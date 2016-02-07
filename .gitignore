@@ -1,0 +1,7 @@
+# Target Directory #
+target/
+
+# Package Files #
+*.jar
+*.war
+*.ear
