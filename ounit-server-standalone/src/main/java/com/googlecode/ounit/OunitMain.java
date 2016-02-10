@@ -31,7 +31,7 @@ public class OunitMain {
 	public static void main(String [] args) {
 		
 		try {
-			// System.setProperty("java.util.logging.config.file", "/home/anttix/tmp/logging.properties");
+			System.setProperty("java.util.logging.config.file", "/home/urmas/tmp/logging.properties");
 			LogManager.getLogManager().readConfiguration();
 		} catch (Exception e) {
 			e.printStackTrace();
