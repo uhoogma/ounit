@@ -126,8 +126,13 @@
 
 		<!-- Pull in ounit plugin -->
 
-		<!-- <plugins> <plugin> <groupId>com.googlecode.ounit</groupId> <artifactId>maven-ounit-plugin</artifactId> 
-			<extensions>true</extensions> </plugin> </plugins> -->
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.ounit</groupId>
+				<artifactId>maven-ounit-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
 	</build>
 
 	<dependencies>
