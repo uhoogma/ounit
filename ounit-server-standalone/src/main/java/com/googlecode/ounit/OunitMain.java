@@ -36,6 +36,7 @@ public class OunitMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+                
 		
 		final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OunitMain.class);
 		log.info("Starting Server");
