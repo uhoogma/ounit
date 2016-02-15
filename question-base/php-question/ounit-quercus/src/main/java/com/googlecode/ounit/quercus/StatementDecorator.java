@@ -237,4 +237,14 @@ public class StatementDecorator implements Statement {
 	public <T> T unwrap(Class<T> iface) throws SQLException {
 		return statement.unwrap(iface);
 	}
+
+    @Override
+    public void closeOnCompletion() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean isCloseOnCompletion() throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

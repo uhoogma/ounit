@@ -3,6 +3,8 @@ package com.googlecode.ounit.quercus;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -57,4 +59,9 @@ public class DataSourceDecorator implements DataSource {
 	public <T> T unwrap(Class<T> arg0) throws SQLException {
 		return dataSource.unwrap(arg0);
 	}
+
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
