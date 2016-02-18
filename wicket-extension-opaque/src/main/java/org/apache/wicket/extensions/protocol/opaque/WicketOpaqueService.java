@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import static com.googlecode.ounit.opaque.OpaqueUtils.*;
@@ -52,138 +51,169 @@ import com.googlecode.ounit.opaque.StartReturn;
  *
  * }
  * </pre>
- * 
+ *
  * @author anttix
  *
  */
-@WebService(serviceName="WicketOpaqueService")
+@WebService(serviceName = "WicketOpaqueService")
 @SOAPBinding(style = Style.RPC)
 public abstract class WicketOpaqueService implements OpaqueService {
-	private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
-	
-	protected OpaqueApplication app;
-	protected PageRunner renderer;
 
-	public WicketOpaqueService(OpaqueApplication app) {
-		this.app = app;
-		renderer = new PageRunner(app);
-	}
+    private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public EngineStatus getEngineStatus() {
-		log.debug("getEngineStatus()");
-		
-		EngineStatus rv = new EngineStatus();
-		rv.setName(app.getName());
-		// TODO: add Version number
-		rv.setUsedmemory(getJvmMem());
-		rv.setActivesessions(app.getActiveSessions());
-		
-		return rv;
-	}
+    protected OpaqueApplication app;
+    protected PageRunner renderer;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public QuestionInfo getQuestionInfo(String questionID,
-			String questionVersion, String questionBaseURL) throws OpaqueException {
-		
-		log.debug("getQuestionInfo({}, {}, {})",
-				new Object[] { questionID, questionVersion, questionBaseURL });
-		
-		if(questionID == null || questionVersion == null)
-			throw new OpaqueException("questionID and questionVersion must be present");
-		
-		OpaqueQuestion q = app.fetchQuestion(questionID, questionVersion,
-				questionBaseURL);
-		QuestionInfo rv = q.getInfo();
-		
-		if (rv.getMaxScore() == 0)
-			rv.setMaxScore(DEFAULT_MARKS);
-		
-		return rv;
-	}
+    public WicketOpaqueService(OpaqueApplication app) {
+        this.app = app;
+        renderer = new PageRunner(app);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public StartReturn start(String questionID, String questionVersion,
-			String questionBaseURL, String[] initialParamNames,
-			String[] initialParamValues, String[] cachedResources)
-			throws OpaqueException {
-		
-		log.debug("start({}, {}, {}, {}, {}, {})", new Object[] { questionID,
-				questionVersion, questionBaseURL, initialParamNames,
-				initialParamValues, cachedResources });
+    /**
+     * {@inheritDoc}
+     */
+    public EngineStatus getEngineStatus() {
+        log.debug("getEngineStatus()");
 
-		if(questionID == null || questionVersion == null)
-			throw new OpaqueException("questionID and questionVersion must be present");
-		
-		OpaqueQuestion question = app.fetchQuestion(questionID,
-				questionVersion, questionBaseURL);
+        EngineStatus rv = new EngineStatus();
+        rv.setName(app.getName());
+        // TODO: add Version number
+        rv.setUsedmemory(getJvmMem());
+        rv.setActivesessions(app.getActiveSessions());
 
-		StartReturn rv = new StartReturn();
-		OpaqueRequest request = new OpaqueRequest(question, initialParamNames,
-				initialParamValues, cachedResources);
+        return rv;
+    }
 
-		renderer.execute(request, rv);
+    /**
+     * {@inheritDoc}
+     */
+    public QuestionInfo getQuestionInfo(String questionID,
+            String questionVersion, String questionBaseURL) throws OpaqueException {
 
-		return rv;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public ProcessReturn process(String questionSession, String[] names,
-			String[] values) throws OpaqueException {
-		
-		log.debug("process({}, {}, {}, {}, {}, {})", new Object[] {
-				questionSession, names, values });
-		
-		if(questionSession == null)
-			throw new OpaqueException("questionSession must be present");
+        log.debug("getQuestionInfo({}, {}, {})",
+                new Object[]{questionID, questionVersion, questionBaseURL});
 
-		ProcessReturn rv = new ProcessReturn();
-		OpaqueRequest request = new OpaqueRequest(questionSession, names,
-				values);
-		renderer.execute(request, rv);
-		
-		return rv;
-	}
+        if (questionID == null || questionVersion == null) {
+            throw new OpaqueException("questionID and questionVersion must be present");
+        }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public void stop(String questionSession) throws OpaqueException {
-		log.debug("stop({})", questionSession);
-		
-		if(questionSession == null)
-			throw new OpaqueException("questionSession must be present");
-		
-		OpaqueRequest request = new OpaqueRequest(questionSession, null);
-		app.getSessionStore().invalidate(request);
-	}
-	
-	/**
-	 * Deprecated compatibility function.
-	 * {@inheritDoc}
-	 */
-	public String getEngineInfo() {
-		log.debug("getEngineInfo()");
-		return makeEngineXML(getEngineStatus());
-	}
-	
-	/**
-	 * Deprecated compatibility function.
-	 * {@inheritDoc}
-	 */
-	public String getQuestionMetadata(String questionID,
-			String questionVersion, String questionBaseURL) throws OpaqueException {
-		log.debug("getQuestionMetadata({}, {}, {})",
-				new Object[] { questionID, questionVersion, questionBaseURL });
+        OpaqueQuestion q = app.fetchQuestion(questionID, questionVersion,
+                questionBaseURL);
+        QuestionInfo rv = q.getInfo();
 
-		return makeQuestionXML(getQuestionInfo(questionID, questionVersion, questionBaseURL));
-	}
+        if (rv.getMaxScore() == 0) {
+            rv.setMaxScore(DEFAULT_MARKS);
+        }
+
+        return rv;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public StartReturn start(String questionID, String questionVersion,
+            String questionBaseURL, String[] initialParamNames,
+            String[] initialParamValues, String[] cachedResources)
+            throws OpaqueException {
+
+        log.debug("start({}, {}, {}, {}, {}, {})", new Object[]{questionID,
+            questionVersion, questionBaseURL, initialParamNames,
+            initialParamValues, cachedResources});
+
+        if (questionID == null || questionVersion == null) {
+            throw new OpaqueException("questionID and questionVersion must be present");
+        }
+
+        OpaqueQuestion question = app.fetchQuestion(questionID,
+                questionVersion, questionBaseURL);
+
+        StartReturn rv = new StartReturn();
+        OpaqueRequest request = new OpaqueRequest(question, initialParamNames,
+                initialParamValues, cachedResources);
+
+        renderer.execute(request, rv);
+
+        return rv;
+    }
+
+    public static String insertMissingGenericParameters(String input) {
+        String[] splits = input.split("<>");
+        if (splits.length == 1) {
+            return input;
+        }
+        StringBuilder sb = new StringBuilder();
+        int beginningIndex;
+        int endIndex;
+        for (String split : splits) {
+            beginningIndex = split.indexOf("<");
+            endIndex = split.indexOf(">");
+            if (beginningIndex != -1 && endIndex != -1) {
+                sb.append(split.substring(beginningIndex, endIndex + 1));
+            }
+            sb.append(split);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public ProcessReturn process(String questionSession, String[] names,
+            String[] values) throws OpaqueException {
+
+        log.debug("process({}, {}, {}, {}, {}, {})", new Object[]{
+            questionSession, names, values});
+
+        if (questionSession == null) {
+            throw new OpaqueException("questionSession must be present");
+        }
+
+        ProcessReturn rv = new ProcessReturn();
+
+        for (int i = 0; i < names.length; i++) {
+            if (names[i].equals("questiondiv:editors:0:editorarea")) {
+                values[i] = insertMissingGenericParameters(values[i]);
+            }
+        }
+
+        OpaqueRequest request = new OpaqueRequest(questionSession, names,
+                values);
+
+        renderer.execute(request, rv);
+
+        return rv;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void stop(String questionSession) throws OpaqueException {
+        log.debug("stop({})", questionSession);
+
+        if (questionSession == null) {
+            throw new OpaqueException("questionSession must be present");
+        }
+
+        OpaqueRequest request = new OpaqueRequest(questionSession, null);
+        app.getSessionStore().invalidate(request);
+    }
+
+    /**
+     * Deprecated compatibility function. {@inheritDoc}
+     */
+    public String getEngineInfo() {
+        log.debug("getEngineInfo()");
+        return makeEngineXML(getEngineStatus());
+    }
+
+    /**
+     * Deprecated compatibility function. {@inheritDoc}
+     */
+    public String getQuestionMetadata(String questionID,
+            String questionVersion, String questionBaseURL) throws OpaqueException {
+        log.debug("getQuestionMetadata({}, {}, {})",
+                new Object[]{questionID, questionVersion, questionBaseURL});
+
+        return makeQuestionXML(getQuestionInfo(questionID, questionVersion, questionBaseURL));
+    }
 }
