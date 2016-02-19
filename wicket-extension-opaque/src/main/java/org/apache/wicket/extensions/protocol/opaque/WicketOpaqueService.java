@@ -147,10 +147,10 @@ public abstract class WicketOpaqueService implements OpaqueService {
         for (String split : splits) {
             beginningIndex = split.indexOf("<");
             endIndex = split.indexOf(">");
+            sb.append(split);
             if (beginningIndex != -1 && endIndex != -1) {
                 sb.append(split.substring(beginningIndex, endIndex + 1));
             }
-            sb.append(split);
         }
         return sb.toString();
     }
@@ -169,13 +169,13 @@ public abstract class WicketOpaqueService implements OpaqueService {
         }
 
         ProcessReturn rv = new ProcessReturn();
-
+        /*
         for (int i = 0; i < names.length; i++) {
             if (names[i].equals("questiondiv:editors:0:editorarea")) {
-                values[i] = insertMissingGenericParameters(values[i]);
+                values[i] = insertMissingGenericParameters(values[i]); // too raw for production
             }
         }
-
+         */
         OpaqueRequest request = new OpaqueRequest(questionSession, names,
                 values);
 

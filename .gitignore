@@ -1,5 +1,6 @@
 # Target Directory #
 target/
+ounit-work/
 
 # Package Files #
 *.jar

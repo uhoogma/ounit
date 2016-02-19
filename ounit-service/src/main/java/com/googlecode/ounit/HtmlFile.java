@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import java.io.IOException;
@@ -34,50 +33,49 @@ import org.apache.wicket.util.string.AppendingStringBuffer;
 
 /**
  * Include contents of a HTML file into a panel.
- * 
+ *
  * @author anttix
  */
 public class HtmlFile extends Panel {
-	private static final long serialVersionUID = 1L;
-	
-	public HtmlFile(String id) {
-		super(id);
-	}
 
-	public HtmlFile(String id, final java.io.File file) {
-		super(id);
-		setDefaultModelObject(file);
-	}
-	
-	private File getFile() {
-		return new File((java.io.File)getDefaultModelObject());
-	}
-	
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		setVisible(getFile().canRead());
-	}
-		
-	@Override
-	public Markup getAssociatedMarkup() {
-		File f = getFile();
-		
-		if(!getFile().canRead()) {
-			//return Markup.NO_MARKUP;
-			return Markup.of("<wicket:panel></wicket:panel>");
-		}
-		
-		final AppendingStringBuffer sb = new AppendingStringBuffer("<wicket:panel>");
-		try {
-			sb.append(f.readString());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		sb.append("</wicket:panel>");
-		InvalidMarkupFilter.removeInvalidMarkup(sb);
-		
-		return MarkupFactory.get().loadMarkup(this, new MarkupResourceStream(
-						new StringResourceStream(sb)), false);
-	}
+    private static final long serialVersionUID = 1L;
+
+    public HtmlFile(String id) {
+        super(id);
+    }
+
+    public HtmlFile(String id, final java.io.File file) {
+        super(id);
+        setDefaultModelObject(file);
+    }
+
+    private File getFile() {
+        return new File((java.io.File) getDefaultModelObject());
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+        setVisible(getFile().canRead());
+    }
+
+    @Override
+    public Markup getAssociatedMarkup() {
+        File f = getFile();
+
+        if (!getFile().canRead()) {
+            //return Markup.NO_MARKUP;
+            return Markup.of("<wicket:panel></wicket:panel>");
+        }
+        final AppendingStringBuffer sb = new AppendingStringBuffer("<wicket:panel>");
+        try {
+            sb.append(f.readString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        sb.append("</wicket:panel>");
+        InvalidMarkupFilter.removeInvalidMarkup(sb);
+        return MarkupFactory.get().loadMarkup(this, new MarkupResourceStream(
+                new StringResourceStream(sb)), false);
+    }
 }
