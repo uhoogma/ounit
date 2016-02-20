@@ -18,80 +18,82 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.maven;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestResults {
-	private int totalTests;
-	private int totalErrors;
-	private int totalFailures;
-	private int totalSkipped;
-	private double totalElapsedTime;
-	//private List <?> failureDetails;
-	private List<FailureDetail> failureDetails = new ArrayList<FailureDetail>();
-	
-	public int getTotalSucceeded() {
-		return getTotalTests() - getTotalErrors() - getTotalFailures() - getTotalSkipped();
-	}
 
-	public int getTotalTests() {
-		return totalTests;
-	}
+    private int totalTests;
+    private int totalErrors;
+    private int totalFailures;
+    private int totalSkipped;
+    private double totalElapsedTime;
+    //private List <?> failureDetails;
+    @SuppressWarnings("Convert2Diamond")
+    private List<FailureDetail> failureDetails = new ArrayList<FailureDetail>();
 
-	public int getTotalErrors() {
-		return totalErrors;
-	}
+    public int getTotalSucceeded() {
+        return getTotalTests() - getTotalErrors() - getTotalFailures() - getTotalSkipped();
+    }
 
-	public int getTotalFailures() {
-		return totalFailures;
-	}
+    public int getTotalTests() {
+        return totalTests;
+    }
 
-	public int getTotalSkipped() {
-		return totalSkipped;
-	}
-	
-	public double getTotalElapsedTime() {
-		return totalElapsedTime;
-	}
-	
-	public double getTotalPercentage() {
-                if(getTotalTests() == 0)
-                    return 0;
-		return (double)getTotalSucceeded() / getTotalTests() * 100;
-	}
-	
-	public List <FailureDetail> getFailureDetails() {
-		return failureDetails;
-	}
-	
-	public void setTotalTests(int totalTests) {
-		this.totalTests = totalTests;
-	}
+    public int getTotalErrors() {
+        return totalErrors;
+    }
 
-	public void setTotalErrors(int totalErrors) {
-		this.totalErrors = totalErrors;
-	}
+    public int getTotalFailures() {
+        return totalFailures;
+    }
 
-	public void setTotalFailures(int totalFailures) {
-		this.totalFailures = totalFailures;
-	}
+    public int getTotalSkipped() {
+        return totalSkipped;
+    }
 
-	public void setTotalSkipped(int totalSkipped) {
-		this.totalSkipped = totalSkipped;
-	}
+    public double getTotalElapsedTime() {
+        return totalElapsedTime;
+    }
 
-	public void setTotalElapsedTime(double totalElapsedTime) {
-		this.totalElapsedTime = totalElapsedTime;
-	}
+    public double getTotalPercentage() {
+        if (getTotalTests() == 0) {
+            return 0;
+        }
+        return (double) getTotalSucceeded() / getTotalTests() * 100;
+    }
 
-	public void setFailureDetails(List<FailureDetail> failureDetails) {
-		this.failureDetails = failureDetails;
-	}
+    public List<FailureDetail> getFailureDetails() {
+        return failureDetails;
+    }
 
-	public void addFailure(FailureDetail failure) {
-		failureDetails.add(failure);
-	}
+    public void setTotalTests(int totalTests) {
+        this.totalTests = totalTests;
+    }
+
+    public void setTotalErrors(int totalErrors) {
+        this.totalErrors = totalErrors;
+    }
+
+    public void setTotalFailures(int totalFailures) {
+        this.totalFailures = totalFailures;
+    }
+
+    public void setTotalSkipped(int totalSkipped) {
+        this.totalSkipped = totalSkipped;
+    }
+
+    public void setTotalElapsedTime(double totalElapsedTime) {
+        this.totalElapsedTime = totalElapsedTime;
+    }
+
+    public void setFailureDetails(List<FailureDetail> failureDetails) {
+        this.failureDetails = failureDetails;
+    }
+
+    public void addFailure(FailureDetail failure) {
+        failureDetails.add(failure);
+    }
 }

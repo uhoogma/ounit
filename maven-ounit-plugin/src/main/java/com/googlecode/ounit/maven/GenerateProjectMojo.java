@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
@@ -32,40 +31,40 @@ import org.apache.maven.plugin.MojoExecutionException;
  * @goal generate-project
  */
 public class GenerateProjectMojo
-    extends AbstractMojo
-{
-	/**
-	 * Location where results will be created.
-	 * 
-	 * @parameter expression="${project.build.directory}"
-	 */
-	protected File outputDirectory;
-	
+        extends AbstractMojo {
+
+    /**
+     * Location where results will be created.
+     *
+     * @parameter expression="${project.build.directory}"
+     */
+    protected File outputDirectory;
+
+    @Override
     public void execute()
-        throws MojoExecutionException
-    {
-    	// Delete assembly descriptor
-   		File f = new File(outputDirectory, "assembly.xml");
-   		f.delete();
-   		
-		// Classes have been compiled thus generated sources are not needed
-		deleteDirectory(new File(outputDirectory, "generated-sources"));
-		
-		// Remove assembly temp files
-		deleteDirectory(new File(outputDirectory, "archive-tmp"));
+            throws MojoExecutionException {
+        // Delete assembly descriptor
+        File f = new File(outputDirectory, "assembly.xml");
+        f.delete();
+
+        // Classes have been compiled thus generated sources are not needed
+        deleteDirectory(new File(outputDirectory, "generated-sources"));
+
+        // Remove assembly temp files
+        deleteDirectory(new File(outputDirectory, "archive-tmp"));
     }
 
-	public static boolean deleteDirectory(File path) {
-		if (path.exists()) {
-			File[] files = path.listFiles();
-			for (int i = 0; i < files.length; i++) {
-				if (files[i].isDirectory()) {
-					deleteDirectory(files[i]);
-				} else {
-					files[i].delete();
-				}
-			}
-		}
-		return (path.delete());
-	}
+    public static boolean deleteDirectory(File path) {
+        if (path.exists()) {
+            File[] files = path.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        return (path.delete());
+    }
 }

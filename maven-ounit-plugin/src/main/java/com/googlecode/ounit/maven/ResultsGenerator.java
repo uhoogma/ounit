@@ -46,10 +46,14 @@ import com.googlecode.ounit.html.*;
  */
 public class ResultsGenerator {
 
+    @SuppressWarnings("FieldMayBeFinal")
     private List<TestSuite> testResults;
     private Log log = null;
+    @SuppressWarnings({"FieldMayBeFinal", "Convert2Diamond"})
     private Map<String, Double> marks = new HashMap<String, Double>();
+    @SuppressWarnings("FieldMayBeFinal")
     private File outputDirectory;
+    @SuppressWarnings("FieldMayBeFinal")
     private boolean showTestOutput;
 
     // TODO: i18n these
@@ -59,11 +63,11 @@ public class ResultsGenerator {
     private final String labelOutputFiles = "Additional test output saved to";
     private final String labelStudent = "Student";
     private final String labelTeacher = "Teacher";
-    private final String summaryLine
-            = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d, Time elapsed: %.2fs";
+    private final String summaryLine = "Tests run: %d, Failures: %d, Errors: %d, Skipped: %d, Time elapsed: %.2fs";
     private final String failureLine = "%s(%s)\n  %s: %s";
     private final String noShowLine = "Binary data of type %s is not shown";
 
+    @SuppressWarnings("Convert2Diamond")
     public ResultsGenerator(MojoData mavenInternals) throws Exception {
         log = mavenInternals.getLog();
         outputDirectory = mavenInternals.getOutputDirectory();
@@ -100,32 +104,28 @@ public class ResultsGenerator {
         Tag panel = new Div();
         panel.setClasses("ou-testresults");
 
-        for (TestSuite suite : testResults) {
+        testResults.stream().map((suite) -> {
             log.debug("Processing " + suite.getName());
-
+            return suite;
+        }).forEach((suite) -> {
             Tag sr = new Div();
             sr.setClasses("ou-test-suite-results");
             panel.add(sr);
-
             /* Caption */
             Tag caption = new H3();
             caption.setClasses("ou-test-suite-results-caption");
             caption.add(suite.getName() + " " + labelTestResults);
             sr.add(caption);
-
             /* Details */
             Tag details = new Div();
             details.setClasses("ou-test-suite-results-details");
             sr.add(details);
-
             /* Summary */
             TestResults results = suite.getResults();
             Tag summary = new Div();
             summary.setClasses("ou-test-summary");
             details.add(summary);
             summary.add(generateSummaryLine(results));
-
-
             /* Failures */
             List<FailureDetail> failureDetails = results.getFailureDetails();
             if (failureDetails.size() > 0) {
@@ -137,15 +137,14 @@ public class ResultsGenerator {
                 failures.setClasses("ou-failed-tests-list");
                 details.add(failures);
 
-                for (FailureDetail f : failureDetails) {
+                failureDetails.stream().forEach((f) -> {
                     Tag failure = new Li();
                     failures.add(failure);
                     Tag pre = new Pre();
                     pre.add(generateFailureString(f));
                     failure.add(pre);
-                }
+                });
             }
-
             /* Test output files */
             List<File> outputFiles = suite.getOutputFiles();
             if (showTestOutput && outputFiles.size() > 0) {
@@ -156,7 +155,7 @@ public class ResultsGenerator {
                 Tag outputs = new Ol();
                 outputs.setClasses("ou-test-output-list");
                 details.add(outputs);
-                for (File f : outputFiles) {
+                outputFiles.stream().forEach((f) -> {
                     String fName = f.getName();
                     String mimeType = URLConnection
                             .guessContentTypeFromName(fName);
@@ -179,9 +178,9 @@ public class ResultsGenerator {
                         div.setClasses("ou-test-output");
                         div.add(String.format(noShowLine, mimeType));
                     }
-                }
+                });
             }
-        }
+        });
 
         return panel.toString();
     }
@@ -194,10 +193,11 @@ public class ResultsGenerator {
 
         log.debug("Generating Text Report");
 
-        for (TestSuite suite : testResults) {
+        testResults.stream().map((suite) -> {
             log.debug("Processing " + suite.getName());
+            return suite;
+        }).map((suite) -> {
             TestResults results = suite.getResults();
-
             sb.append(dashes);
             sb.append(suite.getName());
             sb.append(" " + labelTestResults);
@@ -206,25 +206,37 @@ public class ResultsGenerator {
             sb.append(generateSummaryLine(results));
             sb.append("\n");
             sb.append("\n");
-
-            for (FailureDetail f : results.getFailureDetails()) {
+            results.getFailureDetails().stream().map((f) -> {
                 sb.append(generateFailureString(f));
+                return f;
+            }).forEach((_item) -> {
+                System.out.println(_item);
                 sb.append("\n");
-            }
+            });
             List<File> outputFiles = suite.getOutputFiles();
+            return outputFiles;
+        }).map((outputFiles) -> {
             if (showTestOutput && outputFiles.size() > 0) {
                 sb.append("\n");
                 sb.append(labelOutputFiles);
                 sb.append("\n");
-                for (File f : outputFiles) {
+                outputFiles.stream().map((f) -> {
                     sb.append("\t");
                     sb.append(getRelativePath(outputDirectory, f));
+                    return f;
+                }).forEach((_item) -> {
+                    System.out.println(_item);
                     sb.append("\n");
-                }
+                });
             }
+            return outputFiles;
+        }).map((_item) -> {
             sb.append(dashes);
+            return _item;
+        }).forEach((_item) -> {
+            System.out.println(_item);
             sb.append("\n");
-        }
+        });
 
         return sb.toString();
     }
@@ -236,9 +248,9 @@ public class ResultsGenerator {
         rv.put("default",
                 String.format(Locale.US, "%.2f", marks.get("teacher")));
 
-        for (String key : marks.keySet()) {
+        marks.keySet().stream().forEach((key) -> {
             rv.put(key, String.format(Locale.US, "%.2f", marks.get(key)));
-        }
+        });
 
         return rv;
     }

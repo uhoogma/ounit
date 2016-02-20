@@ -53,6 +53,7 @@ public class GenerateResultsMojo extends MojoData {
         return f;
     }
 
+    @Override
     public void execute() throws MojoExecutionException {
         Log log = getLog();
 

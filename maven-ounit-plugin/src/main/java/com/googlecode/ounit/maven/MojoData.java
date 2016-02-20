@@ -122,6 +122,7 @@ abstract public class MojoData extends AbstractMojo {
 
     public List<File> getStudentTestDirectories() {
         Log log = getLog();
+        @SuppressWarnings("Convert2Diamond")
         List<File> dirs = new ArrayList<File>(2);
 
         String[] repDirs = {getSurefireDirectory(), getFailsafeDirectory()};
@@ -137,6 +138,7 @@ abstract public class MojoData extends AbstractMojo {
 
     public List<File> getTeacherTestDirectories() {
         Log log = getLog();
+        @SuppressWarnings("Convert2Diamond")
         List<File> dirs = new ArrayList<File>(1);
 
         String[] repDirs = {getTeacherDirectory()};

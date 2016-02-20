@@ -17,18 +17,19 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
 import java.util.List;
 
 public interface ReportParser {
-	/**
-	 * Find report files in specified directories and parse them.
-	 * 
-	 * @param dirs directories to look for report files
-	 * @return aggregated results of the report files
-	 */
-	public abstract TestResults parseReportFiles(List<File> dirs) throws Exception;
+
+    /**
+     * Find report files in specified directories and parse them.
+     *
+     * @param dirs directories to look for report files
+     * @return aggregated results of the report files
+     * @throws java.lang.Exception exception
+     */
+    public abstract TestResults parseReportFiles(List<File> dirs) throws Exception;
 }

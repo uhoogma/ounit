@@ -18,34 +18,41 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.maven;
 
 public class FailureDetail {
-	private String name;
-	private String fullClassName;
-	private String type;
-	private String message;
 
-	public FailureDetail(String name, String fullClassName, String type,
-			String message) {
-		this.name = name;
-		this.fullClassName = fullClassName;
-		this.type = type;
-		if(message != null)
-			this.message = message.replace("%n", "\n");		
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public String getFullClassName() {
-		return fullClassName;
-	}
-	public String getType() {
-		return type;
-	}
-	public String getMessage() {
-		return message;
-	}
+    @SuppressWarnings("FieldMayBeFinal")
+    private String name;
+    @SuppressWarnings("FieldMayBeFinal")
+    private String fullClassName;
+    @SuppressWarnings("FieldMayBeFinal")
+    private String type;
+    private String message;
+
+    public FailureDetail(String name, String fullClassName, String type,
+            String message) {
+        this.name = name;
+        this.fullClassName = fullClassName;
+        this.type = type;
+        if (message != null) {
+            this.message = message.replace("%n", "\n");
+        }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFullClassName() {
+        return fullClassName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

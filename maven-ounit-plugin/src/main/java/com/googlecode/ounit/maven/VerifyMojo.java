@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -25,16 +24,17 @@ import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Verify question.
- * 
- * Check that boilerplate (student code) compiles and scores zero points.
- * Check that reference solution (teacher code) compiles and scores maximum points.
- * 
+ *
+ * Check that boilerplate (student code) compiles and scores zero points. Check
+ * that reference solution (teacher code) compiles and scores maximum points.
+ *
  * @execute lifecycle="verify-question" phase="initialize"
  * @goal verify
  */
-
 public class VerifyMojo extends AbstractMojo {
-	public void execute() throws MojoExecutionException {
-		// Do nothing !
-	}
+
+    @Override
+    public void execute() throws MojoExecutionException {
+        // Do nothing !
+    }
 }

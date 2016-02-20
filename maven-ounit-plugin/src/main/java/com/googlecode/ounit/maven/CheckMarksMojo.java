@@ -17,41 +17,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * Verify that boilerplate (student code) compiles and scores zero points
- * 
+ *
  * @goal check-marks
  */
 public class CheckMarksMojo extends MojoData {
-	/**
-	 * Expected marks on the default axis.
-	 * 
-	 * @parameter
-	 * @required
-	 */
-	protected double marks;
 
-	public void execute() throws MojoExecutionException {
-		double default_marks;
-		try {
-			Properties marks = new Properties();
-			marks.load(new FileInputStream(new File(new File(
-					getOunitDirectory()), "marks.properties")));
-			default_marks = Double.parseDouble(marks.getProperty("default"));
-		} catch (Exception e) {
-			throw new MojoExecutionException("Failed to parse test results", e);
-		}
-		if (default_marks != marks)
-			throw new MojoExecutionException("Invalid default marks. Expected "
-					+ marks + " got " + default_marks);
-	}
+    /**
+     * Expected marks on the default axis.
+     *
+     * @parameter
+     * @required
+     */
+    protected double marks;
+
+    @Override
+    public void execute() throws MojoExecutionException {
+        double default_marks;
+        try {
+            @SuppressWarnings("LocalVariableHidesMemberVariable")
+            Properties marks = new Properties();
+            marks.load(new FileInputStream(new File(new File(
+                    getOunitDirectory()), "marks.properties")));
+            default_marks = Double.parseDouble(marks.getProperty("default"));
+        } catch (IOException | NumberFormatException e) {
+            throw new MojoExecutionException("Failed to parse test results", e);
+        }
+        if (default_marks != marks) {
+            throw new MojoExecutionException("Invalid default marks. Expected "
+                    + marks + " got " + default_marks);
+        }
+    }
 }
