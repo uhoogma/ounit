@@ -18,101 +18,105 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.html;
 
 import java.util.LinkedList;
 
 /**
  * An HTML tag
- * 
+ *
  * Based on ideas borrowed from Java HTML Generator v0.9
  * http://artho.com/webtools/java/index.shtml
- * 
+ *
  * @author anttix
  */
 public class Tag extends LinkedList<Object> {
-	private static final long serialVersionUID = -5267385819039950390L;
-	private String name;
+
+    private static final long serialVersionUID = -5267385819039950390L;
+    @SuppressWarnings("FieldMayBeFinal")
+    private String name;
     private String id = null;
     private String classes = null;
     private String attributes = null;
-    
+
     public Tag(String name) {
-    	this.name = name.toLowerCase();
+        this.name = name.toLowerCase();
     }
-    
+
     /**
      * Render tag to HTML using prefix to indent each line
-     * 
+     *
      * @param prefix
      * @return
      */
     public String render(String prefix) {
-    	String rv = "";
-    	String attr = "";
-    	String inner = "";
-    	
-    	if(id != null)
-    		attr += " id=\"" + id + "\"";
-    	if(classes != null)
-    		attr += " class=\"" + classes + "\"";
-    	if(attributes != null)
-    		attr += " " + attributes;
-    	
-    	for(Object i: this) {
-    		String p = prefix + "  ";
-    		if(i instanceof Tag) {
-    			inner += ((Tag)i).render(p);
-    		} else {
-    			inner += p + escape(i) + "\n";
-    		}
-    	}
-    	
-    	rv += prefix + "<" + name + attr + ">\n";
-    	rv += inner;
-    	rv += prefix + "</" + name + ">\n";
-    	
-    	return rv;
+        String rv = "";
+        String attr = "";
+        String inner = "";
+
+        if (id != null) {
+            attr += " id=\"" + id + "\"";
+        }
+        if (classes != null) {
+            attr += " class=\"" + classes + "\"";
+        }
+        if (attributes != null) {
+            attr += " " + attributes;
+        }
+
+        for (Object i : this) {
+            String p = prefix + "  ";
+            if (i instanceof Tag) {
+                inner += ((Tag) i).render(p);
+            } else {
+                inner += p + escape(i) + "\n";
+            }
+        }
+
+        rv += prefix + "<" + name + attr + ">\n";
+        rv += inner;
+        rv += prefix + "</" + name + ">\n";
+
+        return rv;
     }
-    
-	protected String escape(Object o) {
-		return o.toString()
-				.replace("&", "&amp;")
-				.replace("<", "&lt;")
-				.replace(">", "&gt;");
-	}
 
-	public String getName() {
-		return name;
-	}
+    protected String escape(Object o) {
+        return o.toString()
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;");
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getClasses() {
-		return classes;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setClasses(String classes) {
-		this.classes = classes;
-	}
+    public String getClasses() {
+        return classes;
+    }
 
-	public String getAttributes() {
-		return attributes;
-	}
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
 
-	public void setAttributes(String attributes) {
-		this.attributes = attributes;
-	}
+    public String getAttributes() {
+        return attributes;
+    }
 
-	@Override
-	public String toString() {
-		return render("");
-	}
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
+    }
+
+    @Override
+    public String toString() {
+        return render("");
+    }
 }

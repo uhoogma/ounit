@@ -18,18 +18,18 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.html;
 
 public class Br extends Tag {
-	private static final long serialVersionUID = -6863468022543839369L;
 
-	public Br() {
-		super("br");
-	}
+    private static final long serialVersionUID = -6863468022543839369L;
 
-	@Override
-	public String render(String prefix) {
-		return prefix + "<br />\n";
-	}
+    public Br() {
+        super("br");
+    }
+
+    @Override
+    public String render(String prefix) {
+        return prefix + "<br />\n";
+    }
 }

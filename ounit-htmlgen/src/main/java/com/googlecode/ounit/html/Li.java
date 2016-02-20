@@ -18,13 +18,13 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.html;
 
 public class Li extends Tag {
-	private static final long serialVersionUID = 1984318318776017127L;
 
-	public Li() {
-		super("li");
-	}
+    private static final long serialVersionUID = 1984318318776017127L;
+
+    public Li() {
+        super("li");
+    }
 }

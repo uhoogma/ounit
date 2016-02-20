@@ -18,42 +18,44 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.html;
 
 public class Pre extends Tag {
-	private static final long serialVersionUID = 9172203971058435589L;
-	
-	public Pre() {
-		super("pre");
-	}
-	
-	@Override
-	public String render(String prefix) {
-    	String rv = "";
-    	String attr = "";
-    	String inner = "";
 
-    	if(getId() != null)
-    		attr += " id=\"" + getId() + "\"";
-    	if(getClasses() != null)
-    		attr += " class=\"" + getClasses() + "\"";
-    	if(getAttributes() != null)
-    		attr += " " + getAttributes();
-    	
-    	
-    	for(Object i: this) {
-    		if(i instanceof Tag) {
-    			inner += ((Tag)i).render("");
-    		} else {
-    			inner += escape(i);
-    		}
-    	}
-    	
-    	rv += prefix + "<" + getName() + attr + ">\n";
-    	rv += inner;
-    	rv += prefix + "</" + getName() + ">\n";
-    	
-    	return rv;
-	}
+    private static final long serialVersionUID = 9172203971058435589L;
+
+    public Pre() {
+        super("pre");
+    }
+
+    @Override
+    public String render(String prefix) {
+        String rv = "";
+        String attr = "";
+        String inner = "";
+
+        if (getId() != null) {
+            attr += " id=\"" + getId() + "\"";
+        }
+        if (getClasses() != null) {
+            attr += " class=\"" + getClasses() + "\"";
+        }
+        if (getAttributes() != null) {
+            attr += " " + getAttributes();
+        }
+
+        for (Object i : this) {
+            if (i instanceof Tag) {
+                inner += ((Tag) i).render("");
+            } else {
+                inner += escape(i);
+            }
+        }
+
+        rv += prefix + "<" + getName() + attr + ">\n";
+        rv += inner;
+        rv += prefix + "</" + getName() + ">\n";
+
+        return rv;
+    }
 }
