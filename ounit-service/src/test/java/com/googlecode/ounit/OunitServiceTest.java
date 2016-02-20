@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import org.junit.*;
@@ -27,38 +26,39 @@ import com.googlecode.ounit.opaque.OpaqueService;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.text.StringContains.*;
+import static org.hamcrest.Matchers.containsString;
 
 public class OunitServiceTest {
-	private static OpaqueService service;
-	
-	@BeforeClass
-	public static void createService() {
-		service = new OunitService();
-	}
 
-	@Test
-	@SuppressWarnings("deprecation")
-	public void testGetEngineInfo() {
-		String xml = service.getEngineInfo();
-		
-		assertThat(xml, is(notNullValue()));
-		assertThat(xml, containsString("<engineinfo>"));
-		assertThat(xml, containsString("</engineinfo>"));
-		assertThat(xml, containsString("<name>"));
-		assertThat(xml, containsString("</name>"));
-	}
+    private static OpaqueService service;
 
-	@Test
-	@Ignore
-	@SuppressWarnings("deprecation")
-	public void testGetQuestionMetadata() throws Exception {
-		String xml = service.getQuestionMetadata("ounit.selftest.simple", "1.0", "");
-		
-		assertThat(xml, is(notNullValue()));
-		assertThat(xml, containsString("<questionmetadata>"));
-		assertThat(xml, containsString("</questionmetadata>"));
-		assertThat(xml, containsString("<marks>"));
-		assertThat(xml, containsString("</marks>"));
-	}
+    @BeforeClass
+    public static void createService() {
+        service = new OunitService();
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testGetEngineInfo() {
+        String xml = service.getEngineInfo();
+
+        assertThat(xml, is(notNullValue()));
+        assertThat(xml, containsString("<engineinfo>"));
+        assertThat(xml, containsString("</engineinfo>"));
+        assertThat(xml, containsString("<name>"));
+        assertThat(xml, containsString("</name>"));
+    }
+
+    @Test
+    @Ignore
+    @SuppressWarnings("deprecation")
+    public void testGetQuestionMetadata() throws Exception {
+        String xml = service.getQuestionMetadata("ounit.selftest.simple", "1.0", "");
+
+        assertThat(xml, is(notNullValue()));
+        assertThat(xml, containsString("<questionmetadata>"));
+        assertThat(xml, containsString("</questionmetadata>"));
+        assertThat(xml, containsString("<marks>"));
+        assertThat(xml, containsString("</marks>"));
+    }
 }
