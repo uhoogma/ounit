@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.opaque;
 
 import javax.xml.ws.Endpoint;
@@ -30,46 +29,48 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class TestBase {
-	public final static String serviceAddress = "http://localhost:9099/opaque";
-	
-	protected static WebDriver driver;
-	protected static Endpoint ep = null;
-	
-	@Rule
-	public ScreenShotOnFailureRule ssf = new ScreenShotOnFailureRule(driver);
 
-	public static void startServer() {
-		if(ep == null) {
-			MockOpaqueService implementor = new MockOpaqueService();
-			ep = Endpoint.publish(serviceAddress, implementor);
-			assertTrue("Service did not start", ep.isPublished());
-			System.out.println("Mock server started");
-		}
-	}
+    public final static String SERVICE_ADDRESS = "http://localhost:9099/opaque";
 
-	
-	public static void openBrowser() {
-	    if(driver == null)
-	    	driver = new FirefoxDriver();
-	}
+    protected static WebDriver driver;
+    protected static Endpoint ep = null;
 
-	@AfterClass
-	public static void stopServer() {
-		if(ep != null) {
-			ep.stop();
-			ep = null;
-		}
-	}
+    @Rule
+    public ScreenShotOnFailureRule ssf = new ScreenShotOnFailureRule(driver);
 
-	@AfterClass
-	public static void closeBrowser() {
-		if(driver != null) {
-			driver.quit();
-			driver = null;
-		}
-	}
-	public static void main(String [] args) {
-    	startServer();
-	}
+    public static void startServer() {
+        if (ep == null) {
+            MockOpaqueService implementor = new MockOpaqueService();
+            ep = Endpoint.publish(SERVICE_ADDRESS, implementor);
+            assertTrue("Service did not start", ep.isPublished());
+            System.out.println("Mock server started");
+        }
+    }
+
+    public static void openBrowser() {
+        if (driver == null) {
+            driver = new FirefoxDriver();
+        }
+    }
+
+    @AfterClass
+    public static void stopServer() {
+        if (ep != null) {
+            ep.stop();
+            ep = null;
+        }
+    }
+
+    @AfterClass
+    public static void closeBrowser() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
+    }
+
+    public static void main(String[] args) {
+        startServer();
+    }
 
 }
