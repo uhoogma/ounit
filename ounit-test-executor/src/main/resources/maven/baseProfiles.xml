@@ -22,85 +22,86 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <profiles>
-    <profile>
-      <id>ounitBuilderProfile</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <pluginManagement>
-          <plugins>
+    <profiles>
+        <profile>
+            <id>ounitBuilderProfile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
 
-            <!-- 
-                 Force fork mode to reduce the risk of a leaking compiler.
-            -->
-            <plugin>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <configuration>
-                <fork>true</fork>
-              </configuration>
-            </plugin>
+                        <!--
+                             Force fork mode to reduce the risk of a leaking compiler.
+                        -->
+                        <plugin>
+                            <artifactId>maven-compiler-plugin</artifactId>
+                            <configuration>
+                                <fork>true</fork>
+                            </configuration>
+                        </plugin>
 
-            <!--
-                 Direct test output to file and make sure the tests
-                 are run in a forked JVM to reduce the risk of memleaks.
-            -->
-            <plugin>
-              <artifactId>maven-surefire-plugin</artifactId>
-              <configuration>
-                <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                <printSummary>false</printSummary>
-                <forkMode>once</forkMode>
-                <forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
-                <!--
-                     Note the backslash in front of basedir. This file is filtered
-                     by the build so any property that needs to point to the runtime
-                     environment MUST be escaped.
-                -->
-                <argLine>
-                   -Djava.security.manager -Djava.security.policy=tests.policy
-                </argLine>
-              </configuration>
-            </plugin>
-            <plugin>
-              <artifactId>maven-failsafe-plugin</artifactId>
-              <configuration>
-                <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                <printSummary>false</printSummary>
-                <forkMode>once</forkMode>
-                <forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
-                <argLine>
-                  -Djava.security.manager -Djava.security.policy=tests.policy
-                </argLine>
-              </configuration>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
+                        <!--
+                             Direct test output to file and make sure the tests
+                             are run in a forked JVM to reduce the risk of memleaks.
+                        -->
+                        <plugin>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>2.19.1</version>
+                            <configuration>
+                                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                <printSummary>false</printSummary>
+                                <forkMode>once</forkMode>
+                                <forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
+                                <!--
+                                     Note the backslash in front of basedir. This file is filtered
+                                     by the build so any property that needs to point to the runtime
+                                     environment MUST be escaped.
+                                -->
+                                <argLine>
+                                    -Djava.security.manager -Djava.security.policy=tests.policy
+                                </argLine>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <artifactId>maven-failsafe-plugin</artifactId>
+                            <configuration>
+                                <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                                <printSummary>false</printSummary>
+                                <forkMode>once</forkMode>
+                                <forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
+                                <argLine>
+                                    -Djava.security.manager -Djava.security.policy=tests.policy
+                                </argLine>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
 
-      <repositories>
-        <repository>
-          <id>anttix.org</id>
-          <name>anttix.org snapshots</name>
-          <url>
-            http://ounit.anttix.org/repo
-          </url>
-        </repository>
-      </repositories>
+            <repositories>
+                <repository>
+                    <id>anttix.org</id>
+                    <name>anttix.org snapshots</name>
+                    <url>
+                        http://ounit.anttix.org/repo
+                    </url>
+                </repository>
+            </repositories>
 
-      <pluginRepositories>
-        <pluginRepository>
-          <id>anttix.org</id>
-          <name>anttix.org snapshots</name>
-          <url>
-            http://ounit.anttix.org/repo
-          </url>
-        </pluginRepository>
-      </pluginRepositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>anttix.org</id>
+                    <name>anttix.org snapshots</name>
+                    <url>
+                        http://ounit.anttix.org/repo
+                    </url>
+                </pluginRepository>
+            </pluginRepositories>
 
-    </profile>
-  </profiles>
+        </profile>
+    </profiles>
 </project>

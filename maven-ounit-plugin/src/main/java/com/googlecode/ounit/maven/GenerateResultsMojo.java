@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
@@ -31,51 +30,50 @@ import org.apache.maven.plugin.logging.Log;
 
 /**
  * Parse output from testing subsystems and generate test results to be passed
- * back to the LMS.
- * We attach to the verify lifecycle phase for a good reason:
+ * back to the LMS. We attach to the verify lifecycle phase for a good reason:
  * We can not parse results any earlier, because teacher tests normally run
- * during integration-test in order to have access to services started
- * in pre-integration-test phase. We may not use post-integration-test either
+ * during integration-test in order to have access to services started in
+ * pre-integration-test phase. We may not use post-integration-test either
  * because this is reserved for cleanup operations and should be allowed to
  * complete before we potentially fail the build.
- *  
+ *
  * @author <a href="mailto:anttix@users.sourceforge.net">Antti Andreimann</a>
  * @version $Id$
- * 
+ *
  * @goal generate-results
  * @phase verify
  */
-
 public class GenerateResultsMojo extends MojoData {
-	private File createOutputFile(String name) throws IOException {
-		File f = new File(getOunitDirectory() + "/" + name);
-		f.getParentFile().mkdirs();
-		f.createNewFile();
 
-		return f;
-	}
+    private File createOutputFile(String name) throws IOException {
+        File f = new File(getOunitDirectory() + "/" + name);
+        f.getParentFile().mkdirs();
+        f.createNewFile();
 
-	public void execute() throws MojoExecutionException {
-		Log log = getLog();
+        return f;
+    }
 
-		try {
-			ResultsGenerator gen = new ResultsGenerator(this);
+    public void execute() throws MojoExecutionException {
+        Log log = getLog();
 
-			PrintStream fstream = new PrintStream(
-					createOutputFile("results.html"));
-			fstream.println(gen.generateHtmlReport());
-			log.info("");
-			for (String l : gen.generateTextReport().split("\n")) {
-				log.info(l);
-			}
-			log.info("");
-			
-			Properties marks = gen.generateMarks();
-			marks.store(new FileOutputStream(createOutputFile("marks.properties")), "");
-			log.info("Total Score: " + marks.getProperty("default") + " %");
-			log.info("");
-		} catch (Exception e) {
-			throw new MojoExecutionException("Failed to parse test results", e);
-		}
-	}
+        try {
+            ResultsGenerator gen = new ResultsGenerator(this);
+
+            PrintStream fstream = new PrintStream(
+                    createOutputFile("results.html"));
+            fstream.println(gen.generateHtmlReport());
+            log.info("");
+            for (String l : gen.generateTextReport().split("\n")) {
+                log.info(l);
+            }
+            log.info("");
+
+            Properties marks = gen.generateMarks();
+            marks.store(new FileOutputStream(createOutputFile("marks.properties")), "");
+            log.info("Total Score: " + marks.getProperty("default") + " %");
+            log.info("");
+        } catch (Exception e) {
+            throw new MojoExecutionException("Failed to parse test results" + e.getMessage(), e);
+        }
+    }
 }

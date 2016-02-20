@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package foopackage.junit4;
 
 import org.junit.*;
@@ -26,33 +25,38 @@ import static org.junit.Assert.*;
 
 public class JUnit4ErrorTest {
 
-    @Test
+    // @Test
     public void thisWillThrowAnError() throws Exception {
         throw new Exception("Expected unexpected error");
     }
 
-    @Test
+    // @Test
     public void thisWillThrowAnotherError() throws Exception {
         throw new Exception("Another interesting error");
     }
 
-    @Test
+    //@Test
     public void thisWillPass() {
-        assertTrue( true );
+        assertTrue(true);
     }
 
-    @Test
+    // @Test
     public void thisWillFail() {
-        assertEquals( "Wrong animal in my pocket", "a hamster", "a rat" );
+        assertEquals("Wrong animal in my pocket", "a hamster", "a rat");
     }
 
-    @Test
+    //@Test
     public void thisWillFailAsWell() {
         assertEquals("Love is in the air", "Love is down below");
     }
 
-    @Ignore
-    @Test
+    // @Ignore
+    // @Test
     public void thisWillBeSkipped() {
+    }
+
+    @Test
+    public void test() {
+        assertEquals("Who likes you punk?", "everybody", "everybody");
     }
 }

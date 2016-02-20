@@ -26,54 +26,55 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.googlecode.ounit</groupId>
-    <artifactId>question-base</artifactId>
+    <parent>
+        <groupId>com.googlecode.ounit</groupId>
+        <artifactId>question-base</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>java-question</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-  </parent>
+    <name>OUnit Simple Java question</name>
 
-  <artifactId>java-question</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>OUnit Simple Java question</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
 
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Skip test phase to save time: we have no student written tests -->
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.19.1</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
 
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- Skip test phase to save time: we have no student written tests -->
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-          </configuration>
-        </plugin>
-
-        <!-- 
-             Skip jar building to save time: we have no deliverables
-             This is a hack that works by re-binding default-jar to a
-             non-existing lifecycle phase.
-        -->
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>default-jar</id>
-              <phase>never</phase>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+                <!--
+                     Skip jar building to save time: we have no deliverables
+                     This is a hack that works by re-binding default-jar to a
+                     non-existing lifecycle phase.
+                -->
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>default-jar</id>
+                            <phase>never</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

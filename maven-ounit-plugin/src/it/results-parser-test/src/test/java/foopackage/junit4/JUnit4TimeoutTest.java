@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package foopackage.junit4;
 
 import org.junit.*;
@@ -26,13 +25,18 @@ import static org.junit.Assert.*;
 
 public class JUnit4TimeoutTest {
 
-    @Test(timeout=1000)
-    public void thisWillPass() {
-        assertTrue( true );
+    @Test
+    public void test() {
+        assertEquals("Who likes you punk?", "everybody", "everybody");
     }
 
-    @Test(timeout=1000)
+    // @Test(timeout=1000)
+    public void thisWillPass() {
+        assertTrue(true);
+    }
+
+    // @Test(timeout=1000)
     public void thisWillFail() {
-        for(;;);
+        for (;;);
     }
 }

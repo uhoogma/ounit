@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package foopackage.junit4;
 
 import org.junit.*;
@@ -26,29 +25,34 @@ import static org.junit.Assert.*;
 
 public class JUnit4SimpleTest {
 
-    @Test
+    //@Test
     public void thisWillPass() {
-        assertTrue( true );
+        assertTrue(true);
     }
 
-    @Test
+    // @Test
     public void thisWillPassAsWell() {
-        assertTrue( true );
+        assertTrue(true);
     }
 
-    @Test
+    //@Test
     public void thisWillFail() {
-        assertTrue( false );
+        assertTrue(false);
     }
 
-    @Test
+    //@Test
     public void thisWillFailAsWell() {
-        assertEquals( "Politicians do not lie", true, false );
+        assertEquals("Politicians do not lie", true, false);
+    }
+
+    //@Test
+    public void thisWillFailToo() {
+        assertTrue("Housewives never cheat", false);
     }
 
     @Test
-    public void thisWillFailToo() {
-        assertTrue( "Housewives never cheat", false );
+    public void test() {
+        assertEquals("Who likes you punk?", "everybody", "everybody");
     }
 
 }
