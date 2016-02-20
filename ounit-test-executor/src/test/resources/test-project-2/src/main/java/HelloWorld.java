@@ -20,7 +20,10 @@
  */
 
 public class HelloWorld {
-    public static void main(String []) {
-        I have no idea how to code ...
+
+    public static void main(String[]) {
+        I have no idea how to code
+
+...
     }
 }

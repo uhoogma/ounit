@@ -27,7 +27,7 @@ public class HelloTest {
 
     @Test
     public void aTestThatSucceeds() {
-        assertTrue( true );
+        assertTrue(true);
     }
 
 }

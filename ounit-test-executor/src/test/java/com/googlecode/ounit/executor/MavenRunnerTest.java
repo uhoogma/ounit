@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.executor;
 
 import java.io.ByteArrayOutputStream;
@@ -29,134 +28,139 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionResult;
 import org.junit.*;
 
-import com.googlecode.ounit.executor.MavenRunner;
-
 import static org.junit.Assert.*;
 import static com.googlecode.ounit.executor.Util.*;
 
 public class MavenRunnerTest {
-	private static MavenRunner mvn;
-	private static ArrayList<String> delDirs = new ArrayList<String>();
 
-	private static MavenExecutionResult execute(File dir, String goal) {
-		return execute(dir, goal, null);
-	}
+    private static MavenRunner mvn;
+    @SuppressWarnings({"FieldMayBeFinal", "Convert2Diamond"})
+    private static ArrayList<String> delDirs = new ArrayList<String>();
 
-	private static MavenExecutionResult execute(File dir, String goal,
-			String outDir) {
+    private static MavenExecutionResult execute(File dir, String goal) {
+        return execute(dir, goal, null);
+    }
 
-		MavenExecutionResult r = mvn.execute(dir, goal, outDir);
-		addDelDir(r);
+    private static MavenExecutionResult execute(File dir, String goal,
+            String outDir) {
 
-		return r;
-	}
-	
-	private static void addDelDir(MavenExecutionResult r) {
-		try {
-			String d = r.getProject().getBuild().getDirectory();
+        MavenExecutionResult r = mvn.execute(dir, goal, outDir);
+        addDelDir(r);
 
-			if (!delDirs.contains(d))
-				delDirs.add(d);
+        return r;
+    }
 
-		} catch (NullPointerException e) {
-		}
-	}
-	
+    private static void addDelDir(MavenExecutionResult r) {
+        try {
+            String d = r.getProject().getBuild().getDirectory();
 
-	@BeforeClass
-	public static void createMavenRunner() throws Exception {
-		mvn = new MavenRunner();
-	}
+            if (!delDirs.contains(d)) {
+                delDirs.add(d);
+            }
 
-	@AfterClass
-	public static void disposeMavenRunner() {
-		mvn = null;
-	}
-	
-	@AfterClass
-	public static void cleanTargetDirs() {
-		for (String dir : delDirs) {
-			System.out.println("cleanTargetDirs: removing directory " + dir);
-			deleteDirectory(dir);
-		}
-	}
+        } catch (NullPointerException e) {
+        }
+    }
 
-	@Test
-	public void compileSimpleProject() {
-		File dir = fromResources(TP3);
-		MavenExecutionResult r = execute(dir, "compile");
-		for(Throwable t: r.getExceptions())
-			t.printStackTrace();
-		assertFalse("TP1 build failed", r.hasExceptions());
-	}
-	
-	@Test
-	public void compileProjectThatHasErrors() {
-		File dir = fromResources(TP2);
-		MavenExecutionResult r = execute(dir, "compile");
-		assertTrue("TP2 build did not fail", r.hasExceptions());
-	}
-	
-	@Test
-	public void testSimpleProject() {
-		File dir = fromResources(TP3);
-		MavenExecutionResult r = execute(dir, "test");
-		assertFalse("TP3 build failed", r.hasExceptions());		
-	}
+    @BeforeClass
+    public static void createMavenRunner() throws Exception {
+        mvn = new MavenRunner();
+    }
 
-	@Test
-	public void testBuildLogRedirection() {
-		AssertionError err = null;
-		File dir = fromResources(TP1);
-		ByteArrayOutputStream os1 = new ByteArrayOutputStream();
-		ByteArrayOutputStream os2 = new ByteArrayOutputStream();
-		int oldLogLevel = mvn.getLogLevel();
-		mvn.setLogLevel(MavenExecutionRequest.LOGGING_LEVEL_INFO);
+    @AfterClass
+    public static void disposeMavenRunner() {
+        mvn = null;
+    }
 
-		try {
-			mvn.setLog(os1);
-			execute(dir, "compile");
+    @AfterClass
+    public static void cleanTargetDirs() {
+        delDirs.stream().map((dir) -> {
+            System.out.println("cleanTargetDirs: removing directory " + dir);
+            return dir;
+        }).forEach((dir) -> {
+            deleteDirectory(dir);
+        });
+    }
 
-			int len1 = os1.toString().length();
-			assertTrue("No log output produced to first logStream", len1 > 32);
+    @Test
+    @SuppressWarnings("CallToPrintStackTrace")
+    public void compileSimpleProject() {
+        File dir = fromResources(TP3);
+        MavenExecutionResult r = execute(dir, "compile");
+        r.getExceptions().stream().forEach((Throwable t) -> {
+            t.printStackTrace();
+        });
+        assertFalse("TP1 build failed", r.hasExceptions());
+    }
 
-			mvn.setLog(os2);
-			execute(dir, "compile");
+    @Test
+    public void compileProjectThatHasErrors() {
+        File dir = fromResources(TP2);
+        MavenExecutionResult r = execute(dir, "compile");
+        assertTrue("TP2 build did not fail", r.hasExceptions());
+    }
 
-			int len2 = os2.toString().length();
-			assertTrue("No log output produced to second logStream", len2 > 32);
+    @Test
+    public void testSimpleProject() {
+        File dir = fromResources(TP3);
+        MavenExecutionResult r = execute(dir, "test");
+        assertFalse("TP3 build failed", r.hasExceptions());
+    }
 
-			int newLen1 = os1.toString().length();
-			assertTrue("Data appended to old logstream", newLen1 == len1);
-		} catch (AssertionError e) {
-			err = e;
-		}
+    @Test
+    public void testBuildLogRedirection() {
+        AssertionError err = null;
+        File dir = fromResources(TP1);
+        ByteArrayOutputStream os1 = new ByteArrayOutputStream();
+        ByteArrayOutputStream os2 = new ByteArrayOutputStream();
+        int oldLogLevel = mvn.getLogLevel();
+        mvn.setLogLevel(MavenExecutionRequest.LOGGING_LEVEL_INFO);
 
-		// Restore logging settings
-		mvn.setLogLevel(oldLogLevel);
-		mvn.setLog(System.out);
+        try {
+            mvn.setLog(os1);
+            execute(dir, "compile");
 
-		if (err != null)
-			throw err;
-	}
+            int len1 = os1.toString().length();
+            assertTrue("No log output produced to first logStream", len1 > 32);
 
-	@Test
-	public void buildToDifferentOuputDirectory() {
-		File dir = fromResources(TP1);
-		String outDir = dir.getAbsolutePath() + "/target/out2";
-		MavenExecutionResult r = mvn.execute(dir, "compile", outDir);
-		assertEquals("Invalid outputDirectory", outDir, r.getProject().getBuild().getDirectory());
-	}
+            mvn.setLog(os2);
+            execute(dir, "compile");
 
-	@Ignore
-	@Test
-	public void testIfMalformedPomProducesErrors() {
-		// TODO
-	}
-	
-	@Ignore
-	@Test
-	public void testIfProgressListenerWorks() {
-		// TODO
-	}
+            int len2 = os2.toString().length();
+            assertTrue("No log output produced to second logStream", len2 > 32);
+
+            int newLen1 = os1.toString().length();
+            assertTrue("Data appended to old logstream", newLen1 == len1);
+        } catch (AssertionError e) {
+            err = e;
+        }
+
+        // Restore logging settings
+        mvn.setLogLevel(oldLogLevel);
+        mvn.setLog(System.out);
+
+        if (err != null) {
+            throw err;
+        }
+    }
+
+    @Test
+    public void buildToDifferentOuputDirectory() {
+        File dir = fromResources(TP1);
+        String outDir = dir.getAbsolutePath() + "/target/out2";
+        MavenExecutionResult r = mvn.execute(dir, "compile", outDir);
+        assertEquals("Invalid outputDirectory", outDir, r.getProject().getBuild().getDirectory());
+    }
+
+    @Ignore
+    @Test
+    public void testIfMalformedPomProducesErrors() {
+        // TODO
+    }
+
+    @Ignore
+    @Test
+    public void testIfProgressListenerWorks() {
+        // TODO
+    }
 }

@@ -18,22 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.maven.cli;
 
 /**
  * An ugly hack to make PrintStreamLogger.Provider interface visible.
- * 
+ *
  * TODO: Report this problem to upstream
- * 
+ *
  * @author <a href="mailto:anttix@users.sourceforge.net">Antti Andreimann</a>
  *
  */
-
 public class PrintStreamLogger2 extends PrintStreamLogger {
-    public static interface Provider extends PrintStreamLogger.Provider { }
 
-	public PrintStreamLogger2(Provider provider) {
-		super(provider);
-	}
+    public static interface Provider extends PrintStreamLogger.Provider {
+    }
+
+    public PrintStreamLogger2(Provider provider) {
+        super(provider);
+    }
 }
