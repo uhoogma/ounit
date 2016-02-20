@@ -30,13 +30,8 @@ public class JUnit4TimeoutTest {
         assertEquals("Who likes you punk?", "everybody", "everybody");
     }
 
-    // @Test(timeout=1000)
+    @Test(timeout = 1000)
     public void thisWillPass() {
         assertTrue(true);
-    }
-
-    // @Test(timeout=1000)
-    public void thisWillFail() {
-        for (;;);
     }
 }

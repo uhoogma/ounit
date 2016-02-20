@@ -25,34 +25,28 @@ import static org.junit.Assert.*;
 
 public class JUnit4SimpleTest {
 
-    //@Test
+    @Test
     public void thisWillPass() {
         assertTrue(true);
     }
 
-    // @Test
+    @Test
     public void thisWillPassAsWell() {
         assertTrue(true);
     }
 
-    //@Test
+    @Test
     public void thisWillFail() {
-        assertTrue(false);
-    }
-
-    //@Test
-    public void thisWillFailAsWell() {
-        assertEquals("Politicians do not lie", true, false);
-    }
-
-    //@Test
-    public void thisWillFailToo() {
-        assertTrue("Housewives never cheat", false);
+        assertFalse(false);
     }
 
     @Test
-    public void test() {
-        assertEquals("Who likes you punk?", "everybody", "everybody");
+    public void thisWillFailAsWell() {
+        assertEquals("Politicians do not lie", false, false);
     }
 
+    @Test
+    public void thisWillFailToo() {
+        assertFalse("Housewives never cheat", false);
+    }
 }
