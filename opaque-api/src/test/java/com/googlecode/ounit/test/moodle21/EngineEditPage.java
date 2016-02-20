@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.test.moodle21;
 
 import org.openqa.selenium.WebDriver;
@@ -29,23 +28,25 @@ import com.googlecode.ounit.test.moodle.IEditEnginePage;
 import com.googlecode.ounit.test.moodle.IEnginePage;
 
 public class EngineEditPage implements IEditEnginePage {
-	private WebDriver driver;
-	private WebElement enginename;
-	private WebElement questionengineurls;
-	private WebElement submitbutton;
 
-	public EngineEditPage(WebDriver driver) {
+    @SuppressWarnings("FieldMayBeFinal")
+    private WebDriver driver;
+    private WebElement enginename;
+    private WebElement questionengineurls;
+    private WebElement submitbutton;
+
+    public EngineEditPage(WebDriver driver) {
         this.driver = driver;
     }
 
-	@Override
-	public IEnginePage saveEngine(String name, String url) {
-		enginename.clear();
-		enginename.sendKeys(name);
-		questionengineurls.clear();
-		questionengineurls.sendKeys(url);
-		submitbutton.submit();
-		
-		return PageFactory.initElements(driver, EnginePage.class);
-	}
+    @Override
+    public IEnginePage saveEngine(String name, String url) {
+        enginename.clear();
+        enginename.sendKeys(name);
+        questionengineurls.clear();
+        questionengineurls.sendKeys(url);
+        submitbutton.submit();
+
+        return PageFactory.initElements(driver, EnginePage.class);
+    }
 }

@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.test.moodle19;
 
 import org.openqa.selenium.WebDriver;
@@ -30,8 +29,9 @@ import com.googlecode.ounit.test.moodle.IHomePage;
 import com.googlecode.ounit.test.moodle.ILoginPage;
 
 public class LoginPage implements ILoginPage {
+
     private final WebDriver driver;
-    
+
     private WebElement username;
     private WebElement password;
     @FindBy(xpath = "//form[@id='login']//input[@type='submit']")
@@ -42,16 +42,18 @@ public class LoginPage implements ILoginPage {
     }
 
     @Override
-	public IHomePage loginAs(String username, String password) {
-    	String oldUrl = driver.getCurrentUrl();
-    	
-    	this.username.sendKeys(username);
-    	this.password.sendKeys(password);
-    	submitButton.submit();
-    	if(oldUrl.equals(driver.getCurrentUrl())) // Still on same page? Login failed!
-    		throw new IllegalStateException("Login FAILED");
-    	
-    	return PageFactory.initElements(driver, HomePage.class);
+    public IHomePage loginAs(String username, String password) {
+        String oldUrl = driver.getCurrentUrl();
+
+        this.username.sendKeys(username);
+        this.password.sendKeys(password);
+        submitButton.submit();
+        if (oldUrl.equals(driver.getCurrentUrl())) // Still on same page? Login failed!
+        {
+            throw new IllegalStateException("Login FAILED");
+        }
+
+        return PageFactory.initElements(driver, HomePage.class);
     }
 
 }

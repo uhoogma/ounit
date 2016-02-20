@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.test.moodle21;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -36,55 +35,55 @@ import com.googlecode.ounit.test.moodle.ILoginPage;
 import static com.googlecode.ounit.test.moodle.MoodleParams.*;
 
 public class HomePage implements IHomePage {
+
     private final WebDriver driver;
     private String baseUrl;
 
-	@FindBy(linkText=courseName)
+    @FindBy(linkText = COURSE_NAME)
     private WebElement testCourseLink;
-    
+
     public HomePage(WebDriver driver) {
         this.driver = driver;
     }
-    
-    
+
     @Override
     public String getBaseUrl() {
-		return baseUrl;
-	}
-
-    @Override
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-    @Override
-	public ILoginPage gotoLoginPage() {
-    	driver.get(baseUrl + "/login/index.php");
-    	return PageFactory.initElements(driver, LoginPage.class);
-    }
-    
-    @Override
-	public ICoursePage gotoTestCourse() {
-    	driver.get(baseUrl);
-    	try {
-    		testCourseLink.click();
-        	return PageFactory.initElements(driver, CoursePage.class);
-    	} catch(NoSuchElementException e) {
-    		return createTestCourse();
-    	}
-    }
-    
-    @Override
-	public ICoursePage createTestCourse() {
-    	driver.get(baseUrl + "/course/edit.php?category=1");
-    	
-    	ICourseEditPage page = PageFactory.initElements(driver, CourseEditPage.class);
-    	return page.newCourse("OTC" + (int)(Math.random() * 100), courseName);
+        return baseUrl;
     }
 
-	@Override
-	public IEnginePage gotoEnginePage() {
-    	driver.get(baseUrl + "/question/type/opaque/engines.php");
-    	return PageFactory.initElements(driver, EnginePage.class);
-	}
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    @Override
+    public ILoginPage gotoLoginPage() {
+        driver.get(baseUrl + "/login/index.php");
+        return PageFactory.initElements(driver, LoginPage.class);
+    }
+
+    @Override
+    public ICoursePage gotoTestCourse() {
+        driver.get(baseUrl);
+        try {
+            testCourseLink.click();
+            return PageFactory.initElements(driver, CoursePage.class);
+        } catch (NoSuchElementException e) {
+            return createTestCourse();
+        }
+    }
+
+    @Override
+    public ICoursePage createTestCourse() {
+        driver.get(baseUrl + "/course/edit.php?category=1");
+
+        ICourseEditPage page = PageFactory.initElements(driver, CourseEditPage.class);
+        return page.newCourse("OTC" + (int) (Math.random() * 100), COURSE_NAME);
+    }
+
+    @Override
+    public IEnginePage gotoEnginePage() {
+        driver.get(baseUrl + "/question/type/opaque/engines.php");
+        return PageFactory.initElements(driver, EnginePage.class);
+    }
 }

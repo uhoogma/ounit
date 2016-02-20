@@ -18,20 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.test.moodle;
 
 public class MoodleParams {
-	public final static String engineName       = "Opaque Testing Engine";
-	public final static String courseName       = "Opaque Testing Course";
-	public final static String quizName         = "Opaque Testing Quiz";
-	public final static String questionIdPrefix = "opaque.selftest.";
-	public final static String questionVersion  = "1.0";
-	
-	public static void log(String s) {
-		System.err.println("*********************************");
-		System.err.println("    " + s);
-		System.err.println("*********************************");
-	}
+
+    public final static String ENGINE_NAME = "Opaque Testing Engine";
+    public final static String COURSE_NAME = "Opaque Testing Course";
+    public final static String QUIZ_NAME = "Opaque Testing Quiz";
+    public final static String QUESTION_ID_PREFIX = "opaque.selftest.";
+    public final static String QUESTION_VERSION = "1.0";
+
+    public static void log(String s) {
+        System.err.println("*********************************");
+        System.err.println("    " + s);
+        System.err.println("*********************************");
+    }
 
 }
