@@ -18,53 +18,51 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.opaque;
 
 /*
- * API CLASS: This class is used in SOAP returns and should not be altered  
+ * API CLASS: This class is used in SOAP returns and should not be altered
  */
-
 /**
- * Generic status information about the question engine.
- * It's currently only used by Moodle OPAQE question type to test
- * the connection to the question engine.
- * However, in the future it could be used for load balancing purposes.
- * 
+ * Generic status information about the question engine. It's currently only
+ * used by Moodle OPAQE question type to test the connection to the question
+ * engine. However, in the future it could be used for load balancing purposes.
+ *
  * @author anttix
  */
 public class EngineStatus {
-	private String name;
-	private String usedmemory;
-	private int activesessions;
-	
-	private static final String DEFAULT_NAME = "Generic OPAQUE question engine";
 
-	public EngineStatus() {
-		name = DEFAULT_NAME; // Name must Exist in all Info replies.
-	}
+    private String name;
+    private String usedmemory;
+    private int activesessions;
 
-	public String getName() {
-		return name;
-	}
+    private static final String DEFAULT_NAME = "Generic OPAQUE question engine";
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public EngineStatus() {
+        name = DEFAULT_NAME; // Name must Exist in all Info replies.
+    }
 
-	public String getUsedmemory() {
-		return usedmemory;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setUsedmemory(String usedmemory) {
-		this.usedmemory = usedmemory;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public int getActivesessions() {
-		return activesessions;
-	}
+    public String getUsedmemory() {
+        return usedmemory;
+    }
 
-	public void setActivesessions(int activesessions) {
-		this.activesessions = activesessions;
-	}
+    public void setUsedmemory(String usedmemory) {
+        this.usedmemory = usedmemory;
+    }
+
+    public int getActivesessions() {
+        return activesessions;
+    }
+
+    public void setActivesessions(int activesessions) {
+        this.activesessions = activesessions;
+    }
 }

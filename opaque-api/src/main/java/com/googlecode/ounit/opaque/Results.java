@@ -90,11 +90,13 @@ public class Results {
     /**
      * Hashmap of all scores based on axis (String -> Score)
      */
+    @SuppressWarnings({"Convert2Diamond", "FieldMayBeFinal"})
     private HashMap<String, Score> hmScores = new HashMap<String, Score>();
 
     /**
      * Hashmap of custom results (String [id] -> CustomResult)
      */
+    @SuppressWarnings({"FieldMayBeFinal", "Convert2Diamond"})
     private HashMap<String, CustomResult> hmCustomResults = new HashMap<String, CustomResult>();
 
     /**

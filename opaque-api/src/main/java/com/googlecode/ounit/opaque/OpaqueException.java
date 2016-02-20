@@ -19,34 +19,33 @@ package com.googlecode.ounit.opaque;
 
 import javax.xml.ws.WebFault;
 
-/** Standard exception superclass */
+/**
+ * Standard exception superclass
+ */
 @WebFault
-public class OpaqueException extends Exception
-{
-	private static final long serialVersionUID = 3795391987843325751L;
+public class OpaqueException extends Exception {
 
-	/**
-	 * @param sText Exception message (do not end in full stop)
-	 */
-	public OpaqueException(String sText)
-	{
-		super(sText);
-	}
+    private static final long serialVersionUID = 3795391987843325751L;
 
-	/**
-	 * @param t Exception that caused this one
-	 */
-	public OpaqueException(Throwable t)
-	{
-		super(t);
-	}
+    /**
+     * @param sText Exception message (do not end in full stop)
+     */
+    public OpaqueException(String sText) {
+        super(sText);
+    }
 
-	/**
-	 * @param sText Exception message (do not end in full stop)
-	 * @param t Exception that caused this one
-	 */
-	public OpaqueException(String sText, Throwable t)
-	{
-		super(sText,t);
-	}
+    /**
+     * @param t Exception that caused this one
+     */
+    public OpaqueException(Throwable t) {
+        super(t);
+    }
+
+    /**
+     * @param sText Exception message (do not end in full stop)
+     * @param t Exception that caused this one
+     */
+    public OpaqueException(String sText, Throwable t) {
+        super(sText, t);
+    }
 }
