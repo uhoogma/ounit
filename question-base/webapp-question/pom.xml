@@ -26,210 +26,210 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.googlecode.ounit</groupId>
-    <artifactId>question-base</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+    <parent>
+        <groupId>com.googlecode.ounit</groupId>
+        <artifactId>question-base</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-  <artifactId>webapp-question</artifactId>
-  <packaging>pom</packaging>
-  <name>OUnit Java Webapp Question</name>
+    <artifactId>webapp-question</artifactId>
+    <packaging>pom</packaging>
+    <name>OUnit Java Webapp Question</name>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <ounit.packaging>war</ounit.packaging>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ounit.packaging>war</ounit.packaging>
+    </properties>
 
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
 
-  <dependencies>
+    <dependencies>
 
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
-      <version>6.0</version>
-      <scope>provided</scope>
-    </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
 
-<!--
-    <dependency>
-      <groupId>javax.servlet.jsp.jstl</groupId>
-      <artifactId>jstl-api</artifactId>
-      <version>1.2</version>
-    </dependency>
--->
-
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.googlecode.ounit</groupId>
-      <artifactId>ounit-selenium</artifactId>
-      <version>1.0-SNAPSHOT</version>
-      <scope>test</scope>
-    </dependency>
-
-  </dependencies>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- 
-             Skip war building to save time: we have no deliverables
-             This is a hack that works by re-binding default-war to a
-             non-existing lifecycle phase.
+        <!--
+            <dependency>
+              <groupId>javax.servlet.jsp.jstl</groupId>
+              <artifactId>jstl-api</artifactId>
+              <version>1.2</version>
+            </dependency>
         -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <configuration>
-            <failOnMissingWebXml>false</failOnMissingWebXml>
-          </configuration>
-          <executions>
-            <execution>
-              <id>default-war</id>
-              <phase>never</phase>
-            </execution>
-          </executions>
-        </plugin>
 
-        <!-- Pass application URL to tests -->
-<!--
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <systemPropertyVariables>
-              <selenium.baseurl>
-               http://localhost:${cargo.servlet.port}/${project.build.finalName}
-              </selenium.baseurl>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
--->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <configuration>
-            <systemPropertyVariables>
-              <selenium.baseurl>
-               http://localhost:${cargo.servlet.port}/${project.build.finalName}
-              </selenium.baseurl>
-            </systemPropertyVariables>
-          </configuration>
-        </plugin>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
 
-        <!-- Configure Jetty -->
-        <plugin>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>8.0.4.v20111024</version>
-          <configuration>
-            <scanIntervalSeconds>10</scanIntervalSeconds>
-            <webAppConfig>
-              <contextPath>/${project.build.finalName}</contextPath>
-            </webAppConfig>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
+        <dependency>
+            <groupId>com.googlecode.ounit</groupId>
+            <artifactId>ounit-selenium</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
 
-    <plugins>
-      <!-- Make sure tests always use available ports -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.7</version>
-        <executions>
-          <execution>
-            <id>reserve-container-ports</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>reserve-network-port</goal>
-            </goals>
-            <configuration>
-              <portNames>
-                <portName>cargo.servlet.port</portName>
-                <portName>cargo.rmi.port</portName>
-              </portNames>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+    </dependencies>
 
-      <plugin>
-        <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>start-container</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <scanIntervalSeconds>0</scanIntervalSeconds>
-              <daemon>true</daemon>
-              <connectors>
-                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                  <port>${cargo.servlet.port}</port>
-                  <maxIdleTime>30000</maxIdleTime>
-                </connector>
-              </connectors>
-              <stopPort>${cargo.rmi.port}</stopPort>
-              <stopKey>OUnitCommandsYouToStop</stopKey>
-            </configuration>
-          </execution>
-          <execution>
-            <id>stop-container</id>
-            <phase>post-integration-test</phase>
-            <goals>
-              <goal>stop</goal>
-            </goals>
-            <configuration>
-              <stopPort>${cargo.rmi.port}</stopPort>
-              <stopKey>OUnitCommandsYouToStop</stopKey>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <!-- Eclipse m2e will not recognize the project as webapp if war plugin
-       is not present in default lifecycle. Thus we have to re-enable it. -->
-  <profiles>
-    <profile>
-      <id>m2e-enable-war</id>
-      <activation>
-        <property>
-          <name>m2e.version</name>
-        </property>
-      </activation>
-      <build>
+    <build>
         <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-war-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>default-war</id>
-                  <phase>package</phase>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
+            <plugins>
+                <!--
+                     Skip war building to save time: we have no deliverables
+                     This is a hack that works by re-binding default-war to a
+                     non-existing lifecycle phase.
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>default-war</id>
+                            <phase>never</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Pass application URL to tests -->
+                <!--
+                        <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-surefire-plugin</artifactId>
+                          <configuration>
+                            <systemPropertyVariables>
+                              <selenium.baseurl>
+                               http://localhost:${cargo.servlet.port}/${project.build.finalName}
+                              </selenium.baseurl>
+                            </systemPropertyVariables>
+                          </configuration>
+                        </plugin>
+                -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <selenium.baseurl>
+                                http://localhost:${cargo.servlet.port}/${project.build.finalName}
+                            </selenium.baseurl>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+
+                <!-- Configure Jetty -->
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>9.3.7.v20160115</version>
+                    <configuration>
+                        <scanIntervalSeconds>10</scanIntervalSeconds>
+                        <webAppConfig>
+                            <contextPath>/${project.build.finalName}</contextPath>
+                        </webAppConfig>
+                    </configuration>
+                </plugin>
+            </plugins>
         </pluginManagement>
-      </build>
-    </profile>
-  </profiles>
+
+        <plugins>
+            <!-- Make sure tests always use available ports -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>reserve-container-ports</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <configuration>
+                            <portNames>
+                                <portName>cargo.servlet.port</portName>
+                                <portName>cargo.rmi.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>start-container</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <scanIntervalSeconds>0</scanIntervalSeconds>
+                            <daemon>true</daemon>
+                            <connectors>
+                                <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                                    <port>${cargo.servlet.port}</port>
+                                    <maxIdleTime>30000</maxIdleTime>
+                                </connector>
+                            </connectors>
+                            <stopPort>${cargo.rmi.port}</stopPort>
+                            <stopKey>OUnitCommandsYouToStop</stopKey>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-container</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <configuration>
+                            <stopPort>${cargo.rmi.port}</stopPort>
+                            <stopKey>OUnitCommandsYouToStop</stopKey>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Eclipse m2e will not recognize the project as webapp if war plugin
+    is not present in default lifecycle. Thus we have to re-enable it. -->
+    <profiles>
+        <profile>
+            <id>m2e-enable-war</id>
+            <activation>
+                <property>
+                    <name>m2e.version</name>
+                </property>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-war-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>default-war</id>
+                                    <phase>package</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
 </project>
