@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
+package main.java.com.googlecode.ounit;
 
-package com.googlecode.ounit;
-
+import com.googlecode.ounit.OunitService;
 import javax.servlet.ServletConfig;
 import javax.xml.ws.Endpoint;
 
@@ -31,18 +31,19 @@ import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 /**
  * A servlet to publish the service without any of the "spring stuff"
  * http://cxf.apache.org/docs/servlet-transport.html
- * 
+ *
  * @author anttix
  *
  */
 public class OunitServlet extends CXFNonSpringServlet {
-	private static final long serialVersionUID = 1L;
 
-	private Object obj; // JAX-WS resource singleton
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void loadBus(ServletConfig sc) {
-		/*
+    private Object obj; // JAX-WS resource singleton
+
+    @Override
+    protected void loadBus(ServletConfig sc) {
+        /*
 		super.loadBus(sc);
 
 		  JaxWsServerFactoryBean factory = new JaxWsServerFactoryBean();
@@ -50,18 +51,18 @@ public class OunitServlet extends CXFNonSpringServlet {
 		  factory.setAddress("/some/path");
 		  factory.setServiceBean(obj);
 		  Server cxfServer = factory.create();*/
-		
-		super.loadBus(sc);
+
+        super.loadBus(sc);
 
         Bus bus = this.getBus();
-        BusFactory.setDefaultBus(bus); 
-        Endpoint.publish("/OunitService", new OunitService());           
+        BusFactory.setDefaultBus(bus);
+        Endpoint.publish("/OunitService", new OunitService());
     }
-	
-	@Override
-	public void destroy() {
-		// TODO: gracefully shut down OU executor thread pool
-		//oe.shutdown();
-		super.destroy();
-	}
+
+    @Override
+    public void destroy() {
+        // TODO: gracefully shut down OU executor thread pool
+        //oe.shutdown();
+        super.destroy();
+    }
 }

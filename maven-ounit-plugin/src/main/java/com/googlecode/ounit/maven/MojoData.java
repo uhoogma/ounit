@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
@@ -32,127 +31,127 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 
 abstract public class MojoData extends AbstractMojo {
-	/**
-	 * Location where results will be created.
-	 * 
-	 * @parameter expression="${project.build.directory}"
-	 */
-	protected File outputDirectory;
 
-	/**
-	 * Maven Project
-	 * 
-	 * @parameter expression="${project}"
-	 * @required @readonly
-	 */
-	protected MavenProject project;
+    /**
+     * Location where results will be created.
+     *
+     * @parameter expression="${project.build.directory}"
+     */
+    protected File outputDirectory;
 
-	/**
-	 * The Maven Session Object
-	 * 
-	 * @parameter expression="${session}"
-	 * @required
-	 * @readonly
-	 */
-	protected MavenSession session;
+    /**
+     * Maven Project
+     *
+     * @parameter expression="${project}"
+     * @required @readonly
+     */
+    protected MavenProject project;
 
-	/**
-	 * The Maven PluginManager Object
-	 * 
-	 * @component
-	 * @required
-	 */
-	protected BuildPluginManager pluginManager;
+    /**
+     * The Maven Session Object
+     *
+     * @parameter expression="${session}"
+     * @required
+     * @readonly
+     */
+    protected MavenSession session;
 
-	/**
-	 * Directories containing the teacher tests surefire XML Report files
-	 * 
-	 * @parameter
-	 */
-	protected File[] teacherTestsReportsDirectories;
-	
-	/**
-	 * Include test output files in reports
-	 * 
-	 * @parameter expression="${ounit.showTestOutput}" default-value="true"
-	 */
-	protected boolean showTestOutput;
-	
-	public File getOutputDirectory() {
-		return outputDirectory;
-	}
+    /**
+     * The Maven PluginManager Object
+     *
+     * @component
+     * @required
+     */
+    protected BuildPluginManager pluginManager;
 
-	public MavenProject getProject() {
-		return project;
-	}
-	
-	public MavenSession getSession() {
-		return session;
-	}
-	
-	public BuildPluginManager getPluginManager() {
-		return pluginManager;
-	}
-	
-	public boolean isShowTestOutput() {
-		return showTestOutput;
-	}
+    /**
+     * Directories containing the teacher tests surefire XML Report files
+     *
+     * @parameter
+     */
+    protected File[] teacherTestsReportsDirectories;
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getOunitDirectory() {
-		return outputDirectory + "/ounit-reports";
-	}
+    /**
+     * Include test output files in reports
+     *
+     * @parameter expression="${ounit.showTestOutput}" default-value="true"
+     */
+    protected boolean showTestOutput;
 
-	// FIXME: Determine surefire, failsafe and teacher test directories from
-	// build configuration instead of hardcoded defaults
+    public File getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	public String getSurefireDirectory() {
-		return project.getBuild().getDirectory() + "/surefire-reports";
-	}
+    public MavenProject getProject() {
+        return project;
+    }
 
-	public String getFailsafeDirectory() {
-		return project.getBuild().getDirectory() + "/failsafe-reports";
-	}
+    public MavenSession getSession() {
+        return session;
+    }
 
-	private String getTeacherDirectory() {
-		return project.getBuild().getDirectory() + "/teacher-reports";
-	}
-	
-	public List<File> getStudentTestDirectories() {
-		Log log = getLog();
-		List<File> dirs = new ArrayList<File>(2);
-		
-		String[] repDirs = { getSurefireDirectory(), getFailsafeDirectory() };
-		for (String d : repDirs) {
-			File f = new File(d);
-			if (f.isDirectory()) {
-				log.debug("Looking for student test results in " + d);
-				dirs.add(f);
-			}
-		}
-		return dirs;
-	}
-	
-	public List<File> getTeacherTestDirectories() {
-		Log log = getLog();
-		List<File> dirs = new ArrayList<File>(1);
-		
-		String[] repDirs = { getTeacherDirectory() };
-		for (String d : repDirs) {
-			File f = new File(d);
-			if (f.isDirectory()) {
-				log.debug("Looking for teacher test results in " + d);
-				dirs.add(f);
-			}
-		}
-		return dirs;
-	}
+    public BuildPluginManager getPluginManager() {
+        return pluginManager;
+    }
 
-	public ReportParser getReportParser() throws Exception {
-		return new ReflectiveSurefireReportParser(
-				getSession(), getPluginManager());
-	}
+    public boolean isShowTestOutput() {
+        return showTestOutput;
+    }
+
+    /**
+     *
+     * @return preliminary description
+     */
+    public String getOunitDirectory() {
+        return outputDirectory + "/ounit-reports";
+    }
+
+    // FIXME: Determine surefire, failsafe and teacher test directories from
+    // build configuration instead of hardcoded defaults
+    public String getSurefireDirectory() {
+        return project.getBuild().getDirectory() + "/surefire-reports";
+    }
+
+    public String getFailsafeDirectory() {
+        return project.getBuild().getDirectory() + "/failsafe-reports";
+    }
+
+    private String getTeacherDirectory() {
+        return project.getBuild().getDirectory() + "/teacher-reports";
+    }
+
+    public List<File> getStudentTestDirectories() {
+        Log log = getLog();
+        List<File> dirs = new ArrayList<File>(2);
+
+        String[] repDirs = {getSurefireDirectory(), getFailsafeDirectory()};
+        for (String d : repDirs) {
+            File f = new File(d);
+            if (f.isDirectory()) {
+                log.debug("Looking for student test results in " + d);
+                dirs.add(f);
+            }
+        }
+        return dirs;
+    }
+
+    public List<File> getTeacherTestDirectories() {
+        Log log = getLog();
+        List<File> dirs = new ArrayList<File>(1);
+
+        String[] repDirs = {getTeacherDirectory()};
+        for (String d : repDirs) {
+            File f = new File(d);
+            if (f.isDirectory()) {
+                log.debug("Looking for teacher test results in " + d);
+                dirs.add(f);
+            }
+        }
+        return dirs;
+    }
+
+    public ReportParser getReportParser() throws Exception {
+        return new ReflectiveSurefireReportParser(
+                getSession(), getPluginManager());
+    }
 }

@@ -17,12 +17,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  * Contains pieces of code from OpenMark online assessment system
  * SVN r437 (2011-04-21)
- * 
+ *
  * Copyright (C) 2007 The Open University
- * 
+ *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -33,44 +33,53 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package com.googlecode.ounit.opaque;
 
 /*
- * API CLASS: This class is used in SOAP returns and should not be altered  
+ * API CLASS: This class is used in SOAP returns and should not be altered
  */
+/**
+ * Single score
+ */
+public class Score {
 
-/** Single score */
-public class Score
-{
-	public Score() {
-	}
-	
-	/**
-	 * Create a score
-	 * @param sAxis the axis.
-	 * @param iMarks the score on that axis.
-	 */
-	public Score(String axis,int marks)
-	{
-		this.axis=axis;
-		this.marks=marks;
-	}
-	
-	private int marks;
-	private String axis;
+    public Score() {
+    }
 
-	/** @return Score axis (null for default) */
-	public String getAxis() { return axis; }
+    /**
+     * Create a score
+     *
+     * @param axis preliminary description
+     * @param marks preliminary description
+     */
+    public Score(String axis, int marks) {
+        this.axis = axis;
+        this.marks = marks;
+    }
 
-	/** @return Number of marks achieved for question (or, maximum for this axis,
-	 * in that context) */
-	public int getMarks() { return marks; }
+    private int marks;
+    private String axis;
 
-	public void setMarks(int marks) {
-		this.marks = marks;
-	}
-	public void setAxis(String axis) {
-		this.axis = axis;
-	}
+    /**
+     * @return Score axis (null for default)
+     */
+    public String getAxis() {
+        return axis;
+    }
+
+    /**
+     * @return Number of marks achieved for question (or, maximum for this axis,
+     * in that context)
+     */
+    public int getMarks() {
+        return marks;
+    }
+
+    public void setMarks(int marks) {
+        this.marks = marks;
+    }
+
+    public void setAxis(String axis) {
+        this.axis = axis;
+    }
 }
