@@ -18,43 +18,43 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.executor;
 
 import java.io.File;
 
 public class OunitExecutionRequest {
-	private File baseDirectory = null;
-	private String outputDirectory = null;
-	private File logFile = null;
 
-	public File getBaseDirectory() {
-		return baseDirectory;
-	}
+    private File baseDirectory = null;
+    private String outputDirectory = null;
+    private File logFile = null;
 
-	public OunitExecutionRequest setBaseDirectory(File baseDirectory) {
-		this.baseDirectory = baseDirectory;
+    public File getBaseDirectory() {
+        return baseDirectory;
+    }
 
-		return this;
-	}
+    public OunitExecutionRequest setBaseDirectory(File baseDirectory) {
+        this.baseDirectory = baseDirectory;
 
-	public String getOutputDirectory() {
-		return outputDirectory;
-	}
+        return this;
+    }
 
-	public OunitExecutionRequest setOutputDirectory(String outputDirectory) {
-		this.outputDirectory = outputDirectory;
-		
-		return this;
-	}
+    public String getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	public File getLogFile() {
-		return logFile;
-	}
+    public OunitExecutionRequest setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
 
-	public OunitExecutionRequest setLogFile(File logFile) {
-		this.logFile = logFile;
-		
-		return this;
-	}
+        return this;
+    }
+
+    public File getLogFile() {
+        return logFile;
+    }
+
+    public OunitExecutionRequest setLogFile(File logFile) {
+        this.logFile = logFile;
+
+        return this;
+    }
 }

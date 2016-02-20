@@ -29,8 +29,8 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mavenVersion>3.0.5</mavenVersion>
-        <wagonVersion>1.0</wagonVersion>
-        <aetherVersion>1.13</aetherVersion>
+        <wagonVersion>2.10</wagonVersion>
+        <aetherVersion>1.13.1</aetherVersion>
     </properties>
 
     <prerequisites>
@@ -109,11 +109,6 @@ If not, see <http://www.gnu.org/licenses/>. -->
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-site-plugin</artifactId>
-            <version>3.2</version>
-        </dependency>-->
+        
     </dependencies>
 </project>

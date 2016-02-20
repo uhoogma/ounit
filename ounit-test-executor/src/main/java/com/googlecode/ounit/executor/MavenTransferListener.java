@@ -17,10 +17,10 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
- * 
- * 
+ *
+ *
  * Based partly on org.apache.maven.cli.AbstractMavenTransferListener
- * 
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -30,7 +30,7 @@
  * with the License.  You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
- *   
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -38,7 +38,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 package com.googlecode.ounit.executor;
 
 import java.text.DecimalFormat;
@@ -52,63 +51,57 @@ import org.sonatype.aether.transfer.TransferEvent;
 import org.sonatype.aether.transfer.TransferResource;
 
 public class MavenTransferListener
-    extends AbstractTransferListener
-{
+        extends AbstractTransferListener {
 
     protected Logger log;
 
-	protected MavenTransferListener(Logger logger) {
-		if (logger == null)
-			throw new NullPointerException();
+    protected MavenTransferListener(Logger logger) {
+        if (logger == null) {
+            throw new NullPointerException();
+        }
 
-		this.log = logger;
-	}
-
-    @Override
-    public void transferInitiated( TransferEvent event )
-    {
-        String message = event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploading" : "Downloading";
-
-        log.info( message + ": " + event.getResource().getRepositoryUrl() + event.getResource().getResourceName() );
+        this.log = logger;
     }
 
     @Override
-    public void transferCorrupted( TransferEvent event )
-        throws TransferCancelledException
-    {
+    public void transferInitiated(TransferEvent event) {
+        String message = event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploading" : "Downloading";
+
+        log.info(message + ": " + event.getResource().getRepositoryUrl() + event.getResource().getResourceName());
+    }
+
+    @Override
+    public void transferCorrupted(TransferEvent event)
+            throws TransferCancelledException {
         TransferResource resource = event.getResource();
 
         log.warn(event.getException().getMessage() + " for " + resource.getRepositoryUrl()
-            + resource.getResourceName() );
+                + resource.getResourceName());
     }
 
     @Override
-    public void transferSucceeded( TransferEvent event )
-    {
+    public void transferSucceeded(TransferEvent event) {
         TransferResource resource = event.getResource();
         long contentLength = event.getTransferredBytes();
-        if ( contentLength >= 0 )
-        {
-            String type = ( event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploaded" : "Downloaded" );
-            String len = contentLength >= 1024 ? toKB( contentLength ) + " KB" : contentLength + " B";
+        if (contentLength >= 0) {
+            String type = (event.getRequestType() == TransferEvent.RequestType.PUT ? "Uploaded" : "Downloaded");
+            String len = contentLength >= 1024 ? toKB(contentLength) + " KB" : contentLength + " B";
 
             String throughput = "";
             long duration = System.currentTimeMillis() - resource.getTransferStartTime();
-            if ( duration > 0 )
-            {
-                DecimalFormat format = new DecimalFormat( "0.0", new DecimalFormatSymbols( Locale.ENGLISH ) );
-                double kbPerSec = ( contentLength / 1024.0 ) / ( duration / 1000.0 );
-                throughput = " at " + format.format( kbPerSec ) + " KB/sec";
+            if (duration > 0) {
+                DecimalFormat format = new DecimalFormat("0.0", new DecimalFormatSymbols(Locale.ENGLISH));
+                double kbPerSec = (contentLength / 1024.0) / (duration / 1000.0);
+                throughput = " at " + format.format(kbPerSec) + " KB/sec";
             }
 
-            log.info( type + ": " + resource.getRepositoryUrl() + resource.getResourceName() + " (" + len
-                + throughput + ")" );
+            log.info(type + ": " + resource.getRepositoryUrl() + resource.getResourceName() + " (" + len
+                    + throughput + ")");
         }
     }
 
-    protected long toKB( long bytes )
-    {
-        return ( bytes + 1023 ) / 1024;
+    protected long toKB(long bytes) {
+        return (bytes + 1023) / 1024;
     }
 
 }

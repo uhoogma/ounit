@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.executor;
 
 import java.io.File;
@@ -29,51 +28,60 @@ import org.apache.maven.cli.PrintStreamLogger;
 import org.apache.maven.cli.PrintStreamLogger2.Provider;
 
 /**
- * Implements a thread safe worker object factory 
- * that can be used to execute the test requests. 
- * 
+ * Implements a thread safe worker object factory that can be used to execute
+ * the test requests.
+ *
  * @author <a href="mailto:anttix@users.sourceforge.net">Antti Andreimann</a>
  *
  */
 public class OunitWorker implements Provider {
-	private static OunitWorker instance = null;
-	private MavenRunner mvn;
-	private ThreadLocal<PrintStream> log;
-	
-	private OunitWorker() throws Exception {
-		mvn = new MavenRunner( new PrintStreamLogger( this ) );
-		log = new ThreadLocal<PrintStream>() {
-			@Override
-			protected PrintStream initialValue() {
-				return System.out;
-			}
-		};
-	}
 
-	public PrintStream getStream() {
-		return log.get();
-	}
+    private static OunitWorker instance = null;
+    private MavenRunner mvn;
+    @SuppressWarnings("FieldMayBeFinal")
+    private ThreadLocal<PrintStream> log;
 
-	public static OunitWorker getInstance() throws Exception {
-		if(instance == null)
-			instance = new OunitWorker();
-		
-		return instance;
-	}
-	
-	public OunitResult execute(OunitExecutionRequest r) throws FileNotFoundException {
-		File logFile = r.getLogFile();
-		if(logFile != null)
-			log.set( new PrintStream(logFile) );
-		
-		OunitResult res = new OunitResult(mvn.execute(r.getBaseDirectory(),
-				MavenRunner.DEFAULT_GOAL, r.getOutputDirectory()));
-		
-		if(logFile != null) {
-			log.get().close();
-			log.set( System.out );
-		}
+    private OunitWorker() throws Exception {
+        mvn = new MavenRunner(new PrintStreamLogger(this));
+        log = new ThreadLocal<PrintStream>() {
+            @Override
+            protected PrintStream initialValue() {
+                return System.out;
+            }
+        };
+    }
 
-		return res;
-	}
+    /**
+     *
+     * @return log
+     */
+    @Override
+    public PrintStream getStream() {
+        return log.get();
+    }
+
+    public static OunitWorker getInstance() throws Exception {
+        if (instance == null) {
+            instance = new OunitWorker();
+        }
+
+        return instance;
+    }
+
+    public OunitResult execute(OunitExecutionRequest r) throws FileNotFoundException {
+        File logFile = r.getLogFile();
+        if (logFile != null) {
+            log.set(new PrintStream(logFile));
+        }
+
+        OunitResult res = new OunitResult(mvn.execute(r.getBaseDirectory(),
+                MavenRunner.DEFAULT_GOAL, r.getOutputDirectory()));
+
+        if (logFile != null) {
+            log.get().close();
+            log.set(System.out);
+        }
+
+        return res;
+    }
 }

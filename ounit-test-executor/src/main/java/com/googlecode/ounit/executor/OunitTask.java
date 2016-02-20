@@ -18,19 +18,16 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.executor;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
 public class OunitTask extends FutureTask<OunitResult> {
-	public OunitTask(final OunitExecutionRequest r) {
-		super(new Callable<OunitResult>() {
-			public OunitResult call() throws Exception {
-				OunitWorker e = OunitWorker.getInstance();
-				return e.execute(r);
-			}
-		});
-	}
+
+    public OunitTask(final OunitExecutionRequest r) {
+        super(() -> {
+            OunitWorker e = OunitWorker.getInstance();
+            return e.execute(r);
+        });
+    }
 }
