@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
@@ -29,26 +28,31 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 public class MockResultsMojo extends MojoData {
-	ReportParser mp;
 
-	public MockResultsMojo(ReportParser mp) {
-		this.mp = mp;
-	}
+    ReportParser mp;
 
-	@Override
-	public ReportParser getReportParser() throws Exception {
-		return mp;
-	}
+    public MockResultsMojo(ReportParser mp) {
+        this.mp = mp;
+    }
 
-	@Override
-	public List<File> getStudentTestDirectories() {
-		return new LinkedList<File>();
-	}
+    @Override
+    public ReportParser getReportParser() throws Exception {
+        return mp;
+    }
 
-	@Override
-	public List<File> getTeacherTestDirectories() {
-		return new LinkedList<File>();
-	}
-	
-	public void execute() throws MojoExecutionException, MojoFailureException { }
+    @Override
+    @SuppressWarnings("Convert2Diamond")
+    public List<File> getStudentTestDirectories() {
+        return new LinkedList<File>();
+    }
+
+    @Override
+    @SuppressWarnings("Convert2Diamond")
+    public List<File> getTeacherTestDirectories() {
+        return new LinkedList<File>();
+    }
+
+    @Override
+    public void execute() throws MojoExecutionException, MojoFailureException {
+    }
 }

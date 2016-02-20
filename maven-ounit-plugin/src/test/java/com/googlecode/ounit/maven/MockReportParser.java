@@ -17,38 +17,38 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
 package com.googlecode.ounit.maven;
 
 import java.io.File;
 import java.util.List;
 
 public class MockReportParser implements ReportParser {
-	
-	public TestResults parseReportFiles(List<File> dirs) throws Exception {
-		TestResults rv = new TestResults();
-		
-		// Mock summary data. 
-	    rv.setTotalTests      ( 10    );
-	    rv.setTotalFailures   (  3    );
-	    rv.setTotalErrors     (  2    );
-	    rv.setTotalSkipped    (  1    );
-	    rv.setTotalElapsedTime( 56.50 );
-	    //rv.setTotalPercentage(  40    );
 
-		// Mock failures
-		rv.addFailure(new FailureDetail(
-			"thisWillFail",
-			"foopackage.junit4.JUnit4ErrorTest",
-			"org.junit.ComparisonFailure",
-			"Wrong animal in my pocket"));
+    @Override
+    public TestResults parseReportFiles(List<File> dirs) throws Exception {
+        TestResults rv = new TestResults();
 
-		rv.addFailure(new FailureDetail(
-				"thisWillFail",
-				"foopackage.junit4.JUnit4TimeoutTest",
-				"java.lang.Exception",
-				"test timed out after 1000 milliseconds"));
+        // Mock summary data.
+        rv.setTotalTests(10);
+        rv.setTotalFailures(3);
+        rv.setTotalErrors(2);
+        rv.setTotalSkipped(1);
+        rv.setTotalElapsedTime(56.50);
+        //rv.setTotalPercentage(  40    );
 
-	    return rv;
-	}
+        // Mock failures
+        rv.addFailure(new FailureDetail(
+                "thisWillFail",
+                "foopackage.junit4.JUnit4ErrorTest",
+                "org.junit.ComparisonFailure",
+                "Wrong animal in my pocket"));
+
+        rv.addFailure(new FailureDetail(
+                "thisWillFail",
+                "foopackage.junit4.JUnit4TimeoutTest",
+                "java.lang.Exception",
+                "test timed out after 1000 milliseconds"));
+
+        return rv;
+    }
 }
