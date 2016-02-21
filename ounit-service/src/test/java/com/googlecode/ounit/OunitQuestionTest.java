@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import org.junit.*;
@@ -26,29 +25,30 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 public class OunitQuestionTest {
-	static QuestionFactory qf;
-	
-	@BeforeClass
-	public static void createFactory() {
-		qf = new DefaultQuestionFactory();
-	}
-	
-	@BeforeClass
-	public static void setupQuestionRepositories() {
-		// TODO
-	}
 
-	@Ignore
-	@Test
-	public void testFindHeadRevision() {
-		// TODO
-		OunitQuestion q = qf.loadQuestion("ounit.selftest.v1", "1.0", null);
-		assertThat(q.getRevision(), is(""));
-	}
+    static QuestionFactory qf;
 
-	@Ignore
-	@Test
-	public void testFetchQuestion() {
-		// TODO
-	}
+    @BeforeClass
+    public static void createFactory() {
+        qf = new DefaultQuestionFactory();
+    }
+
+    @BeforeClass
+    public static void setupQuestionRepositories() {
+        // TODO
+    }
+
+    @Ignore
+    @Test
+    public void testFindHeadRevision() {
+        // TODO
+        OunitQuestion q = qf.loadQuestion("ounit.selftest.v1", "1.0", null);
+        assertThat(q.getRevision(), is(""));
+    }
+
+    @Ignore
+    @Test
+    public void testFetchQuestion() {
+        // TODO
+    }
 }
