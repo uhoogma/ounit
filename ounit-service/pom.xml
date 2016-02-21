@@ -26,7 +26,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jgit.version>1.0.0.201106090707-r</jgit.version>
+        <jgit.version>4.2.0.201601211800-r</jgit.version>
     </properties>
 
     <repositories>

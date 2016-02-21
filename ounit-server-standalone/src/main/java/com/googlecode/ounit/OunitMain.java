@@ -18,30 +18,28 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import java.util.logging.LogManager;
-
 import javax.xml.ws.Endpoint;
-
-import com.googlecode.ounit.OunitService;
+import java.io.IOException;
 
 public class OunitMain {
-	public static void main(String [] args) {
-		
-		try {
-			System.setProperty("java.util.logging.config.file", "/home/urmas/tmp/logging.properties");
-			LogManager.getLogManager().readConfiguration();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-                
-		
-		final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OunitMain.class);
-		log.info("Starting Server");
-		OunitService implementor = new OunitService();
-		String address = "http://localhost:8080/ounit-server/OunitService";
-		Endpoint.publish(address, implementor);
-	}
+
+    @SuppressWarnings("CallToPrintStackTrace")
+    public static void main(String[] args) {
+
+        try {
+            System.setProperty("java.util.logging.config.file", "/home/urmas/tmp/logging.properties");
+            LogManager.getLogManager().readConfiguration();
+        } catch (IOException | SecurityException e) {
+            e.printStackTrace();
+        }
+
+        final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OunitMain.class);
+        log.info("Starting Server");
+        OunitService implementor = new OunitService();
+        String address = "http://localhost:8080/ounit-server/OunitService";
+        Endpoint.publish(address, implementor);
+    }
 }

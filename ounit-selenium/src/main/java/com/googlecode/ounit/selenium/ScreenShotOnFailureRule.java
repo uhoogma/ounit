@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.selenium;
 
 import org.junit.runner.Description;
@@ -29,8 +28,8 @@ import org.openqa.selenium.WebDriver;
 import com.googlecode.ounit.junit.ActOnFailureRule;
 
 /**
- * A JUnit 4.x rule that can be used with selenium to take
- * screenshots of test failures (if the driver supports it).
+ * A JUnit 4.x rule that can be used with selenium to take screenshots of test
+ * failures (if the driver supports it).
  * <p>
  * Screenshots will be saved to <code>target/surefire-reports</code> directory.
  * </p>
@@ -40,73 +39,76 @@ import com.googlecode.ounit.junit.ActOnFailureRule;
  * <pre>
  * public class TestBase {
  *   protected static WebDriver driver;
- *   
+ *
  *   &#64;Rule
  *   public ScreenShotOnFailureRule ssf = new ScreenShotOnFailureRule(driver);
  *   ...
- * </p>
  * </pre>
  */
 public class ScreenShotOnFailureRule extends ActOnFailureRule {
-	private WebDriver driver;
-	private boolean sourceDumpEnabled = false; 
-	private boolean screenShotsEnabled = true;
 
-	public ScreenShotOnFailureRule(WebDriver driver) {
-		this.driver = driver;
-	}
+    private WebDriver driver;
+    private boolean sourceDumpEnabled = false;
+    private boolean screenShotsEnabled = true;
 
-	public WebDriver getDriver() {
-		return driver;
-	}
+    public ScreenShotOnFailureRule(WebDriver driver) {
+        this.driver = driver;
+    }
 
-	public void setDriver(WebDriver driver) {
-		this.driver = driver;
-	}
+    public WebDriver getDriver() {
+        return driver;
+    }
 
-	public boolean isScreenShotsEnabled() {
-		return screenShotsEnabled;
-	}
+    public void setDriver(WebDriver driver) {
+        this.driver = driver;
+    }
 
-	public void setScreenShotsEnabled(boolean screenShotsEnabled) {
-		this.screenShotsEnabled = screenShotsEnabled;
-	}
+    public boolean isScreenShotsEnabled() {
+        return screenShotsEnabled;
+    }
 
-	/**
-	 * Check if source dumps are performed in case driver does
-	 * not support screen shots.
-	 * 
-	 * @return
-	 */
-	public boolean isSourceDumpEnabled() {
-		return sourceDumpEnabled;
-	}
+    public void setScreenShotsEnabled(boolean screenShotsEnabled) {
+        this.screenShotsEnabled = screenShotsEnabled;
+    }
 
-	/**
-	 * Control if page source dumps are performed in case driver does
-	 * not support screen shots.
-	 * 
-	 * @param sourceDumpEnabled
-	 */
-	public void setSourceDumpEnabled(boolean sourceDumpEnabled) {
-		this.sourceDumpEnabled = sourceDumpEnabled;
-	}
-	
-	@Override
-	protected void onFailure(Description desc) throws Throwable {
-		if(!screenShotsEnabled)
-			return;
+    /**
+     * Check if source dumps are performed in case driver does not support
+     * screen shots.
+     *
+     * @return
+     */
+    public boolean isSourceDumpEnabled() {
+        return sourceDumpEnabled;
+    }
 
-		WebDriver driver = getDriver();
-		if (driver instanceof TakesScreenshot) {
-			byte[] data = ((TakesScreenshot) getDriver())
-					.getScreenshotAs(OutputType.BYTES);
-			saveFailureData(desc, "png", data);
-		} else {
-			// Can't take screen shots. Save page source instead.
-			if (sourceDumpEnabled)
-				saveFailureData(desc, "html", getDriver()
-						.getPageSource());
-		}
-	}
+    /**
+     * Control if page source dumps are performed in case driver does not
+     * support screen shots.
+     *
+     * @param sourceDumpEnabled
+     */
+    public void setSourceDumpEnabled(boolean sourceDumpEnabled) {
+        this.sourceDumpEnabled = sourceDumpEnabled;
+    }
+
+    @Override
+    protected void onFailure(Description desc) throws Throwable {
+        if (!screenShotsEnabled) {
+            return;
+        }
+
+        @SuppressWarnings("LocalVariableHidesMemberVariable")
+        WebDriver driver = getDriver();
+        if (driver instanceof TakesScreenshot) {
+            byte[] data = ((TakesScreenshot) getDriver())
+                    .getScreenshotAs(OutputType.BYTES);
+            saveFailureData(desc, "png", data);
+        } else // Can't take screen shots. Save page source instead.
+        {
+            if (sourceDumpEnabled) {
+                saveFailureData(desc, "html", getDriver()
+                        .getPageSource());
+            }
+        }
+    }
 }

@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.selenium;
 
 import java.util.HashMap;
@@ -42,19 +41,19 @@ import com.gargoylesoftware.htmlunit.WebClient;
  * <pre>
  * public class TestBase {
  *   protected static WebDriver driver;
- *   
+ *
  *   &#64;BeforeClass
  *   public static void openBrowser() {
  *     if(driver == null)
  *       driver = WebDriverFactory.newInstance();
  *   }
- *   
+ *
  *   &#64;AfterClass
  *   public static void closeBrowser() {
  *     if(driver != null)
  *       driver.close();
  *   }
- *   
+ *
  *   &#64;Test
  *   public void gotoHomePage() {
  *     driver.open(WebDriverFactory.getBaseUrl());
@@ -63,8 +62,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
  * </pre>
  *
  * The specific browser to be instantiated is controlled via a system property:
- * <i>selenium.browser</i>.
- * If no browser is specified, the factory will default to HTMLUnit.
+ * <i>selenium.browser</i>. If no browser is specified, the factory will default
+ * to HTMLUnit.
  * <p>
  * The list of supported browsers:
  * </p>
@@ -75,15 +74,15 @@ import com.gargoylesoftware.htmlunit.WebClient;
  * <tr><td>ie</td><td>Internet Explorer</td></tr>
  * <tr><td>htmlunit</td><td>HTMLUnit</td></tr>
  * </table>
- * 
+ *
  * <p>
  * NOTE: For chrome to work, you need to install an additional
  * <a href="http://code.google.com/p/selenium/wiki/ChromeDriver">ChromeDriver</a>
  * binary.
  * </p>
  * <p>
- * To properly pass test properties from Maven,
- * you must add the following to the build section in pom.xml:
+ * To properly pass test properties from Maven, you must add the following to
+ * the build section in pom.xml:
  * </p>
  * <pre>
  *  &lt;pluginManagement&gt;
@@ -100,90 +99,92 @@ import com.gargoylesoftware.htmlunit.WebClient;
  *  &lt;/pluginManagement&gt;
  * </pre>
  */
-
 public class WebDriverFactory {
-	public enum Browser {
-		FIREFOX, CHROME, IE, HTMLUNIT
-	};
 
-	/**
-	 * Creates a new WebDriver instance determined by the <i>selenium.browser</i> property.
-	 * 
-	 * @return new WebDriver instance.
-	 * @see WebDriverFactory
-	 */
-	public static WebDriver newInstance() {
-		HashMap<String, Browser> knownBrowsers = new HashMap<String, Browser>();
-		knownBrowsers.put("firefox", Browser.FIREFOX);
-		knownBrowsers.put("chrome", Browser.CHROME);
-		knownBrowsers.put("ie", Browser.IE);
-		knownBrowsers.put("htmlunit", Browser.HTMLUNIT);
+    public enum Browser {
+        FIREFOX, CHROME, IE, HTMLUNIT
+    };
 
-		WebDriver rv;
-		Exception err = null;
-		String preferredBrowser = System.getProperty("selenium.browser",
-				"htmlunit");
-		Browser b = knownBrowsers.get(preferredBrowser.toLowerCase());
+    /**
+     * Creates a new WebDriver instance determined by the
+     * <i>selenium.browser</i> property.
+     *
+     * @return new WebDriver instance.
+     * @see WebDriverFactory
+     */
+    public static WebDriver newInstance() {
+        @SuppressWarnings("Convert2Diamond")
+        HashMap<String, Browser> knownBrowsers = new HashMap<String, Browser>();
+        knownBrowsers.put("firefox", Browser.FIREFOX);
+        knownBrowsers.put("chrome", Browser.CHROME);
+        knownBrowsers.put("ie", Browser.IE);
+        knownBrowsers.put("htmlunit", Browser.HTMLUNIT);
 
-		if (b == null)
-			throw new RuntimeException("Invalid selenium.browser property: "
-					+ preferredBrowser);
+        WebDriver rv;
+        Exception err = null;
+        String preferredBrowser = System.getProperty("selenium.browser",
+                "htmlunit");
+        Browser b = knownBrowsers.get(preferredBrowser.toLowerCase());
 
-		try {
-			rv = newInstance(b);
-			assert rv != null;
-			return rv;
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to create WebDriver instance",
-					err);
-		}
-	}
+        if (b == null) {
+            throw new RuntimeException("Invalid selenium.browser property: "
+                    + preferredBrowser);
+        }
 
-	public static WebDriver newInstance(Browser b) {
-		switch (b) {
-		case FIREFOX:
-			return new FirefoxDriver();
-		case CHROME:
-			return new ChromeDriver();
-		case IE:
-			return new InternetExplorerDriver();
-		case HTMLUNIT:
-			/* 
+        try {
+            rv = newInstance(b);
+            assert rv != null;
+            return rv;
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to create WebDriver instance",
+                    err);
+        }
+    }
+
+    public static WebDriver newInstance(Browser b) {
+        switch (b) {
+            case FIREFOX:
+                return new FirefoxDriver();
+            case CHROME:
+                return new ChromeDriver();
+            case IE:
+                return new InternetExplorerDriver();
+            case HTMLUNIT:
+                /*
 			 * Make sure we have a fully capable HtmlUnitDriver and
-			 * silence the stupid warnings about text/javascript  
-			 */
-			HtmlUnitDriver rv = new HtmlUnitDriver(new DesiredCapabilities(
-					"htmlunit", "firefox", Platform.ANY)) {
-				@Override
-				protected WebClient modifyWebClient(WebClient client) {
-					final IncorrectnessListener delegate = client
-							.getIncorrectnessListener();
-					client.setIncorrectnessListener(new IncorrectnessListener() {
-						@Override
-						public void notify(String message, Object origin) {
-							if (message.contains("Obsolete")
-									&& message.contains("/javascript"))
-								return;
+			 * silence the stupid warnings about text/javascript
+                 */
+                HtmlUnitDriver rv = new HtmlUnitDriver(new DesiredCapabilities(
+                        "htmlunit", "firefox", Platform.ANY)) {
+                    @Override
+                    protected WebClient modifyWebClient(WebClient client) {
+                        final IncorrectnessListener delegate = client
+                                .getIncorrectnessListener();
+                        client.setIncorrectnessListener((String message, Object origin) -> {
+                            if (message.contains("Obsolete")
+                                    && message.contains("/javascript")) {
+                                return;
+                            }
 
-							delegate.notify(message, origin);
-						}
-					});
-					return super.modifyWebClient(client);
-				}
-			};
-			return rv;
-		default:
-			throw new IllegalArgumentException("Invalid browser specified");
-		}
-	}
-	/**
-	 * Get the base URL specified in system property <i>selenium.baseurl</i>.
-	 * 
-	 * @return base URL for Selenium tests
-	 * @see WebDriverFactory
-	 */
-	public static String getBaseUrl() {
-		String baseUrl = System.getProperty("selenium.baseurl");		
-		return baseUrl;
-	}
+                            delegate.notify(message, origin);
+                        });
+                        return super.modifyWebClient(client);
+                    }
+                };
+                return rv;
+            default:
+                throw new IllegalArgumentException("Invalid browser specified");
+        }
+    }
+
+    /**
+     * Get the base URL specified in system property <i>selenium.baseurl</i>.
+     *
+     * @return base URL for Selenium tests
+     * @see WebDriverFactory
+     */
+    public static String getBaseUrl() {
+        String baseUrl = System.getProperty("selenium.baseurl");
+        return baseUrl;
+    }
 }

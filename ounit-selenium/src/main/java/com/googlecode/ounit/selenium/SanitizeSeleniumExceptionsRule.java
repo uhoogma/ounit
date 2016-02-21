@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit.selenium;
 
 import org.junit.rules.TestRule;
@@ -34,30 +33,31 @@ import org.openqa.selenium.WebDriverException;
  * <pre>
  * public class TestBase {
  *   protected static WebDriver driver;
- *   
+ *
  *   &#64;Rule
  *   public SanitizeSeleniumExceptionsRule san = new SanitizeSeleniumExceptionsRule();
  *   ...
- * </p>
  * </pre>
  */
 public class SanitizeSeleniumExceptionsRule implements TestRule {
-	@Override
-	public Statement apply(final Statement base, final Description description) {
-		return new Statement() {
-			@Override
-			public void evaluate() throws Throwable {
-				try {
-					base.evaluate();
-				} catch (WebDriverException e) {
-					String msg = e.getMessage();
-					int idx = msg.indexOf("For documentation on this error");
-					if(idx > 0)
-						msg = msg.substring(0, idx);
-					
-					throw new AssertionError(msg);
-				}
-			}
-		};
-	}
+
+    @Override
+    public Statement apply(final Statement base, final Description description) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                try {
+                    base.evaluate();
+                } catch (WebDriverException e) {
+                    String msg = e.getMessage();
+                    int idx = msg.indexOf("For documentation on this error");
+                    if (idx > 0) {
+                        msg = msg.substring(0, idx);
+                    }
+
+                    throw new AssertionError(msg);
+                }
+            }
+        };
+    }
 }
