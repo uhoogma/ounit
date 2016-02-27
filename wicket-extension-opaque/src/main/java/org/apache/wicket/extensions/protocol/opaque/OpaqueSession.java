@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import java.util.ArrayList;
@@ -34,117 +33,119 @@ import com.googlecode.ounit.opaque.OpaqueException;
 import com.googlecode.ounit.opaque.Results;
 
 public class OpaqueSession extends WebSession {
-	private static final long serialVersionUID = 1L;
-	
-	public final static int DEFAULT_MARKS = 10;
-	
-	protected OpaqueQuestion question;
-	protected List<String> cachedResources;
-	protected int maxMarks = DEFAULT_MARKS;
-	protected double score = 0;
-	protected boolean closed;
 
-	// TODO: This has a potential to consume up a lot of memory so it's not enabled
-	// until the real need surfaces.
-	//LinkedList<PageParameters> history = new LinkedList<PageParameters>();
-	
-	public OpaqueSession(Request request) {
-		super(request);
+    private static final long serialVersionUID = 1L;
 
-		if (request instanceof OpaqueRequest) {
-			OpaqueRequest rq = (OpaqueRequest) request;
+    public final static int DEFAULT_MARKS = 10;
 
-			if (rq.getCallType() != CallType.START)
-				throw new IllegalArgumentException(
-						"New sessions must be created from START requests." +
-						"Stale session ID?");
+    protected OpaqueQuestion question;
+    protected List<String> cachedResources;
+    protected int maxMarks = DEFAULT_MARKS;
+    protected double score = 0;
+    protected boolean closed;
 
-			this.question = rq.getQuestion();
+    // TODO: This has a potential to consume up a lot of memory so it's not enabled
+    // until the real need surfaces.
+    //LinkedList<PageParameters> history = new LinkedList<PageParameters>();
+    public OpaqueSession(Request request) {
+        super(request);
 
-			cachedResources = new ArrayList<String>(rq.getCachedResources());
-			
-			bind(); // Make sure session ID is generated!
-		} else {
-			// TODO: Remove the exception when it becomes possible to run
-			// OpaqueApps with the normal WicketFilter
-			// (for testing purposes)
-			throw new WicketRuntimeException(
-					"Opaque application only works with OpaqueRequest");
-		}
-	}
+        if (request instanceof OpaqueRequest) {
+            OpaqueRequest rq = (OpaqueRequest) request;
 
-	public OpaqueQuestion getQuestion() {
-		return question;
-	}
+            if (rq.getCallType() != CallType.START) {
+                throw new IllegalArgumentException(
+                        "New sessions must be created from START requests."
+                        + "Stale session ID?");
+            }
 
-	public List<String> getCachedResources() {
-		return Collections.unmodifiableList(cachedResources);
-	}
+            this.question = rq.getQuestion();
 
-	void setCachedResources(List<String> cachedResources) {
-		this.cachedResources = cachedResources;
-		dirty();
-	}
-		
-	void addCachedResource(String resource) {
-		this.cachedResources.add(resource);
-		dirty();
-	}
-	
-	public boolean isClosed() {
-		return closed;
-	}
-	
-	public void setClosed(boolean closed) {
-		this.closed = closed;
-		dirty();
-	}
-	
-	public int getMaxMarks() {
-		return maxMarks;
-	}
-	
-	public void setMaxMarks(int marks) {
-		this.maxMarks = marks;
-		dirty();
-	}
-	
-	/**
-	 * Build an OPAQUE results object from the session data. Override this
-	 * method in your own session if you wish to pass more details back to the LMS.
-	 * 
-	 * @return a new results object containing only a single score returned
-	 *         by {@link #getMarks()}
-	 * @throws OpaqueException
-	 */
+            cachedResources = new ArrayList<String>(rq.getCachedResources());
 
-	public Results getResults() throws OpaqueException {
-		Results results = new Results();
-		results.addScore(getMarks(), Results.ATTEMPTS_UNSET);
+            bind(); // Make sure session ID is generated!
+        } else {
+            // TODO: Remove the exception when it becomes possible to run
+            // OpaqueApps with the normal WicketFilter
+            // (for testing purposes)
+            throw new WicketRuntimeException(
+                    "Opaque application only works with OpaqueRequest");
+        }
+    }
 
-		return results;
-	}
-	
-	/**
-	 * Final score in percent (0-100). Default mark will be calculated from this:
-	 * marks = score / 100 * maxMarks
-	 * 
-	 * @return
-	 */
-	public double getScore() {
-		return score;
-	}
-	
-	public void setScore(double score) {
-		this.score = score;
-		dirty();
-	}
-	
-	/**
-	 * Calculate final (default) marks from score.
-	 * @return score / 100 * maxMarks
-	 */
-	public int getMarks() {
-		return (int)Math.round(getScore() / 100 * getMaxMarks());
-	}
+    public OpaqueQuestion getQuestion() {
+        return question;
+    }
+
+    public List<String> getCachedResources() {
+        return Collections.unmodifiableList(cachedResources);
+    }
+
+    void setCachedResources(List<String> cachedResources) {
+        this.cachedResources = cachedResources;
+        dirty();
+    }
+
+    void addCachedResource(String resource) {
+        this.cachedResources.add(resource);
+        dirty();
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
+        dirty();
+    }
+
+    public int getMaxMarks() {
+        return maxMarks;
+    }
+
+    public void setMaxMarks(int marks) {
+        this.maxMarks = marks;
+        dirty();
+    }
+
+    /**
+     * Build an OPAQUE results object from the session data. Override this
+     * method in your own session if you wish to pass more details back to the
+     * LMS.
+     *
+     * @return a new results object containing only a single score returned by
+     * {@link #getMarks()}
+     * @throws OpaqueException
+     */
+    public Results getResults() throws OpaqueException {
+        Results results = new Results();
+        results.addScore(getMarks(), Results.ATTEMPTS_UNSET);
+        results.appendActionSummary("Siia tuleb plagiaadihinnang");
+        return results;
+    }
+
+    /**
+     * Final score in percent (0-100). Default mark will be calculated from
+     * this: marks = score / 100 * maxMarks
+     *
+     * @return
+     */
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+        dirty();
+    }
+
+    /**
+     * Calculate final (default) marks from score.
+     *
+     * @return score / 100 * maxMarks
+     */
+    public int getMarks() {
+        return (int) Math.round(getScore() / 100 * getMaxMarks());
+    }
 }
