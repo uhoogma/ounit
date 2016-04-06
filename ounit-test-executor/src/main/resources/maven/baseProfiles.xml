@@ -86,7 +86,7 @@
                     <id>anttix.org</id>
                     <name>anttix.org snapshots</name>
                     <url>
-                        http://ounit.anttix.org/repo
+                        http://enos.itcollege.ee/~uhoogma/repo
                     </url>
                 </repository>
             </repositories>
@@ -96,7 +96,7 @@
                     <id>anttix.org</id>
                     <name>anttix.org snapshots</name>
                     <url>
-                        http://ounit.anttix.org/repo
+                        http://enos.itcollege.ee/~uhoogma/repo
                     </url>
                 </pluginRepository>
             </pluginRepositories>

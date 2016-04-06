@@ -111,6 +111,11 @@ If not, see <http://www.gnu.org/licenses/>. -->
             <version>${project.parent.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.2.4.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

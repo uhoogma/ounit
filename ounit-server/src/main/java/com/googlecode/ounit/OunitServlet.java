@@ -27,6 +27,7 @@ import javax.xml.ws.Endpoint;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
+import com.googlecode.ounit.opaque.SoapActionInterceptor;
 
 /**
  * A servlet to publish the service without any of the "spring stuff"
@@ -56,6 +57,8 @@ public class OunitServlet extends CXFNonSpringServlet {
 
         Bus bus = this.getBus();
         BusFactory.setDefaultBus(bus);
+        SoapActionInterceptor soapActionInterceptor = new SoapActionInterceptor();
+        bus.getInInterceptors().add(soapActionInterceptor);
         Endpoint.publish("/OunitService", new OunitService());
     }
 

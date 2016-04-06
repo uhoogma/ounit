@@ -39,7 +39,7 @@ public class OunitMain {
         final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(OunitMain.class);
         log.info("Starting Server");
         OunitService implementor = new OunitService();
-        String address = "http://localhost:8080/ounit-server/OunitService";
+        String address = "http://10.0.2.15:8080/ounit-server/OunitService";
         Endpoint.publish(address, implementor);
     }
 }
