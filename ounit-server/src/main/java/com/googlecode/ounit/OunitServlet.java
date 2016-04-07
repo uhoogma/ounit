@@ -40,8 +40,6 @@ public class OunitServlet extends CXFNonSpringServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private Object obj; // JAX-WS resource singleton
-
     @Override
     protected void loadBus(ServletConfig sc) {
         /*

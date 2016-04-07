@@ -80,6 +80,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <cxf.version>3.1.6</cxf.version>
         <slf4j.version>1.6.2</slf4j.version>
         <wicket.version>1.5.0</wicket.version>
+        <maven.tomcat.path>/</maven.tomcat.path>
         <additionalparam>-Xdoclint:none</additionalparam>
     </properties>
 
@@ -104,6 +105,16 @@ If not, see <http://www.gnu.org/licenses/>. -->
                     <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-maven-plugin</artifactId>
                     <version>9.3.7.v20160115</version>
+                    <configuration>
+                        <webAppSourceDirectory>${project.basedir}/ounit-server/target</webAppSourceDirectory>
+                        <classesDirectory>${project.basedir}/ounit-server/target/classes</classesDirectory>
+                        <war>${project.basedir}/ounit-server/target/ounit-server-1.0-SNAPSHOT.war</war>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
                     <configuration>
                         <webAppSourceDirectory>${project.basedir}/ounit-server/target</webAppSourceDirectory>
                         <classesDirectory>${project.basedir}/ounit-server/target/classes</classesDirectory>
