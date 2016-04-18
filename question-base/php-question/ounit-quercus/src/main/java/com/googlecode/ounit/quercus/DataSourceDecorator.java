@@ -9,59 +9,60 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 public class DataSourceDecorator implements DataSource {
-	DataSource dataSource;
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+    DataSource dataSource;
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
-	@Override
-	public Connection getConnection() throws SQLException {
-		return new ConnectionDecorator(dataSource.getConnection());
-	}
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	@Override
-	public Connection getConnection(String username, String password)
-			throws SQLException {
-		return new ConnectionDecorator(dataSource.getConnection(username, password));
-	}
+    @Override
+    public Connection getConnection() throws SQLException {
+        return new ConnectionDecorator(dataSource.getConnection());
+    }
 
-	@Override
-	public PrintWriter getLogWriter() throws SQLException {
-		return dataSource.getLogWriter();
-	}
+    @Override
+    public Connection getConnection(String username, String password)
+            throws SQLException {
+        return new ConnectionDecorator(dataSource.getConnection(username, password));
+    }
 
-	@Override
-	public int getLoginTimeout() throws SQLException {
-		return dataSource.getLoginTimeout();
-	}
+    @Override
+    public PrintWriter getLogWriter() throws SQLException {
+        return dataSource.getLogWriter();
+    }
 
-	@Override
-	public boolean isWrapperFor(Class<?> arg0) throws SQLException {
-		return dataSource.isWrapperFor(arg0);
-	}
+    @Override
+    public int getLoginTimeout() throws SQLException {
+        return dataSource.getLoginTimeout();
+    }
 
-	@Override
-	public void setLogWriter(PrintWriter arg0) throws SQLException {
-		dataSource.setLogWriter(arg0);
-	}
+    @Override
+    public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+        return dataSource.isWrapperFor(arg0);
+    }
 
-	@Override
-	public void setLoginTimeout(int arg0) throws SQLException {
-		dataSource.setLoginTimeout(arg0);
-	}
+    @Override
+    public void setLogWriter(PrintWriter arg0) throws SQLException {
+        dataSource.setLogWriter(arg0);
+    }
 
-	@Override
-	public <T> T unwrap(Class<T> arg0) throws SQLException {
-		return dataSource.unwrap(arg0);
-	}
+    @Override
+    public void setLoginTimeout(int arg0) throws SQLException {
+        dataSource.setLoginTimeout(arg0);
+    }
+
+    @Override
+    public <T> T unwrap(Class<T> arg0) throws SQLException {
+        return dataSource.unwrap(arg0);
+    }
 
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

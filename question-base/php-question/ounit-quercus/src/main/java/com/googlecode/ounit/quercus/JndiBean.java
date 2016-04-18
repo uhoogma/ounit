@@ -5,82 +5,84 @@ import javax.naming.NamingException;
 import org.eclipse.jetty.util.component.LifeCycle;
 
 public class JndiBean implements LifeCycle {
-	String name;
-	Object object;
-	Resource jndiResource;
-	
-	boolean started = false;
 
-	public String getName() {
-		return name;
-	}
+    String name;
+    Object object;
+    Resource jndiResource;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    boolean started = false;
 
-	public Object getObject() {
-		return object;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setObject(Object object) {
-		this.object = object;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public void start() {
-		try {
-			jndiResource = new Resource(name, object);
-			started = true;
-		} catch (NamingException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public Object getObject() {
+        return object;
+    }
 
-	@Override
-	public void stop() {
-		//jndiResource.release();		
-		started = false;
-	}
+    public void setObject(Object object) {
+        this.object = object;
+    }
 
-	@Override
-	public void addLifeCycleListener(Listener arg0) {
-	}
+    @Override
+    public void start() {
+        try {
+            jndiResource = new Resource(name, object);
+            started = true;
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	@Override
-	public boolean isFailed() {
-		return false;
-	}
+    @Override
+    public void stop() {
+        //jndiResource.release();
+        started = false;
+    }
 
-	@Override
-	public boolean isRunning() {
-		return false;
-	}
+    @Override
+    public void addLifeCycleListener(Listener arg0) {
+    }
 
-	@Override
-	public boolean isStarted() {
-		return started;
-	}
+    @Override
+    public boolean isFailed() {
+        return false;
+    }
 
-	@Override
-	public boolean isStarting() {
-		return false;
-	}
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
 
-	@Override
-	public boolean isStopped() {
-		return !started;
-	}
+    @Override
+    public boolean isStarted() {
+        return started;
+    }
 
-	@Override
-	public boolean isStopping() {
-		return false;
-	}
+    @Override
+    public boolean isStarting() {
+        return false;
+    }
 
-	@Override
-	public void removeLifeCycleListener(Listener arg0) {
-	}
+    @Override
+    public boolean isStopped() {
+        return !started;
+    }
+
+    @Override
+    public boolean isStopping() {
+        return false;
+    }
+
+    @Override
+    public void removeLifeCycleListener(Listener arg0) {
+    }
 }
+
 // public class JndiDS extends org.eclipse.jetty.plus.jndi.Resource implements
 // LifeCycle {
 // public JndiDS() throws javax.naming.NamingException {

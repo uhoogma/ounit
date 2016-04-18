@@ -24,7 +24,6 @@ If not, see <http://www.gnu.org/licenses/>. -->
     </parent>
 
     <artifactId>question-base</artifactId>
-    <!-- <version>1.0</version> -->
     <packaging>pom</packaging>
     <name>OUnit question base settings</name>
 
