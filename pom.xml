@@ -312,7 +312,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
     <modules>
         <module>opaque-api</module>
         <module>ounit-htmlgen</module>
-        <module>maven-ounit-plugin</module>
+        <module>ounit-maven-plugin</module>
         <module>ounit-test-executor</module>
         <module>wicket-extension-opaque</module>
         <module>ounit-service</module>
@@ -321,7 +321,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <module>ounit-junit</module>
         <module>ounit-selenium</module>
 
-        <!-- Do not build questions in reactor. It fails without access to maven-ounit-plugin.
+        <!-- Do not build questions in reactor. It fails without access to ounit-maven-plugin.
         FIXME: We should be able to build it with invoker <module>questions</module> -->
     </modules>
 </project>

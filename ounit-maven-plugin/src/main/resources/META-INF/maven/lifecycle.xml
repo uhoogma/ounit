@@ -223,7 +223,7 @@
                     <execution>
                         <goals>
                             <goal>
-                                com.googlecode.ounit:maven-ounit-plugin:check-marks
+                                com.googlecode.ounit:ounit-maven-plugin:check-marks
                             </goal>
                         </goals>
                         <configuration>
@@ -269,7 +269,7 @@
                     <execution>
                         <goals>
                             <goal>
-                                com.googlecode.ounit:maven-ounit-plugin:check-marks
+                                com.googlecode.ounit:ounit-maven-plugin:check-marks
                             </goal>
                         </goals>
                         <configuration>

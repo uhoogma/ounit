@@ -38,10 +38,10 @@
             <configuration>
                 <phases>
                     <initialize>
-                        com.googlecode.ounit:maven-ounit-plugin:setup-paths
+                        com.googlecode.ounit:ounit-maven-plugin:setup-paths
                     </initialize>
                     <generate-resources>
-                        com.googlecode.ounit:maven-ounit-plugin:generate-files
+                        com.googlecode.ounit:ounit-maven-plugin:generate-files
                     </generate-resources>
                     <process-resources>
                         org.apache.maven.plugins:maven-resources-plugin:resources
@@ -56,10 +56,10 @@
                         org.apache.maven.plugins:maven-compiler-plugin:testCompile
                     </test-compile>
                     <process-test-classes>
-                        com.googlecode.ounit:maven-ounit-plugin:generate-project
+                        com.googlecode.ounit:ounit-maven-plugin:generate-project
                     </process-test-classes>
                     <test>
-                        com.googlecode.ounit:maven-ounit-plugin:verify
+                        com.googlecode.ounit:ounit-maven-plugin:verify
                     </test>
                     <!--
                     <package>

@@ -22,7 +22,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>maven-ounit-plugin</artifactId>
+    <artifactId>ounit-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
     <name>OUnit plugin for Apache Maven</name>
     <url>http://ounit.googlecode.com</url>

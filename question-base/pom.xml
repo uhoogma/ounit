@@ -85,7 +85,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                     </configuration>
                 </plugin>
                 <!-- Apply default surefire settings. Basic configuration should be kept
-                in sync with these two files: maven-ounit-plugin/src/main/resources/META-INF/maven/lifecycle.xml
+                in sync with these two files: ounit-maven-plugin/src/main/resources/META-INF/maven/lifecycle.xml
                 ounit-test-executor/src/main/resources/maven/baseProfile.xml -->
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -117,7 +117,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                 </plugin>
                 <plugin>
                     <groupId>com.googlecode.ounit</groupId>
-                    <artifactId>maven-ounit-plugin</artifactId>
+                    <artifactId>ounit-maven-plugin</artifactId>
                     <version>1.0-SNAPSHOT</version>
                     <extensions>true</extensions>
                 </plugin>
@@ -129,7 +129,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <plugins>
             <plugin>
                 <groupId>com.googlecode.ounit</groupId>
-                <artifactId>maven-ounit-plugin</artifactId>
+                <artifactId>ounit-maven-plugin</artifactId>
                 <extensions>true</extensions>
             </plugin>
         </plugins>
@@ -187,7 +187,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                                         <pluginExecution>
                                             <pluginExecutionFilter>
                                                 <groupId>com.googlecode.ounit</groupId>
-                                                <artifactId>maven-ounit-plugin</artifactId>
+                                                <artifactId>ounit-maven-plugin</artifactId>
                                                 <versionRange>[1.0-SNAPSHOT,)</versionRange>
                                                 <goals>
                                                     <goal>setup-paths</goal>

@@ -136,7 +136,7 @@ public class GenerateFilesMojo
         List<String> blacklist = Arrays.asList(
                 new String[]{"maven-clean-plugin", "maven-site-plugin"});
         project.getBuild().getPlugins().stream().forEach((p) -> {
-            if (p.getArtifactId().equals("maven-ounit-plugin")) {
+            if (p.getArtifactId().equals("ounit-maven-plugin")) {
                 Plugin n = new Plugin();
                 n.setGroupId(p.getGroupId());
                 n.setArtifactId(p.getArtifactId());

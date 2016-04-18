@@ -74,7 +74,7 @@
             <!-- Pull in our own plugin -->
             <plugin>
                 <groupId>@project.groupId@</groupId>
-                <artifactId>maven-ounit-plugin</artifactId>
+                <artifactId>ounit-maven-plugin</artifactId>
                 <version>@project.version@</version>
                 <extensions>true</extensions>
                 <executions>
