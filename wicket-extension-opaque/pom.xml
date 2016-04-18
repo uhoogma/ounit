@@ -24,7 +24,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
     </parent>
 
     <artifactId>wicket-extension-opaque</artifactId>
-    <version>7.1.0</version>
+    <version>7.2.0</version>
     <name>OPAQUE rendering extension for Apache Wicket</name>
     <url>http://ounit.googlecode.com</url>
 
