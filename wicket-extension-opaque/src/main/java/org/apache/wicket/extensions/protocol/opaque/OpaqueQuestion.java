@@ -18,14 +18,17 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import com.googlecode.ounit.opaque.QuestionInfo;
 
 public interface OpaqueQuestion {
-	public String getId();
-	public String getVersion();
-	public String getBaseUrl();
-	public QuestionInfo getInfo();
+
+    public String getId();
+
+    public String getVersion();
+
+    public String getBaseUrl();
+
+    public QuestionInfo getInfo();
 }

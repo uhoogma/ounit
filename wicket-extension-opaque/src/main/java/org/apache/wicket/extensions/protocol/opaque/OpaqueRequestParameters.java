@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import java.util.ArrayList;
@@ -33,45 +32,45 @@ import org.apache.wicket.util.string.StringValue;
 
 /**
  * Utility class that expresses a list as {@link IRequestParameters}.
- * 
+ *
  * @author Antti Andreimann
  */
-
 public class OpaqueRequestParameters implements IRequestParameters {
-	final Map<String, List<StringValue>> parameters = new HashMap<String, List<StringValue>>();
-	
-	/* Access is only allowed inside our own circle of trust (read: package) */
-	void add(String name, String value) {
-		List<StringValue> list = parameters.get(name);
-		if(list == null) {
-			list = new ArrayList<StringValue>(1);
-			parameters.put(name, list);
-		}
-		list.add(StringValue.valueOf(value));
-	}
 
-	/*
+    final Map<String, List<StringValue>> parameters = new HashMap<>();
+
+    /* Access is only allowed inside our own circle of trust (read: package) */
+    void add(String name, String value) {
+        List<StringValue> list = parameters.get(name);
+        if (list == null) {
+            list = new ArrayList<>(1);
+            parameters.put(name, list);
+        }
+        list.add(StringValue.valueOf(value));
+    }
+
+    /*
 	 * Code of the following three methods is shamelessly stolen from
 	 * @see org.apache.wicket.mock.MockRequestParameters
-	 * 
+	 *
 	 * Licensed to the Apache Software Foundation (ASF) under one or more
 	 * contributor license agreements.
-	 */
-	@Override
-	public Set<String> getParameterNames() {
-		return Collections.unmodifiableSet(parameters.keySet());
-	}
+     */
+    @Override
+    public Set<String> getParameterNames() {
+        return Collections.unmodifiableSet(parameters.keySet());
+    }
 
-	@Override
-	public StringValue getParameterValue(String name) {
-		List<StringValue> values = parameters.get(name);
-		return (values != null && !values.isEmpty()) ? values.get(0)
-				: StringValue.valueOf((String) null);
-	}
+    @Override
+    public StringValue getParameterValue(String name) {
+        List<StringValue> values = parameters.get(name);
+        return (values != null && !values.isEmpty()) ? values.get(0)
+                : StringValue.valueOf((String) null);
+    }
 
-	@Override
-	public List<StringValue> getParameterValues(String name) {
-		List<StringValue> values = parameters.get(name);
-		return values != null ? Collections.unmodifiableList(values) : null;
-	}
+    @Override
+    public List<StringValue> getParameterValues(String name) {
+        List<StringValue> values = parameters.get(name);
+        return values != null ? Collections.unmodifiableList(values) : null;
+    }
 }

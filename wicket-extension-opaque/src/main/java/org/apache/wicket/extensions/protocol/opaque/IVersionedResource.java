@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import org.apache.wicket.request.resource.IResource;
@@ -37,10 +36,11 @@ import org.apache.wicket.request.resource.IResource;
  * that the uniqueness of each resource is determined by the versioned file name
  * returned by this interface so make sure you generate names that do not
  * collide. Use with caution!
- * 
+ *
  * @author anttix
- * 
+ *
  */
 public interface IVersionedResource extends IResource {
-	public String getVersionedName();
+
+    public String getVersionedName();
 }

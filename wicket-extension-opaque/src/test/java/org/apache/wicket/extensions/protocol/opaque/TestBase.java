@@ -28,7 +28,7 @@ import javax.xml.ws.Endpoint;
 import com.googlecode.ounit.opaque.OpaqueService;
 import java.io.IOException;
 
-public class TestBase /* extends com.googlecode.ounit.opaque.TestBase */ {
+public class TestBase {
 
     protected static Endpoint ep = null;
     public final static String SERVICE_ADDRESS = "http://localhost:9099/opaque";

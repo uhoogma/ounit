@@ -72,6 +72,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public EngineStatus getEngineStatus() {
         log.debug("getEngineStatus()");
 
@@ -87,6 +88,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public QuestionInfo getQuestionInfo(String questionID,
             String questionVersion, String questionBaseURL) throws OpaqueException {
 
@@ -111,6 +113,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public StartReturn start(String questionID, String questionVersion,
             String questionBaseURL, String[] initialParamNames,
             String[] initialParamValues, String[] cachedResources)
@@ -158,6 +161,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public ProcessReturn process(String questionSession, String[] names,
             String[] values) throws OpaqueException {
 
@@ -169,13 +173,6 @@ public abstract class WicketOpaqueService implements OpaqueService {
         }
 
         ProcessReturn rv = new ProcessReturn();
-        /*
-        for (int i = 0; i < names.length; i++) {
-            if (names[i].equals("questiondiv:editors:0:editorarea")) {
-                values[i] = insertMissingGenericParameters(values[i]); // too raw for production
-            }
-        }
-         */
         OpaqueRequest request = new OpaqueRequest(questionSession, names,
                 values);
 
@@ -187,6 +184,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void stop(String questionSession) throws OpaqueException {
         log.debug("stop({})", questionSession);
 
@@ -201,6 +199,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * Deprecated compatibility function. {@inheritDoc}
      */
+    @Override
     public String getEngineInfo() {
         log.debug("getEngineInfo()");
         return makeEngineXML(getEngineStatus());
@@ -209,6 +208,7 @@ public abstract class WicketOpaqueService implements OpaqueService {
     /**
      * Deprecated compatibility function. {@inheritDoc}
      */
+    @Override
     public String getQuestionMetadata(String questionID,
             String questionVersion, String questionBaseURL) throws OpaqueException {
         log.debug("getQuestionMetadata({}, {}, {})",

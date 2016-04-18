@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import org.apache.wicket.markup.html.form.Button;
@@ -26,27 +25,31 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class MockHomePage extends MockBasePage {
-	private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
-	private static final long serialVersionUID = 1L;
 
-	public MockHomePage(PageParameters parameters) {
-		super(parameters);
-		log.debug("MockHomePage()");
-		
-		setVersioned(false);
+    private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
+    private static final long serialVersionUID = 1L;
 
-		mainForm.add(new TextField<Integer>("nr"));
-		mainForm.add(new Button("go") {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public void onSubmit() {
-				log.debug("Go clicked");
+    @SuppressWarnings("Convert2Diamond")
+    public MockHomePage(PageParameters parameters) {
+        super(parameters);
+        log.debug("MockHomePage()");
 
-				if(m.getNr() == -1)
-				    setResponsePage(MockSecondPage.class);
-				else
-					setResponsePage(MockHomePage.class);
-			}
-		});
-	}
+        setVersioned(false);
+
+        mainForm.add(new TextField<Integer>("nr"));
+        mainForm.add(new Button("go") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onSubmit() {
+                log.debug("Go clicked");
+
+                if (m.getNr() == -1) {
+                    setResponsePage(MockSecondPage.class);
+                } else {
+                    setResponsePage(MockHomePage.class);
+                }
+            }
+        });
+    }
 }
