@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import org.apache.wicket.Session;
@@ -29,56 +28,80 @@ import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.IProvider;
 
 import com.googlecode.ounit.opaque.OpaqueException;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.filter.JavaScriptFilteredIntoFooterHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderResponseDecorator;
 
 public abstract class OpaqueApplication extends WebApplication {
-	private OpaqueSessionStore sessionStore;
-	
-	/**
-	 * Fetch question from question database.
-	 * This function is called from getQuestionMetadata and start to
-	 * make sure the question exists.
-	 * 
-	 * @param questionID
-	 * @param questionVersion
-	 * @param questionBaseURL
-	 * @return
-	 */
-	public abstract OpaqueQuestion fetchQuestion(String id, String version,
-			String baseUrl) throws OpaqueException;
 
-	public int getActiveSessions() {
-		if(sessionStore != null) {
-			return sessionStore.getActiveSessionCount();
-		} else {
-			return -1; // Unknown
-		}
-	}
-	
-	public void setSessionStore(OpaqueSessionStore sessionStore) {
-		this.sessionStore = sessionStore; 
-	}
-	
-	@Override
-	protected void init() {
-		super.init();
-		if (sessionStore != null) {
-			/* Set session store provider */
-			setSessionStoreProvider(new IProvider<ISessionStore>() {
-				@Override
-				public ISessionStore get() {
-					return sessionStore;
-				}
-			});
-		}
-	}
-	
-	@Override
-	public String getInitParameter(String key) {
-		return null;
-	}
+    private OpaqueSessionStore sessionStore;
 
-	@Override
-	public Session newSession(Request request, Response response) {
-		return new OpaqueSession(request);
-	}
+    /**
+     * Fetch question from question database. This function is called from
+     * getQuestionMetadata and start to make sure the question exists.
+     *
+     * @param questionID
+     * @param questionVersion
+     * @param questionBaseURL
+     * @return
+     */
+    public abstract OpaqueQuestion fetchQuestion(String id, String version,
+            String baseUrl) throws OpaqueException;
+
+    public int getActiveSessions() {
+        if (sessionStore != null) {
+            return sessionStore.getActiveSessionCount();
+        } else {
+            return -1; // Unknown
+        }
+    }
+
+    public void setSessionStore(OpaqueSessionStore sessionStore) {
+        this.sessionStore = sessionStore;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        setHeaderResponseDecorator(new JavaScriptToBucketResponseDecorator("footer-container"));
+
+        if (sessionStore != null) {
+            /* Set session store provider */
+            setSessionStoreProvider(new IProvider<ISessionStore>() {
+                @Override
+                public ISessionStore get() {
+                    return sessionStore;
+                }
+            });
+        }
+    }
+
+    /**
+     * Decorates an original IHeaderResponse and renders all javascript items
+     * (JavaScriptHeaderItem), to a specific container in the page.
+     */
+    static class JavaScriptToBucketResponseDecorator implements IHeaderResponseDecorator {
+
+        private String bucketName;
+
+        public JavaScriptToBucketResponseDecorator(String bucketName) {
+            this.bucketName = bucketName;
+        }
+
+        @Override
+        public IHeaderResponse decorate(IHeaderResponse response) {
+            return new JavaScriptFilteredIntoFooterHeaderResponse(response, bucketName);
+        }
+
+    }
+
+    @Override
+    public String getInitParameter(String key) {
+        return null;
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        return new OpaqueSession(request);
+    }
 }

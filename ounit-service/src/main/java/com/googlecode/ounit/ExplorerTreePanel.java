@@ -18,9 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -32,106 +32,114 @@ import org.apache.wicket.markup.html.panel.Fragment;
 import org.apache.wicket.markup.html.panel.Panel;
 
 public class ExplorerTreePanel extends Panel {
-	private static final long serialVersionUID = 1L;
-	private boolean root = true;
-	ProjectTree tree;
-	
-	public ExplorerTreePanel(String id) {
-		this(id, (ProjectTree) null);
-	}
-	
-	public ExplorerTreePanel(String id, ProjectTree tree) {
-		super(id);
 
-		if(tree != null)
-			this.tree = tree;
-	}
-	
-	private ExplorerTreePanel(String id, List<ProjectTreeNode> children) {
-		super(id);
-		root = false;
-		add(new Rows("rows", children));
-	}
-	
-	@Override
-	protected void onInitialize() {
-		super.onInitialize();
-		
-		if(!root) return;
-		
-		if(tree == null)
-			tree = (ProjectTree)getDefaultModelObject();
-		
-		add(new Rows("rows", tree.getTrunk()));
-		//setVersioned(false);
-	}
+    private static final long serialVersionUID = 1L;
+    private boolean root = true;
+    ProjectTree tree;
 
-	@Override
-	protected void onConfigure() {
-		super.onConfigure();
-		
-		if(!root) return;
+    public ExplorerTreePanel(String id) {
+        this(id, (ProjectTree) null);
+    }
 
-		/*
+    public ExplorerTreePanel(String id, ProjectTree tree) {
+        super(id);
+
+        if (tree != null) {
+            this.tree = tree;
+        }
+    }
+
+    private ExplorerTreePanel(String id, List<ProjectTreeNode> children) {
+        super(id);
+        root = false;
+        add(new Rows("rows", children));
+    }
+
+    @Override
+    protected void onInitialize() {
+        super.onInitialize();
+
+        if (!root) {
+            return;
+        }
+
+        if (tree == null) {
+            tree = (ProjectTree) getDefaultModelObject();
+        }
+
+        add(new Rows("rows", tree.getTrunk()));
+        //setVersioned(false);
+    }
+
+    @Override
+    protected void onConfigure() {
+        super.onConfigure();
+
+        if (!root) {
+            return;
+        }
+
+        /*
 		 * If there is no Read Only nodes to display and the number of read-write nodes is
 		 * reasonable, there is no need to waste space on the project treeview.
-		 */
+         */
+        // FIXME: Shouldn't access session directly.
+        //        better use a model property.
+        //OunitSession sess = (OunitSession)getPage().getDefaultModelObject();
+        //OunitSession sess = ((BasePage)getPage()).getOunitSession();
+        OunitSession sess = OunitSession.get();
 
-		// FIXME: Shouldn't access session directly.
-		//        better use a model property.
-		//OunitSession sess = (OunitSession)getPage().getDefaultModelObject();
-		//OunitSession sess = ((BasePage)getPage()).getOunitSession();
-		OunitSession sess = OunitSession.get();
-		
-		setVisible(tree.getRoNodes().size() > 0
-				|| tree.getRwNodes().size() >= 6
-				|| sess.hasDownload());
-	}
+        setVisible(tree.getRoNodes().size() > 0
+                || tree.getRwNodes().size() >= 6
+                || sess.hasDownload());
+    }
 
-	private class Rows extends ListView<ProjectTreeNode> {
-		private static final long serialVersionUID = 1L;
-		
-		public Rows(String id, List<? extends ProjectTreeNode> list) {
-			super(id, list);
-		}
-		
-		public class TreeFragment extends Fragment {
-			private static final long serialVersionUID = 1L;
+    private class Rows extends ListView<ProjectTreeNode> {
 
-			public TreeFragment(String id, String markupId) {
-				super(id, markupId, ExplorerTreePanel.this);
-			}
-		}
-		
-		@Override
-		protected void populateItem(ListItem<ProjectTreeNode> item) {
-		    ProjectTreeNode node = (ProjectTreeNode)item.getDefaultModelObject();
+        private static final long serialVersionUID = 1L;
+
+        public Rows(String id, List<? extends ProjectTreeNode> list) {
+            super(id, new ArrayList<>(list));
+        }
+
+        public class TreeFragment extends Fragment {
+
+            private static final long serialVersionUID = 1L;
+
+            public TreeFragment(String id, String markupId) {
+                super(id, markupId, ExplorerTreePanel.this);
+            }
+        }
+
+        @Override
+        protected void populateItem(ListItem<ProjectTreeNode> item) {
+            ProjectTreeNode node = (ProjectTreeNode) item.getDefaultModelObject();
             WebMarkupContainer row = new WebMarkupContainer("row");
             Fragment frag;
-            
+
             if (node.getChildren() != null) {
-            	frag = new TreeFragment("listitem", "branch");
-            	frag.add(new Label("label", node.getName()));
-            	frag.add(new ExplorerTreePanel("nested", node.getChildren()));
+                frag = new TreeFragment("listitem", "branch");
+                frag.add(new Label("label", node.getName()));
+                frag.add(new ExplorerTreePanel("nested", node.getChildren()));
             } else {
-            	frag = new TreeFragment("listitem", "leaf");
-                if(node.isReadonly()) {
-                	// FIXME: Make it work!
-                	frag.add(new Label("link", node.getName()));
-                	
-                	//frag.add(new ExternalLink("link", node.getName(), node.getName())
-                	//			.add(new SimpleAttributeModifier("target", "_blank")));
-                	//AbstractLink link = new ResourceLink<String>("link",
-    				//			new ResourceStreamResource(new FileResourceStream(
-    				//					node.getPathname())));
-                	//link.setBody(Model.of(node.getName()));
+                frag = new TreeFragment("listitem", "leaf");
+                if (node.isReadonly()) {
+                    // FIXME: Make it work!
+                    frag.add(new Label("link", node.getName()));
+
+                    //frag.add(new ExternalLink("link", node.getName(), node.getName())
+                    //			.add(new SimpleAttributeModifier("target", "_blank")));
+                    //AbstractLink link = new ResourceLink<String>("link",
+                    //			new ResourceStreamResource(new FileResourceStream(
+                    //					node.getPathname())));
+                    //link.setBody(Model.of(node.getName()));
                     //row.add(link);
                 } else {
-                	frag.add(new AnchorLink("link", node.getEditor(), node.getName()));
+                    frag.add(new AnchorLink("link", node.getEditor(), node.getName()));
                 }
             }
-        	row.add(frag);
+            row.add(frag);
             item.add(row);
-		}
-	}
+        }
+    }
 }

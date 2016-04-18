@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import java.io.ByteArrayOutputStream;
@@ -35,184 +34,205 @@ import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.util.time.Time;
 
 public class OpaqueResponse extends WebResponse {
-	String mimeType;
-	String redirectLocation = null;
-	
-	private ByteArrayOutputStream byteStream;
-	private StringWriter stringWriter;
 
-	private Map<String, Url> referencedResources = new HashMap<String, Url>();
-	private StringBuilder css = new StringBuilder();
-	private StringBuilder head = new StringBuilder();
-	private String pageURL;
-	private String fileName;
-		
-	OpaqueResponse() {
-		stringWriter = new StringWriter();
-		byteStream = new ByteArrayOutputStream();
-	}
-	
-	public String getContentType() {
-		return mimeType;
-	}
-	
-	/**
-	 * Get the binary content that was written with {@link #write(byte[])}
-	 * 
-	 * @return The binary content
-	 */
-	public byte[] getBinaryContent()
-	{
-		return byteStream.toByteArray();
-	}
-	
-	/**
-	 * Get the content that was written with {@link #write(CharSequence)}
-	 * 
-	 * @return The document
-	 */
-	public String getCharacterContent()
-	{
-		return stringWriter.getBuffer().toString();
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return redirected location
-	 */
-	public String getRedirectLocation() {
-		return redirectLocation;
-	}
-	
-	public Map<String, Url> getReferencedResources() {
-		return referencedResources;
-	}
-	
-	public void setReferencedResources(Map<String, Url> referencedResources) {
-		this.referencedResources = referencedResources;
-	}
-	
-	public void addReferencedResource(String name, Url url) {
-		if(!referencedResources.containsKey(name))
-			referencedResources.put(name, url);
-	}
-		
-	public String getCSS() {
-		return css.toString();
-	}
-	
-	public String getHeaderContributions() {
-		return head.toString();
-	}
-	
-	public String getFileName() {
-		return fileName;
-	}
+    String mimeType;
+    String redirectLocation = null;
 
-	public void addHeaderContribution(String header) {
-		// TODO: Consider other tags to filter (eg: <meta http-equiv="Content-Type: ...)
-		header = header.replaceAll("<title[^>]*>[^<]*</title>", "");
-		head.append(header);
-	}
+    // private final WebResponse originalResponse;
+    private ByteArrayOutputStream byteStream;
+    private StringWriter stringWriter;
 
-	public String getPageURL() {
-		return pageURL;
-	}
-	
-	public void setPageURL(String url) {
-		pageURL = url;
-	}
+    private Map<String, Url> referencedResources = new HashMap<String, Url>();
+    private StringBuilder css = new StringBuilder();
+    private StringBuilder head = new StringBuilder();
+    private String pageURL;
+    private String fileName;
 
-	@Override
-	public void addCookie(Cookie cookie) {
-	}
+    OpaqueResponse() {
+        stringWriter = new StringWriter();
+        byteStream = new ByteArrayOutputStream();
+        // this.originalResponse = new WebResponse();
+    }
 
-	@Override
-	public void clearCookie(Cookie cookie) {
-	}
+    public String getContentType() {
+        return mimeType;
+    }
 
-	@Override
-	public void setAttachmentHeader(String filename) {
-		this.fileName = filename;
-	}
-	
-	@Override
-	public void setInlineHeader(String filename) {
-		this.fileName = filename;
-	}
-	
-	// TODO: Exctact filename from Content-Disposition header
-	
-	@Override
-	public void setHeader(String name, String value) {
-	}
+    /**
+     * Get the binary content that was written with {@link #write(byte[])}
+     *
+     * @return The binary content
+     */
+    public byte[] getBinaryContent() {
+        return byteStream.toByteArray();
+    }
 
-	@Override
-	public void addHeader(String name, String value) {
-	}
+    /**
+     * Get the content that was written with {@link #write(CharSequence)}
+     *
+     * @return The document
+     */
+    public String getCharacterContent() {
+        return stringWriter.getBuffer().toString();
+    }
 
-	@Override
-	public void setDateHeader(String name, Time date) {
-	}
+    /**
+     *
+     *
+     * @return redirected location
+     */
+    public String getRedirectLocation() {
+        return redirectLocation;
+    }
 
-	@Override
-	public void setContentLength(long length) {
-	}
+    public Map<String, Url> getReferencedResources() {
+        for (Map.Entry<String, Url> entry : referencedResources.entrySet()) {
+            System.out.println(entry.getKey() + " kvp " + entry.getValue().toString());
+        }
+        return referencedResources;
+    }
 
-	@Override
-	public void setContentType(String mimeType) {
-		this.mimeType = mimeType;
-	}
+    public void setReferencedResources(Map<String, Url> referencedResources) {
+        this.referencedResources = referencedResources;
+    }
 
-	@Override
-	public void setStatus(int sc) {
-	}
+    public void addReferencedResource(String name, Url url) {
+        if (!referencedResources.containsKey(name)) {
+            System.out.println("ureferencedResources rl on: " + url.toString());
+            referencedResources.put(name, url);
+        }
+    }
 
-	@Override
-	public void sendError(int sc, String msg) {
-	}
+    public String getCSS() {
+        return css.toString();
+    }
 
-	@Override
-	public String encodeRedirectURL(CharSequence url) {
-		return url.toString();
-	}
+    public String getHeaderContributions() {
+        return head.toString();
+    }
 
-	@Override
-	public void sendRedirect(String url) {
-		redirectLocation = url;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	@Override
-	public boolean isRedirect() {
-		return redirectLocation != null;
-	}
+    public void addHeaderContribution(String header) {
+        // TODO: Consider other tags to filter (eg: <meta http-equiv="Content-Type: ...)
+        header = header.replaceAll("<title[^>]*>[^<]*</title>", "");
+        head.append(header);
+    }
 
-	@Override
-	public void flush() {
-	}
+    public String getPageURL() {
+        return pageURL;
+    }
 
-	@Override
-	public void write(CharSequence sequence) {
-		stringWriter.append(sequence);
-	}
+    public void setPageURL(String url) {
+        pageURL = url;
+    }
 
-	@Override
-	public void write(byte[] array) {
-		try {
-			byteStream.write(array);
-		} catch (IOException e) {
-			throw new WicketRuntimeException(e);
-		}
-	}
+    @Override
+    public void addCookie(Cookie cookie) {
+    }
 
-	@Override
-	public String encodeURL(CharSequence url) {
-		return url.toString();
-	}
+    @Override
+    public void clearCookie(Cookie cookie) {
+    }
 
-	@Override
-	public Object getContainerResponse() {
-		return null;
-	}
+    @Override
+    public void setAttachmentHeader(String filename) {
+        this.fileName = filename;
+    }
+
+    @Override
+    public void setInlineHeader(String filename) {
+        this.fileName = filename;
+    }
+
+    // TODO: Exctact filename from Content-Disposition header
+    @Override
+    public void setHeader(String name, String value) {
+    }
+
+    @Override
+    public void addHeader(String name, String value) {
+    }
+
+    @Override
+    public void setDateHeader(String name, Time date) {
+    }
+
+    @Override
+    public void setContentLength(long length) {
+    }
+
+    @Override
+    public void setContentType(String mimeType) {
+        this.mimeType = mimeType;
+    }
+
+    @Override
+    public void setStatus(int sc) {
+    }
+
+    @Override
+    public void sendError(int sc, String msg) {
+    }
+
+    @Override
+    public String encodeRedirectURL(CharSequence url) {
+        return url.toString();
+    }
+
+    @Override
+    public void sendRedirect(String url) {
+        redirectLocation = url;
+    }
+
+    @Override
+    public boolean isRedirect() {
+        return redirectLocation != null;
+    }
+
+    @Override
+    public void flush() {
+    }
+
+    @Override
+    public void write(CharSequence sequence) {
+        stringWriter.append(sequence);
+    }
+
+    @Override
+    public void write(byte[] array) {
+        try {
+            byteStream.write(array);
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
+
+    @Override
+    public String encodeURL(CharSequence url) {
+        if (url.subSequence(0, 2).equals("./")) {
+            System.out.println("url inside on: " + url.subSequence(2, url.length()).toString());
+            return url.subSequence(2, url.length()).toString();
+
+        }
+
+        return url.toString();
+    }
+
+    @Override
+    public Object getContainerResponse() {
+        https://github.com/apache/wicket/blob/master/wicket-core/src/main/java/org/apache/wicket/protocol/http/HeaderBufferingWebResponse.java
+        return null;
+    }
+
+    @Override
+    public void write(byte[] array, int offset, int length) {
+        try {
+            byteStream.write(array);
+        } catch (IOException e) {
+            throw new WicketRuntimeException(e);
+        }
+    }
 }

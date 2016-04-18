@@ -78,7 +78,8 @@ public class OpaqueSession extends WebSession {
     }
 
     public List<String> getCachedResources() {
-        return Collections.unmodifiableList(cachedResources);
+        return // new ArrayList<String>();//
+                Collections.unmodifiableList(cachedResources);
     }
 
     void setCachedResources(List<String> cachedResources) {
@@ -87,6 +88,7 @@ public class OpaqueSession extends WebSession {
     }
 
     void addCachedResource(String resource) {
+        System.out.println("ressurss on: " + resource);
         this.cachedResources.add(resource);
         dirty();
     }

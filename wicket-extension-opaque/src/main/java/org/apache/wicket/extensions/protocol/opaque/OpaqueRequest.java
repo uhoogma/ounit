@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
 import java.nio.charset.Charset;
@@ -37,173 +36,185 @@ import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.time.Time;
 
 public class OpaqueRequest extends WebRequest {
-	public final static String PAGE_PARAMETER_NAME = "wicketpage";
-	public final static String MOODLE_EVENT_PARAMETER_NAME = "event";
-	public final static String MOODLE_FINISH_PARAMETER_NAME = "-finish";
-	public final static String MOODLE_SPECIAL_PARAMETER_PREFIX = "-";
 
-	public enum CallType {
-		START, PROCESS, OTHER
-	};
-	
-	protected String sessionId;
-	protected Url url;
-	protected CallType callType = CallType.OTHER;
-	
-	protected OpaqueRequestParameters postParameters;
-	protected OpaqueQuestion question;
-	protected List<String> cachedResources;
+    public final static String PAGE_PARAMETER_NAME = "wicketpage";
+    public final static String MOODLE_EVENT_PARAMETER_NAME = "event";
+    public final static String MOODLE_FINISH_PARAMETER_NAME = "-finish";
+    public final static String MOODLE_SPECIAL_PARAMETER_PREFIX = "-";
 
-	public OpaqueRequest(String sessionId, Url url) {
-		this.sessionId = sessionId;
-		this.url = url;
-	}	
+    public enum CallType {
+        START, PROCESS, OTHER
+    };
 
-	public OpaqueRequest(OpaqueQuestion question, String[] initialParamNames,
-			String[] initialParamValues, String[] cachedResources) {
+    protected String sessionId;
+    protected Url url;
+    protected CallType callType = CallType.OTHER;
 
-		Args.notNull(question, "question");
+    protected OpaqueRequestParameters postParameters;
+    protected OpaqueQuestion question;
+    protected List<String> cachedResources;
 
-		this.callType = CallType.START;
-		this.question = question;
-		this.cachedResources = Arrays.asList(cachedResources);
+    public OpaqueRequest(String sessionId, Url url) {
+        this.sessionId = sessionId;
+        this.url = url;
+    }
 
-		// TODO: Do something with the initial parameters
-		
-		setUrl("");
-	}
-	
-	public OpaqueRequest(String sessionId, String[] names, String[] values) {
-		Args.notEmpty(sessionId, "sessionId");
-		
-		this.callType = CallType.PROCESS;
-		this.sessionId = sessionId;
-		
-		/* Parse parameters */
-		if(values.length != values.length)
-			throw new WicketRuntimeException(
-					"The count of parameter names and values does not match");
-		
-		postParameters = new OpaqueRequestParameters();
-		
-		for(int i = 0; i <  names.length; i++) {
-			/* Find "special" parameters */
-			if(names[i].equals(MOODLE_EVENT_PARAMETER_NAME)) {
-				// TODO: Do something with it (eg. detect replay)
-				continue;
-			}
-			if(names[i].startsWith(MOODLE_SPECIAL_PARAMETER_PREFIX)) {
-				if(getUrl() == null)
-					setUrl(""); // Let HomePage handle the request
-				
-				getUrl().addQueryParameter(names[i], values[i]);
-				continue;
-			}
-			
-			if(names[i].equals(PAGE_PARAMETER_NAME)) {
-				String pageUrl = values[i];
-				
-				// FIXME: This is a seriously ugly temporary hack!
-				if(!pageUrl.startsWith("?") && !pageUrl.startsWith("wicket/")) {
-					if(pageUrl.startsWith("page?"))
-						pageUrl = "wicket/" + pageUrl;
-					else
-						pageUrl = "wicket/bookmarkable/" + pageUrl;
-				}
-				
-				setUrl(pageUrl);
-				continue;
-			}
-			
-			/* Parameter not recognized, must belong to the page */
-			postParameters.add(names[i], values[i]);
-		}
-		
-		if (getUrl() == null)
-			throw new WicketRuntimeException(PAGE_PARAMETER_NAME
-					+ " not present in POST parameters");
-	}
+    public OpaqueRequest(OpaqueQuestion question, String[] initialParamNames,
+            String[] initialParamValues, String[] cachedResources) {
 
-	public CallType getCallType() {
-		return callType;
-	}
+        Args.notNull(question, "question");
 
-	public void setUrl(Url url) {
-		this.url = url;
-	}
-	
-	public void setUrl(String url) {
-		this.url = Url.parse(url, getCharset());
-	}
+        this.callType = CallType.START;
+        this.question = question;
+        this.cachedResources = Arrays.asList(cachedResources);
 
-	public String getSessionId() {
-		return sessionId;
-	}
-	
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
+        // TODO: Do something with the initial parameters
+        setUrl("");
+    }
 
-	public List<String> getCachedResources() {
-		return cachedResources;
-	}
+    public OpaqueRequest(String sessionId, String[] names, String[] values) {
+        Args.notEmpty(sessionId, "sessionId");
 
-	@Override
-	public IRequestParameters getPostParameters() {
-		if(postParameters == null)
-			return EmptyRequestParameters.INSTANCE;
-		else
-			return postParameters;
-	}
+        this.callType = CallType.PROCESS;
+        this.sessionId = sessionId;
 
-	@Override
-	public List<Cookie> getCookies() {
-		return null;
-	}
+        /* Parse parameters */
+        if (values.length != values.length) {
+            throw new WicketRuntimeException(
+                    "The count of parameter names and values does not match");
+        }
 
-	@Override
-	public List<String> getHeaders(String name) {
-		return null;
-	}
+        postParameters = new OpaqueRequestParameters();
 
-	@Override
-	public String getHeader(String name) {
-		return null;
-	}
+        for (int i = 0; i < names.length; i++) {
+            /* Find "special" parameters */
+            if (names[i].equals(MOODLE_EVENT_PARAMETER_NAME)) {
+                // TODO: Do something with it (eg. detect replay)
+                continue;
+            }
+            if (names[i].startsWith(MOODLE_SPECIAL_PARAMETER_PREFIX)) {
+                if (getUrl() == null) {
+                    setUrl(""); // Let HomePage handle the request
+                }
+                getUrl().addQueryParameter(names[i], values[i]);
+                continue;
+            }
+            String pageUrl2 = values[i];
+            String pageUrl;
 
-	@Override
-	public Time getDateHeader(String name) {
-		return null;
-	}
+            if (pageUrl2.startsWith("./")) {
+                pageUrl = pageUrl2.substring(2);
+                System.out.println("pageUrl2: " + pageUrl2);
+            } else {
+                pageUrl = pageUrl2;
+            }
+            if (names[i].equals(PAGE_PARAMETER_NAME)) {
 
-	@Override
-	public Url getUrl() {
-		return url;
-	}
+                // pageUrl = pageUrl2;
+                // FIXME: This is a seriously ugly temporary hack!
+                if (!pageUrl.startsWith("?") && !pageUrl.startsWith("wicket/")) {
+                    if (pageUrl.startsWith("page?")) {
+                        pageUrl = "wicket/" + pageUrl;
+                    } else {
+                        pageUrl = "wicket/bookmarkable/" + pageUrl;
+                    }
+                }
 
-	@Override
-	public Url getClientUrl() {
-		// We want Wicket to always generate absolute URLs (wicket/...)
-		return new Url();
-	}
+                setUrl(pageUrl);
+                continue;
+            }
 
-	@Override
-	public Locale getLocale() {
-		// FIXME: Derive it from language passed to the start call
-		return Locale.getDefault();
-	}
+            /* Parameter not recognized, must belong to the page */
+            postParameters.add(names[i], pageUrl);
+        }
 
-	@Override
-	public Charset getCharset() {
-		return Charset.forName("UTF-8");
-	}
+        if (getUrl() == null) {
+            throw new WicketRuntimeException(PAGE_PARAMETER_NAME
+                    + " not present in POST parameters");
+        }
+    }
 
-	@Override
-	public Object getContainerRequest() {
-		return null;
-	}
+    public CallType getCallType() {
+        return callType;
+    }
 
-	public OpaqueQuestion getQuestion() {
-		return question;
-	}	
+    public void setUrl(Url url) {
+        this.url = url;
+    }
+
+    public void setUrl(String url) {
+        this.url = Url.parse(url, getCharset());
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public List<String> getCachedResources() {
+        return cachedResources;
+    }
+
+    @Override
+    public IRequestParameters getPostParameters() {
+        if (postParameters == null) {
+            return EmptyRequestParameters.INSTANCE;
+        } else {
+            return postParameters;
+        }
+    }
+
+    @Override
+    public List<Cookie> getCookies() {
+        return null;
+    }
+
+    @Override
+    public List<String> getHeaders(String name) {
+        return null;
+    }
+
+    @Override
+    public String getHeader(String name) {
+        return null;
+    }
+
+    @Override
+    public Time getDateHeader(String name) {
+        return null;
+    }
+
+    @Override
+    public Url getUrl() {
+        return url;
+    }
+
+    @Override
+    public Url getClientUrl() {
+        // We want Wicket to always generate absolute URLs (wicket/...)
+        return new Url();
+    }
+
+    @Override
+    public Locale getLocale() {
+        // FIXME: Derive it from language passed to the start call
+        return Locale.getDefault();
+    }
+
+    @Override
+    public Charset getCharset() {
+        return Charset.forName("UTF-8");
+    }
+
+    @Override
+    public Object getContainerRequest() {
+        return null;
+    }
+
+    public OpaqueQuestion getQuestion() {
+        return question;
+    }
 }

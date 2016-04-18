@@ -18,43 +18,45 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.apache.wicket.extensions.protocol.opaque;
 
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
 
 public class MockBasePage extends OpaquePage {
-	private static final long serialVersionUID = 1L;
-	final MockModelObject m;
 
-	public MockBasePage(PageParameters parameters) {
-		super(parameters);
-		setDefaultModel(new CompoundPropertyModel<MockModelObject>(new MockModelObject()));
-		m = (MockModelObject)getDefaultModelObject();
-	}
-	
-	@Override
-	public void renderHead(IHeaderResponse response) {
-		super.renderHead(response);
-		
-		response.renderCSSReference(new PackageResourceReference(
-				MockHomePage.class, "mockstyle.css"));
-		response.renderJavaScriptReference(new PackageResourceReference(
-				MockHomePage.class, "mockscript.js"));
-	}
-	
-	@Override
-	protected void onMainFormSubmit() {
-		OpaqueSession os = getOpaqueSession();
-		int nr = m.getNr();
-		if(nr >= 0 && nr < 10) {
-			//os.setMaxMarks(3);
-			//os.setScore(nr * 33.3);
-			os.setScore(nr * 10);
-			os.setClosed(true);
-		}
-	}
+    private static final long serialVersionUID = 1L;
+    final MockModelObject m;
+
+    @SuppressWarnings("Convert2Diamond")
+    public MockBasePage(PageParameters parameters) {
+        super(parameters);
+        setDefaultModel(new CompoundPropertyModel<MockModelObject>(new MockModelObject()));
+        m = (MockModelObject) getDefaultModelObject();
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+
+        response.render(CssHeaderItem.forReference(new CssResourceReference(MockBasePage.class, "mockstyle.css")));
+        response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(MockBasePage.class, "mockscript.js")));
+    }
+
+    @Override
+    protected void onMainFormSubmit() {
+        OpaqueSession os = getOpaqueSession();
+        int nr = m.getNr();
+        if (nr >= 0 && nr < 10) {
+            //os.setMaxMarks(3);
+            //os.setScore(nr * 33.3);
+            os.setScore(nr * 10);
+            os.setClosed(true);
+        }
+    }
 }

@@ -39,7 +39,7 @@
 div.opage { float: left; width: 100% } /* Required for Moodle 2.1+ */
 .opage ul.ou-explorer-tree { padding-left: 2em; }
 .opage .ou-explorer-tree ul { margin-top: 0px; margin-bottom: 0px; }
-.opage .ou-explorer-tree a { color: blue; } 
+.opage .ou-explorer-tree a { color: blue; }
 /* .ou-buttons input { font-size: large; } */
 .opage div.ou-buttons { margin-top: 3px; }
 .opage div.ou-left-button-panel { width: 10em; float: left; }
@@ -54,14 +54,14 @@ div.opage .ou-closed-question .ui-tabs-panel,
 div.opage .ou-closed-question .CodeMirror-gutter { background-color: #EEEEEE; }
 
 .opage .ou-confirm .ou-results {
-	margin: 2em;
-	min-height: 5em;
-	max-height: 26em;
-	overflow: auto;
-	border-top: 1px solid black;
+    margin: 2em;
+    min-height: 5em;
+    max-height: 26em;
+    overflow: auto;
+    border-top: 1px solid black;
     border-bottom: 1px solid black;
 }
 
 .opage .ou-confirm {
-	margin-bottom: 1em;
+    margin-bottom: 1em;
 }

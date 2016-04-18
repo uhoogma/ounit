@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import static com.googlecode.ounit.OunitUtil.*;
@@ -44,88 +43,88 @@ import com.googlecode.ounit.executor.OunitTask;
 import com.googlecode.ounit.opaque.OpaqueException;
 
 public class OunitApplication extends OpaqueApplication {
-	
-	protected QuestionFactory qf = new DefaultQuestionFactory();
-	
-	
-	@Override
-	public Class<? extends Page> getHomePage() {
-		return WelcomePage.class;
-	}
-	
-	@Override
-	public RuntimeConfigurationType getConfigurationType() {
-		return RuntimeConfigurationType.DEPLOYMENT;
-	}
-	
-	@Override
-	protected void init() {
-		super.init();
-		getRootRequestMapperAsCompound().add(new OunitRequestMapper());
-		getSessionStore().registerUnboundListener(new UnboundListener() {
-			@Override
-			public void sessionUnbound(String sessionId) {
-				deleteDirectory(new File(OunitSession.sessDir, sessionId));
-			}
-		});
-	}
 
-	@Override
-	public OpaqueQuestion fetchQuestion(String id, String version,
-			String baseUrl) throws OpaqueException {
-		
-		return qf.loadQuestion(id, version, baseUrl);
-	}
-	
-	@Override
-	public Session newSession(Request request, Response response) {
-		return new OunitSession(request);
-	}
-	
-	public static OunitApplication get() {
-		Application app = Application.get();
+    protected QuestionFactory qf = new DefaultQuestionFactory();
 
-		if (!(app instanceof OunitApplication)) {
-			throw new WicketRuntimeException(
-					"The application attached to the current " +
-					"thread is not an OunitApplication");
-		}
+    @Override
+    public Class<? extends Page> getHomePage() {
+        return WelcomePage.class;
+    }
 
-		return (OunitApplication) app;
-	}
-		
-	public static OunitResult waitForTask(OunitTask task)
-			throws RuntimeException {
-		try {
-			while(!task.isDone()) {
-				Thread.sleep(200);
-			}
-			return task.get();
-		} catch(Exception e) {
-			//slog.warn("Failed task", e);
-			throw new RuntimeException((e.getCause() == null) ? e : e.getCause());
-		}
-	}
+    @Override
+    public RuntimeConfigurationType getConfigurationType() {
+        return RuntimeConfigurationType.DEPLOYMENT;
+    }
 
-	/* Executor access must be synchronized */
-	static OunitExecutor oe = null;
-	
-	public static synchronized OunitTask scheduleTask(OunitExecutionRequest r) {
-		return getExecutor().submit(r);
-	}
-	
-	public static synchronized Properties getModelProperties(File outDir) {
-		try {
-			return getExecutor().getModelProperties(outDir);
-		} catch (Exception e) {
-			throw new RuntimeException("Unable to parse " + outDir + "/pom.xml", e);
-		}
-	}
-	
-	private static synchronized OunitExecutor getExecutor() {
-		if(oe == null)
-			oe = new OunitExecutor();
+    @Override
+    protected void init() {
+        super.init();
+        getRootRequestMapperAsCompound().add(new OunitRequestMapper());
+        getSessionStore().registerUnboundListener(new UnboundListener() {
+            @Override
+            public void sessionUnbound(String sessionId) {
+                deleteDirectory(new File(OunitSession.sessDir, sessionId));
+            }
+        });
+    }
 
-		return oe;
-	}
+    @Override
+    public OpaqueQuestion fetchQuestion(String id, String version,
+            String baseUrl) throws OpaqueException {
+
+        return qf.loadQuestion(id, version, baseUrl);
+    }
+
+    @Override
+    public Session newSession(Request request, Response response) {
+        return new OunitSession(request);
+    }
+
+    public static OunitApplication get() {
+        Application app = Application.get();
+
+        if (!(app instanceof OunitApplication)) {
+            throw new WicketRuntimeException(
+                    "The application attached to the current "
+                    + "thread is not an OunitApplication");
+        }
+
+        return (OunitApplication) app;
+    }
+
+    public static OunitResult waitForTask(OunitTask task)
+            throws RuntimeException {
+        try {
+            while (!task.isDone()) {
+                Thread.sleep(200);
+            }
+            return task.get();
+        } catch (Exception e) {
+            //slog.warn("Failed task", e);
+            throw new RuntimeException((e.getCause() == null) ? e : e.getCause());
+        }
+    }
+
+    /* Executor access must be synchronized */
+    static OunitExecutor oe = null;
+
+    public static synchronized OunitTask scheduleTask(OunitExecutionRequest r) {
+        return getExecutor().submit(r);
+    }
+
+    public static synchronized Properties getModelProperties(File outDir) {
+        try {
+            return getExecutor().getModelProperties(outDir);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to parse " + outDir + "/pom.xml", e);
+        }
+    }
+
+    private static synchronized OunitExecutor getExecutor() {
+        if (oe == null) {
+            oe = new OunitExecutor();
+        }
+
+        return oe;
+    }
 }
