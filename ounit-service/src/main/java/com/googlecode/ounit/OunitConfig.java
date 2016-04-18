@@ -28,8 +28,10 @@ import org.springframework.util.PropertyPlaceholderHelper;
 
 public class OunitConfig {
 
-    // TODO: Consider moving constants to a separate class
-    //       so they can be shared with the Maven plugin.
+    /**
+     * TODO: Consider moving constants to a separate class so they can be shared
+     * with the Maven plugin.
+     */
     public static final String DESCRIPTION_FILE = "description/index.html";
     public static final String RESULTS_FILE = "target/ounit-reports/results.html";
     public static final String MARKS_FILE = "target/ounit-reports/marks.properties";

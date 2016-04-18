@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import org.apache.wicket.Component;
@@ -27,36 +26,45 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.model.IModel;
 
 public class QuizStateAttributeModifier extends Behavior {
-	private static final long serialVersionUID = 1L;
-	
-	IModel<OunitSession> model;
-	Behavior modifier;
 
-	private String attribute;
-	private String openValue;
-	private String closedValue;
-	
-	public QuizStateAttributeModifier(IModel<OunitSession> model,
-			String attribute, String openValue, String closedValue) {
+    private static final long serialVersionUID = 1L;
 
-		this.model = model;
-		this.attribute = attribute;
-		this.openValue = openValue;
-		this.closedValue = closedValue;
-	}
+    IModel<OunitSession> model;
+    Behavior modifier;
 
-	@Override
-	public void onComponentTag(Component component, ComponentTag tag) {
-		if (!isEnabled(component)) return;
-		
-		// FIXME: This shouldn't happen ....
-		if(model == null || model.getObject() == null) return;
-		
-		String value = (model.getObject().isClosed()) ? closedValue : openValue;
-		
-		if(value == null)
-			tag.getAttributes().remove(attribute);
-		else
-			tag.getAttributes().put(attribute, value);
-	}
+    @SuppressWarnings("FieldMayBeFinal")
+    private String attribute;
+    @SuppressWarnings("FieldMayBeFinal")
+    private String openValue;
+    @SuppressWarnings("FieldMayBeFinal")
+    private String closedValue;
+
+    public QuizStateAttributeModifier(IModel<OunitSession> model,
+            String attribute, String openValue, String closedValue) {
+
+        this.model = model;
+        this.attribute = attribute;
+        this.openValue = openValue;
+        this.closedValue = closedValue;
+    }
+
+    @Override
+    public void onComponentTag(Component component, ComponentTag tag) {
+        if (!isEnabled(component)) {
+            return;
+        }
+
+        // FIXME: This shouldn't happen ....
+        if (model == null || model.getObject() == null) {
+            return;
+        }
+
+        String value = (model.getObject().isClosed()) ? closedValue : openValue;
+
+        if (value == null) {
+            tag.getAttributes().remove(attribute);
+        } else {
+            tag.getAttributes().put(attribute, value);
+        }
+    }
 }

@@ -34,12 +34,13 @@ public class WelcomePage extends BasePage {
     private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
     private static final long serialVersionUID = 1L;
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public WelcomePage(PageParameters parameters) {
         super(parameters);
 
         log.debug("WelcomePage()");
 
-        mainForm.add(new HiddenField<String>("revision"));
+        mainForm.add(new HiddenField<>("revision"));
 
         mainForm.add(new Button("start") {
             private static final long serialVersionUID = 1L;

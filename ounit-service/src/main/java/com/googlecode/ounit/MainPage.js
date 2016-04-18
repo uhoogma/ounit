@@ -75,7 +75,7 @@ function createCodeEditor(area) {
         }
     }
 
-    if (typeof area.attributes["readonly"] != "undefined") {
+    if (typeof area.attributes["readonly"] !== "undefined") {
         options["readOnly"] = true;
     }
 
@@ -86,7 +86,7 @@ function doJQuery() {
 
     var was_error = false;
 
-    if (typeof jQuery == 'undefined') {
+    if (typeof jQuery === 'undefined') {
         window.setTimeout(doJQuery, 500);
         was_error = true;
         return;
@@ -133,12 +133,12 @@ function doJQuery() {
                     var url = this.href;
                     var tabId = null;
                     for (var prop in $tabs.urlMap) {
-                        if ($tabs.urlMap[prop] == url) {
+                        if ($tabs.urlMap[prop] === url) {
                             tabId = prop;
                             break;
                         }
                     }
-                    if (tabId != null) {
+                    if (tabId !== null) {
                         if (parseInt(tabId) >= 0)
                             tabId = parseInt(tabId);
                         $tabs.tabs("select", tabId);

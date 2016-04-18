@@ -18,19 +18,19 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import static com.googlecode.ounit.OunitConfig.*;
 
 public class DefaultQuestionFactory implements QuestionFactory {
-	
-	@Override
-	public OunitQuestion loadQuestion(String id, String version, String baseURL) {
-		if(baseURL == null || baseURL.replaceAll("[ \t\n]+", "").isEmpty())
-			baseURL = BASEURL;
 
-		// TODO: Detect appropriate SCM from baseURL.
-		return new GitQuestion(id, version, baseURL);
-	}
+    @Override
+    public OunitQuestion loadQuestion(String id, String version, String baseURL) {
+        if (baseURL == null || baseURL.replaceAll("[ \t\n]+", "").isEmpty()) {
+            baseURL = BASEURL;
+        }
+
+        // TODO: Detect appropriate SCM from baseURL.
+        return new GitQuestion(id, version, baseURL);
+    }
 }

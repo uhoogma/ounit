@@ -18,10 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 public interface QuestionFactory {
-	public abstract OunitQuestion loadQuestion(String id, String version,
-			String baseURL);
+
+    public abstract OunitQuestion loadQuestion(String id, String version,
+            String baseURL);
 }

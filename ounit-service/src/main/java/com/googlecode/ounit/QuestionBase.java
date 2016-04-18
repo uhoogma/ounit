@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import static com.googlecode.ounit.OunitConfig.MARKS_PROPERTY;
@@ -30,98 +29,101 @@ import java.util.Properties;
 import com.googlecode.ounit.opaque.QuestionInfo;
 
 public abstract class QuestionBase implements OunitQuestion {
-	protected String id;
-	protected String version;
-	protected String baseURL;
-	protected String revision;
-	protected QuestionInfo info;
-	protected File srcDir;
-	
-	public QuestionBase(String id, String version, String baseURL) {
-		this.id = id;
-		this.version = version;
-		this.baseURL = baseURL;
-		
-		assert id != null && !id.isEmpty() : "Missing ID";
-		assert version != null && !version.isEmpty() : "Missing version";
-		assert baseURL != null && !baseURL.isEmpty() : "Missing BaseURL";
-		
-		this.revision = findHeadRevision();
 
-		Properties qprops = OunitApplication.getModelProperties(getSrcDir());
-		int maxScore;
-		try {
-			maxScore = Integer.parseInt((String) qprops.get(MARKS_PROPERTY));
-		} catch (Exception e) {
-			maxScore = OunitSession.DEFAULT_MARKS;
-		}
-		
-		info = new QuestionInfo();		
-		info.setMaxScore(maxScore);
-		
-		/* Moodle currently does not display it, but we handle it anyway */
-		info.setTitle((String) qprops.get(TITLE_PROPERTY));
-	}
-	
-	@Override
-	public String getId() {
-		return id;
-	}
-	
-	@Override
-	public String getVersion() {
-		return version;
-	}
-	
-	@Override
-	public String getBaseUrl() {
-		return baseURL;
-	}
-	
-	@Override
-	public QuestionInfo getInfo() {
-		return info;
-	}
-	
-	/* (non-Javadoc)
+    protected String id;
+    protected String version;
+    protected String baseURL;
+    protected String revision;
+    protected QuestionInfo info;
+    protected File srcDir;
+
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public QuestionBase(String id, String version, String baseURL) {
+        this.id = id;
+        this.version = version;
+        this.baseURL = baseURL;
+
+        assert id != null && !id.isEmpty() : "Missing ID";
+        assert version != null && !version.isEmpty() : "Missing version";
+        assert baseURL != null && !baseURL.isEmpty() : "Missing BaseURL";
+
+        this.revision = findHeadRevision();
+
+        Properties qprops = OunitApplication.getModelProperties(getSrcDir());
+        int maxScore;
+        try {
+            maxScore = Integer.parseInt((String) qprops.get(MARKS_PROPERTY));
+        } catch (Exception e) {
+            maxScore = OunitSession.DEFAULT_MARKS;
+        }
+
+        info = new QuestionInfo();
+        info.setMaxScore(maxScore);
+
+        /* Moodle currently does not display it, but we handle it anyway */
+        info.setTitle((String) qprops.get(TITLE_PROPERTY));
+    }
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public String getVersion() {
+        return version;
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return baseURL;
+    }
+
+    @Override
+    public QuestionInfo getInfo() {
+        return info;
+    }
+
+    /* (non-Javadoc)
 	 * @see com.googlecode.ounit.OunitQuestion#getRevision()
-	 */
-	@Override
-	public String getRevision() {
-		return revision;
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.googlecode.ounit.OunitQuestion#setRevision(java.lang.String)
-	 */
-	@Override
-	public void setRevision(String revision) {
-		if (revision != null && !revision.equals(this.revision)) {
-			this.revision = revision;
-			srcDir = null;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see com.googlecode.ounit.OunitQuestion#getSrcDir()
-	 */
-	@Override
-	public File getSrcDir() {
-		if(srcDir == null)
-			fetchQuestion();
+     */
+    @Override
+    public String getRevision() {
+        return revision;
+    }
 
-		return srcDir;
-	}
-	
-	/**
-	 * Find latest revision for question in Database.
-	 * 
-	 * @return
-	 */
-	abstract protected String findHeadRevision();
-	
-	/**
-	 * Fetch question from Question Database.
-	 */
-	abstract protected void fetchQuestion();
+    /* (non-Javadoc)
+	 * @see com.googlecode.ounit.OunitQuestion#setRevision(java.lang.String)
+     */
+    @Override
+    public void setRevision(String revision) {
+        if (revision != null && !revision.equals(this.revision)) {
+            this.revision = revision;
+            srcDir = null;
+        }
+    }
+
+    /* (non-Javadoc)
+	 * @see com.googlecode.ounit.OunitQuestion#getSrcDir()
+     */
+    @Override
+    public File getSrcDir() {
+        if (srcDir == null) {
+            fetchQuestion();
+        }
+
+        return srcDir;
+    }
+
+    /**
+     * Find latest revision for question in Database.
+     *
+     * @return
+     */
+    abstract protected String findHeadRevision();
+
+    /**
+     * Fetch question from Question Database.
+     */
+    abstract protected void fetchQuestion();
 }

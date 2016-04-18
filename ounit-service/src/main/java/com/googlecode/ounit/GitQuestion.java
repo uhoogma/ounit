@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import static com.googlecode.ounit.OunitConfig.*;
@@ -31,135 +30,140 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryBuilder;
 
 public class GitQuestion extends QuestionBase {
-	private org.slf4j.Logger _log;
-	private org.slf4j.Logger getLog() {
-		if(_log == null)
-			_log = org.slf4j.LoggerFactory.getLogger(this.getClass());
-		return _log;
-	}
-	
-	static Map<String, Long> pullTimes = Collections.synchronizedMap(new HashMap<String, Long>());
-	File cloneDir;
-	
-	// TODO: Support username/password via
-	// 		 .setCredentialsProvider(credentialsProvider)
-	
-	/**
-	 * Load question from a GIT repository.
-	 * 
-	 * @param questionID
-	 * @param questionVersion
-	 * @param questionBaseURL
-	 * @throws IOException
-	 */
-	public GitQuestion(String id, String version, String baseURL) {
-		super(id, version, baseURL);
-		findRepo();
-	}
 
-	@Override
-	public String findHeadRevision() {
-		if(cloneDir == null)
-			findRepo();
+    private org.slf4j.Logger _log;
 
-		try {
-			Repository repo = Git.open(cloneDir).getRepository();
-			Ref ref = repo.getRef(version);
-			if(ref == null)
-				ref = repo.getRef(Constants.MASTER);
-			
-			return ref.getObjectId().name();			
-		} catch (IOException e) {
-			throw new RuntimeException("Unable to find HEAD revision", e);
-		}
-	}
+    private org.slf4j.Logger getLog() {
+        if (_log == null) {
+            _log = org.slf4j.LoggerFactory.getLogger(this.getClass());
+        }
+        return _log;
+    }
 
-	@Override
-	protected void fetchQuestion() {
-		File cacheDir = new File(WORKDIR, REPO_DIR);
-		srcDir = new File(cacheDir, id + "-" + revision);
-		
-		if(srcDir.exists()) {
-			getLog().debug("Question found in {}", srcDir);
-			return;
-		}
-		
-		try {
-			getLog().debug("Checking out revision {} from {} to {}",
-					new Object[] { revision, cloneDir, srcDir });
-			
-			Git git = Git.wrap(new RepositoryBuilder()
-				.setMustExist(true)
-				.setIndexFile(new File(srcDir, ".gitindex"))
-				.setGitDir(cloneDir)
-				.setWorkTree(srcDir)
-				.build());
+    static Map<String, Long> pullTimes = Collections.synchronizedMap(new HashMap<String, Long>());
+    File cloneDir;
 
-			git.checkout()
-				.setName(revision)
-				.call();
-		} catch(Exception e) {
-			getLog().error("Error checking out revision " + revision + " from "
-					+ cloneDir, e);
-			throw new RuntimeException("Failed to fetch question", e);
-		}
+    // TODO: Support username/password via
+    // 		 .setCredentialsProvider(credentialsProvider)
+    /**
+     * Load question from a GIT repository.
+     *
+     * @param questionID
+     * @param questionVersion
+     * @param questionBaseURL
+     */
+    public GitQuestion(String questionID, String questionVersion, String questionBaseURL) {
+        super(questionID, questionVersion, questionBaseURL);
+        findRepo();
+    }
 
-	}
-	
-	private void findRepo() {
-		File cacheDir = new File(WORKDIR, REPO_DIR);
-		cloneDir = new File(cacheDir, id + ".git");
-		if(!cloneDir.isDirectory()) {
-			cloneRepo();
-		} else {
-			// FIXME: Handle baseURL changes.
-			pull();
-		}
-	}
+    @Override
+    @SuppressWarnings("null")
+    public String findHeadRevision() {
+        if (cloneDir == null) {
+            findRepo();
+        }
 
-	private void cloneRepo() {
-		String url = baseURL + "/" + id;
-		
-		getLog().debug("Cloning {} to {}", new Object[] { id, cloneDir } );
-		try {
-			Git.cloneRepository()
-				.setBare(true)
-				.setDirectory(cloneDir)
-				.setTimeout(SCM_TIMEOUT)
-				.setURI(url)
-				.call();
-		} catch (Exception e) {
-			getLog().error("Failed to clone question from {} to {}", new Object[] { url, cloneDir });
-			deleteDirectory(cloneDir);
-			throw new RuntimeException("Failed to clone question repository", e);
-		}
-		pullTimes.put(id, System.currentTimeMillis());
-	}
-	
-	private void pull() {
-		Long pullTime = pullTimes.get(id);
-		long now = System.currentTimeMillis();
-		
-		if (pullTime != null && now - pullTime.longValue() < SCM_TTL * 1000) {
-			getLog().debug("Skipping update, already pulled {} ms ago", now - pullTime.longValue());
-			return;
-		}
-		
-		try {
-			getLog().debug("Pulling in {}", cloneDir);
-			Git.open(cloneDir).fetch()
-				.setTimeout(SCM_TIMEOUT)
-				.call();
-			pullTimes.put(id, System.currentTimeMillis());
-		} catch (Exception e) {
-			// Failing a pull is not to be considered fatal ...
-			getLog().error("Error while updating question " + id + "-" + version, e);
-		}
-	}
+        try {
+            Repository repo = Git.open(cloneDir).getRepository();
+            Ref ref = repo.getRef(version);
+            if (ref == null) {
+                ref = repo.getRef(Constants.MASTER);
+            }
+
+            return ref.getObjectId().name();
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to find HEAD revision", e);
+        }
+    }
+
+    @Override
+    protected void fetchQuestion() {
+        File cacheDir = new File(WORKDIR, REPO_DIR);
+        srcDir = new File(cacheDir, id + "-" + revision);
+
+        if (srcDir.exists()) {
+            getLog().debug("Question found in {}", srcDir);
+            return;
+        }
+
+        try {
+            getLog().debug("Checking out revision {} from {} to {}",
+                    new Object[]{revision, cloneDir, srcDir});
+
+            Git git = Git.wrap(new RepositoryBuilder()
+                    .setMustExist(true)
+                    .setIndexFile(new File(srcDir, ".gitindex"))
+                    .setGitDir(cloneDir)
+                    .setWorkTree(srcDir)
+                    .build());
+
+            git.checkout()
+                    .setName(revision)
+                    .call();
+        } catch (IOException | GitAPIException e) {
+            getLog().error("Error checking out revision " + revision + " from "
+                    + cloneDir, e);
+            throw new RuntimeException("Failed to fetch question", e);
+        }
+
+    }
+
+    private void findRepo() {
+        File cacheDir = new File(WORKDIR, REPO_DIR);
+        cloneDir = new File(cacheDir, id + ".git");
+        if (!cloneDir.isDirectory()) {
+            cloneRepo();
+        } else {
+            // FIXME: Handle baseURL changes.
+            pull();
+        }
+    }
+
+    private void cloneRepo() {
+        String url = baseURL + "/" + id;
+
+        getLog().debug("Cloning {} to {}", new Object[]{id, cloneDir});
+        try {
+            Git.cloneRepository()
+                    .setBare(true)
+                    .setDirectory(cloneDir)
+                    .setTimeout(SCM_TIMEOUT)
+                    .setURI(url)
+                    .call();
+        } catch (IllegalStateException | GitAPIException e) {
+            getLog().error("Failed to clone question from {} to {}", new Object[]{url, cloneDir});
+            deleteDirectory(cloneDir);
+            throw new RuntimeException("Failed to clone question repository", e);
+        }
+        pullTimes.put(id, System.currentTimeMillis());
+    }
+
+    private void pull() {
+        Long pullTime = pullTimes.get(id);
+        long now = System.currentTimeMillis();
+
+        if (pullTime != null && now - pullTime < SCM_TTL * 1000) {
+            getLog().debug("Skipping update, already pulled {} ms ago", now - pullTime);
+            return;
+        }
+
+        try {
+            getLog().debug("Pulling in {}", cloneDir);
+            Git.open(cloneDir).fetch()
+                    .setTimeout(SCM_TIMEOUT)
+                    .call();
+            pullTimes.put(id, System.currentTimeMillis());
+        } catch (IOException | GitAPIException e) {
+            // Failing a pull is not to be considered fatal ...
+            getLog().error("Error while updating question " + id + "-" + version, e);
+        }
+    }
 }

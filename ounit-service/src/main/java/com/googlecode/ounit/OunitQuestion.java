@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import java.io.File;
@@ -27,22 +26,20 @@ import org.apache.wicket.extensions.protocol.opaque.OpaqueQuestion;
 
 public interface OunitQuestion extends OpaqueQuestion {
 
-	public abstract String getRevision();
+    public abstract String getRevision();
 
-	/**
-	 * Switch to another question revision.
-	 * Please note that this will change the source
-	 * directory.
-	 * 
-	 * @param revision new revision string
-	 */
-	public abstract void setRevision(String revision);
+    /**
+     * Switch to another question revision. Please note that this will change
+     * the source directory.
+     *
+     * @param revision new revision string
+     */
+    public abstract void setRevision(String revision);
 
-	/**
-	 * Find a directory with question sources.
-	 * It may point to a cached version.
-	 *  
-	 * @return an object pointing to source directory
-	 */
-	public abstract File getSrcDir();
+    /**
+     * Find a directory with question sources. It may point to a cached version.
+     *
+     * @return an object pointing to source directory
+     */
+    public abstract File getSrcDir();
 }

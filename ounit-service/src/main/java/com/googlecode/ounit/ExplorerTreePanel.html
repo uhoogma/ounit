@@ -25,29 +25,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en" xml:lang="en"
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.5-strict.dtd">
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <title></title>
-</head>
-<body>
-  <wicket:panel>
-    <ul>
-      <wicket:container wicket:id="rows">
-        <li wicket:id="row">
-          <wicket:container wicket:id="listitem" />
-        </li>
-      </wicket:container>
-    </ul>
-    
-    <wicket:fragment wicket:id="branch">
-      <wicket:container wicket:id="label" />
-      <wicket:container wicket:id="nested" />
-    </wicket:fragment>
-    
-    <wicket:fragment wicket:id="leaf">
-      <a href="#" wicket:id="link" />
-    </wicket:fragment>
-    
-  </wicket:panel>
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title></title>
+    </head>
+    <body>
+        <wicket:panel>
+            <ul>
+                <wicket:container wicket:id="rows">
+                    <li wicket:id="row">
+                        <wicket:container wicket:id="listitem" />
+                    </li>
+                </wicket:container>
+            </ul>
+
+            <wicket:fragment wicket:id="branch">
+                <wicket:container wicket:id="label" />
+                <wicket:container wicket:id="nested" />
+            </wicket:fragment>
+
+            <wicket:fragment wicket:id="leaf">
+                <a href="#" wicket:id="link" />
+            </wicket:fragment>
+
+        </wicket:panel>
+    </body>
 </html>

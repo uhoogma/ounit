@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with OUnit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.googlecode.ounit;
 
 import org.apache.wicket.Component;
@@ -28,33 +27,38 @@ import org.apache.wicket.model.Model;
 
 /**
  * A link that points to an object in the same page.
- * 
+ *
  * @author anttix
  *
  */
 public class AnchorLink extends StatelessLink<Void> {
-	
-	public AnchorLink(final String id, final Component anchor) {
-		this(id, anchor, (IModel<?>)null);
-	}
-	
-	public AnchorLink(final String id, final Component anchor, final String label) {
-		this(id, anchor, Model.of(label));
-	}
-	
-	public AnchorLink(final String id, final Component anchor, final IModel<?> label) {
-		super(id);
-		
-		setAnchor(anchor);
-		if(label != null) {
-			setDefaultModel(label);
-			setBody(label);
-		}
-	}
-	
-	private static final long serialVersionUID = 1L;
-	@Override
-	public void onClick() { }
-	@Override
-	protected CharSequence getURL() { return ""; }
+
+    public AnchorLink(final String id, final Component anchor) {
+        this(id, anchor, (IModel<?>) null);
+    }
+
+    public AnchorLink(final String id, final Component anchor, final String label) {
+        this(id, anchor, Model.of(label));
+    }
+
+    public AnchorLink(final String id, final Component anchor, final IModel<?> label) {
+        super(id);
+
+        setAnchor(anchor);
+        if (label != null) {
+            setDefaultModel(label);
+            setBody(label);
+        }
+    }
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public void onClick() {
+    }
+
+    @Override
+    protected CharSequence getURL() {
+        return "";
+    }
 }
