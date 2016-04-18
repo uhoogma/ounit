@@ -42,14 +42,13 @@ public class OunitServlet extends CXFNonSpringServlet {
 
     @Override
     protected void loadBus(ServletConfig sc) {
-        /*
-		super.loadBus(sc);
-
-		  JaxWsServerFactoryBean factory = new JaxWsServerFactoryBean();
-		  factory.setBus(getBus());
-		  factory.setAddress("/some/path");
-		  factory.setServiceBean(obj);
-		  Server cxfServer = factory.create();*/
+        /**
+         * super.loadBus(sc);
+         *
+         * JaxWsServerFactoryBean factory = new JaxWsServerFactoryBean();
+         * factory.setBus(getBus()); factory.setAddress("/some/path");
+         * factory.setServiceBean(obj); Server cxfServer = factory.create();
+         */
 
         super.loadBus(sc);
 
