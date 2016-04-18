@@ -59,8 +59,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <!--update-->
-            <version>2.25.0</version>
+            <version>2.53.0</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
@@ -107,7 +106,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <!--update-->
-                    <version>2.5.1</version>
+                    <version>2.10</version>
                     <executions>
                         <execution>
                             <id>copy-dependencies</id>
