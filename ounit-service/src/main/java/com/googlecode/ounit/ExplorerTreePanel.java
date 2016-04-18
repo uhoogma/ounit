@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-//import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Fragment;
@@ -79,9 +78,10 @@ public class ExplorerTreePanel extends Panel {
             return;
         }
 
-        /*
-		 * If there is no Read Only nodes to display and the number of read-write nodes is
-		 * reasonable, there is no need to waste space on the project treeview.
+        /**
+         * If there is no Read Only nodes to display and the number of
+         * read-write nodes is reasonable, there is no need to waste space on
+         * the project treeview.
          */
         // FIXME: Shouldn't access session directly.
         //        better use a model property.

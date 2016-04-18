@@ -58,7 +58,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
 
     <build>
         <sourceDirectory>${basedir}/src</sourceDirectory>
-        <finalName>ounit-server-1.0-SNAPSHOT</finalName>
+        <finalName>ounit-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -67,7 +67,6 @@ If not, see <http://www.gnu.org/licenses/>. -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

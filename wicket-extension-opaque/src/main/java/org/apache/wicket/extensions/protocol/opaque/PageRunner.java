@@ -53,7 +53,6 @@ import org.apache.wicket.request.resource.caching.version.CachingResourceVersion
 import org.apache.wicket.request.resource.caching.version.IResourceVersion;
 import org.apache.wicket.request.resource.caching.version.MessageDigestResourceVersion;
 import org.apache.wicket.request.resource.caching.version.RequestCycleCachedResourceVersion;
-// import org.apache.wicket.settings.IRequestCycleSettings.RenderStrategy;
 import org.apache.wicket.util.lang.Args;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.apache.wicket.util.string.Strings;
@@ -63,7 +62,13 @@ import com.googlecode.ounit.opaque.ProcessReturn;
 import com.googlecode.ounit.opaque.Resource;
 import com.googlecode.ounit.opaque.ReturnBase;
 import com.googlecode.ounit.opaque.StartReturn;
+import java.io.UnsupportedEncodingException;
+import java.util.Locale;
+import java.util.Objects;
+import org.apache.wicket.core.util.lang.WicketObjects;
 import org.apache.wicket.settings.RequestCycleSettings;
+import org.apache.wicket.util.lang.Packages;
+import org.apache.wicket.util.resource.StringResourceStream;
 
 public class PageRunner {
 
@@ -104,6 +109,7 @@ public class PageRunner {
      *
      * @param app
      */
+    @SuppressWarnings("Convert2Lambda")
     private void configure(final Application app) {
         //final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PageRunner.class);
 
@@ -123,16 +129,16 @@ public class PageRunner {
             }
         });
 
-        /*
-		 * Expose Exceptions. We want OPAQUE client to get a proper SOAP
-		 * error instead of a garbled HTML output with a rendered exception
-		 * in it.
+        /**
+         * Expose Exceptions. We want OPAQUE client to get a proper SOAP error
+         * instead of a garbled HTML output with a rendered exception in it.
          */
         final IRequestCycleProvider rp = app.getRequestCycleProvider();
         app.setRequestCycleProvider(new IRequestCycleProvider() {
             private final IRequestCycleProvider delegate = rp;
 
             @Override
+            @SuppressWarnings("Convert2Lambda")
             public RequestCycle get(RequestCycleContext context) {
                 context.setExceptionMapper(new IExceptionMapper() {
                     @Override
@@ -151,19 +157,19 @@ public class PageRunner {
         /* Register output filters */
         app.getRequestCycleSettings().addResponseFilter(new InvalidMarkupFilter());
         app.getRequestCycleSettings().addResponseFilter(OpaqueResourceMapper.getFilter());
-        // TODO
         app.getRequestCycleSettings().setRenderStrategy(RequestCycleSettings.RenderStrategy.ONE_PASS_RENDER);
 
         /* Add our mapper between the app and rest of the bunch */
         app.setRootRequestMapper(new OpaqueResourceMapper(app.getRootRequestMapper()));
 
-        /*
-		 * Force MD5 digest based versions to be included in resource filenames
-		 * ({@see org.apache.wicket.settings.def.ResourceSettings}) This is
-		 * required to make sure resource changes are picked up and disk space
-		 * on the LMS side is used sparingly (all resources passed to the LMS
-		 * will be cached on it's local disk and as of 09/2011 Moodle has no
-		 * garbage collection so they stay there forever).
+        /**
+         * Force MD5 digest based versions to be included in resource filenames
+         *
+         * @see org.apache.wicket.settings.def.ResourceSettings}) This is
+         * required to make sure resource changes are picked up and disk space
+         * on the LMS side is used sparingly (all resources passed to the LMS
+         * will be cached on it's local disk and as of 09/2011 Moodle has no
+         * garbage collection so they stay there forever).
          */
         final IResourceVersion resourceVersion;
         final IResourceCachingStrategy resourceCachingStrategy;
@@ -217,19 +223,6 @@ public class PageRunner {
                 return null; // did not resolve to a wicket request
             }
 
-            /*
-            Url url = Url.parse(response.getPageURL());
-            if (url != null) {
-                List<String> str = url.getSegments();
-                if (str.size() > 0) {
-                    System.out.println("str.get(0)" + str.get(0));
-                    if (str.get(0).equals("./")) {
-                    }
-                }
-            }
-             */
-            System.out.println("request.getPageURL() " + request.toString());
-            System.out.println("response.getPageURL() " + response.toString());
             if (response.isRedirect()) {
                 System.out.println("response.isRedirect()");
                 Url nextUrl = Url.parse(response.getRedirectLocation());
@@ -284,28 +277,29 @@ public class PageRunner {
             // Render referenced resources
             // TODO: allow resources to reference more resources
             Map<String, Url> rm = r.getReferencedResources();
-            List<Resource> newResources = new ArrayList<Resource>();
+            List<Resource> newResources = new ArrayList<>();
 
             for (String name : rm.keySet()) {
-                System.out.println("name on: " + name);
-
-                System.out.println("andle dynamically generated resources");
-                body = Strings.replaceAll(body, "<link rel=\"stylesheet\" type=\"text/css\" href=\"./", "<link rel=\"stylesheet\" type=\"text/css\" href=\"");
-                body = Strings.replaceAll(body, "<script type=\"text/javascript\" src=\"./", "<script type=\"text/javascript\" src=\"");
+                /**
+                 * Urmas Hoogma - Ugly hack to get rid of './' at the beginning
+                 * of resource url-s
+                 */
+                body = Strings.replaceAll(body, "<link rel=\"stylesheet\" type=\"text/css\" href=\"./",
+                        "<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+                body = Strings.replaceAll(body, "<script type=\"text/javascript\" src=\"./",
+                        "<script type=\"text/javascript\" src=\"");
 
                 if (session.getCachedResources().contains(name)) {
                     continue;
                 }
-                System.out.println("name on: after continue " + name);
 
                 String sessionId = request.getSessionId();
 
                 OpaqueRequest resourceRequest = new OpaqueRequest(
                         sessionId, rm.get(name));
 
-                System.out.println("resourceRequest" + resourceRequest.toString());
                 cycle = processRequest(resourceRequest);
-                System.out.println("cycle " + cycle);
+
                 if (cycle == null) // FIXME: Should we throw here?
                 {
                     continue;
@@ -336,9 +330,6 @@ public class PageRunner {
                 session.dirty();
             }
 
-            for (String name : rm.keySet()) {
-                System.out.println("name after " + name);
-            }
             rv.setXHTML(body.toString());
             rv.setHead(head.toString());
 
@@ -357,7 +348,6 @@ public class PageRunner {
 
     private String decorateFileName(final String fileName, final byte[] data) {
         Args.notNull(fileName, "fileName");
-
         ResourceUrl url = new ResourceUrl(fileName, null);
         IResourceCachingStrategy rc
                 = new FilenameWithVersionResourceCachingStrategy(
@@ -365,34 +355,136 @@ public class PageRunner {
 
         rc.decorateUrl(url, new IStaticCacheableResource() {
             private static final long serialVersionUID = 1L;
+            // https://fossies.org/linux/www/apache-wicket-7.2.0.tar.gz/apache-wicket-7.2.0/wicket-core/src/main/java/org/apache/wicket/request/resource/PackageResource.java
+            boolean cachingEnabled = true;
+            String scopeName;
+            Locale locale;
+            String style;
+            String variation;
+            String absolutePath = Packages.absolutePath(getScope(), getScope().getName());
 
             @Override
             public void respond(Attributes attributes) {
             }
 
-            /*
-            @Override
-            public IResourceStream getCacheableResourceStream() {
-                return new ByteArrayResourceStream(data);
-            }
-             */
             @Override
             public Serializable getCacheKey() {
+                Class<?> scope = getScope();
+                String currentStyle = getCurrentStyle();
+                Locale currentLocale = getCurrentLocale();
+
+                IResourceStream packageResource = Application.get()
+                        .getResourceSettings()
+                        .getResourceStreamLocator()
+                        .locate(scope, absolutePath, currentStyle, variation, currentLocale, null, false);
+
+                // if resource stream can not be found do not cache
+                if (packageResource != null) {
+                    return new CacheKey(scopeName, absolutePath, currentLocale, currentStyle, variation);
+                }
+
                 return null;
+            }
+
+            private String getCurrentStyle() {
+                if (style == null && Session.exists()) {
+                    return Session.get().getStyle();
+                }
+                return style;
+            }
+
+            private Locale getCurrentLocale() {
+                if (locale == null && Session.exists()) {
+                    return Session.get().getLocale();
+                }
+                return locale;
+            }
+
+            /**
+             * Gets the scoping class, used for class loading and to determine
+             * the package.
+             *
+             * @return the scoping class
+             */
+            public final Class<?> getScope() {
+                return WicketObjects.resolveClass(scopeName);
             }
 
             @Override
             public boolean isCachingEnabled() {
-                throw new UnsupportedOperationException("isCachingEnabled Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+                return cachingEnabled;
             }
 
             @Override
             public IResourceStream getResourceStream() {
-                throw new UnsupportedOperationException("getResourceStream Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                // http://www.programcreek.com/java-api-examples/index.php?api=org.apache.wicket.util.resource.IResourceStream
+                try {
+                    return new StringResourceStream(new String(data, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    throw new IllegalArgumentException(e);
+                }
             }
         });
 
-        System.out.println("string ja filemanm" + url.toString() + " " + url.getFileName());
         return url.getFileName();
     }
+
+    private static class CacheKey implements Serializable {
+
+        private final String scopeName;
+        private final String path;
+        private final Locale locale;
+        private final String style;
+        private final String variation;
+
+        public CacheKey(String scopeName, String path, Locale locale, String style, String variation) {
+            this.scopeName = scopeName;
+            this.path = path;
+            this.locale = locale;
+            this.style = style;
+            this.variation = variation;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof CacheKey)) {
+                return false;
+            }
+
+            CacheKey cacheKey = (CacheKey) o;
+
+            return Objects.equals(locale, cacheKey.locale) && Objects.equals(path, cacheKey.path)
+                    && Objects.equals(scopeName, cacheKey.scopeName)
+                    && Objects.equals(style, cacheKey.style)
+                    && Objects.equals(variation, cacheKey.variation);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scopeName.hashCode();
+            result = 31 * result + path.hashCode();
+            result = 31 * result + (locale != null ? locale.hashCode() : 0);
+            result = 31 * result + (style != null ? style.hashCode() : 0);
+            result = 31 * result + (variation != null ? variation.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("CacheKey");
+            sb.append("{scopeName='").append(scopeName).append('\'');
+            sb.append(", path='").append(path).append('\'');
+            sb.append(", locale=").append(locale);
+            sb.append(", style='").append(style).append('\'');
+            sb.append(", variation='").append(variation).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
+    }
+
 }

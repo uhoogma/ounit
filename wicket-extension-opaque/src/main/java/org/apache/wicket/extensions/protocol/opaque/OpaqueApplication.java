@@ -63,7 +63,6 @@ public abstract class OpaqueApplication extends WebApplication {
     @Override
     protected void init() {
         super.init();
-        setHeaderResponseDecorator(new JavaScriptToBucketResponseDecorator("footer-container"));
 
         if (sessionStore != null) {
             /* Set session store provider */
@@ -74,25 +73,6 @@ public abstract class OpaqueApplication extends WebApplication {
                 }
             });
         }
-    }
-
-    /**
-     * Decorates an original IHeaderResponse and renders all javascript items
-     * (JavaScriptHeaderItem), to a specific container in the page.
-     */
-    static class JavaScriptToBucketResponseDecorator implements IHeaderResponseDecorator {
-
-        private String bucketName;
-
-        public JavaScriptToBucketResponseDecorator(String bucketName) {
-            this.bucketName = bucketName;
-        }
-
-        @Override
-        public IHeaderResponse decorate(IHeaderResponse response) {
-            return new JavaScriptFilteredIntoFooterHeaderResponse(response, bucketName);
-        }
-
     }
 
     @Override

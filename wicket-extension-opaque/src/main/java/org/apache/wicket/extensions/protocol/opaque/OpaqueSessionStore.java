@@ -37,9 +37,9 @@ import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.util.lang.Args;
 
 public class OpaqueSessionStore implements ISessionStore {
-    //private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
-    private final Set<UnboundListener> unboundListeners = new CopyOnWriteArraySet<UnboundListener>();
+    private final Set<UnboundListener> unboundListeners = new CopyOnWriteArraySet<>();
+    private final Set<BindListener> bindListeners = new CopyOnWriteArraySet<>();
 
     final Map<String, Map<String, Serializable>> attributes = Collections
             .synchronizedMap(new HashMap<String, Map<String, Serializable>>());
@@ -68,7 +68,7 @@ public class OpaqueSessionStore implements ISessionStore {
 
     @Override
     public List<String> getAttributeNames(Request request) {
-        return new ArrayList<String>(getSessionMap(request).keySet());
+        return new ArrayList<>(getSessionMap(request).keySet());
     }
 
     @Override
@@ -86,9 +86,9 @@ public class OpaqueSessionStore implements ISessionStore {
         String id = getSessionId(request, false);
         attributes.remove(id);
 
-        for (UnboundListener l : unboundListeners) {
+        unboundListeners.stream().forEach((l) -> {
             l.sessionUnbound(id);
-        }
+        });
     }
 
     @Override
@@ -113,7 +113,11 @@ public class OpaqueSessionStore implements ISessionStore {
         String id = getSessionId(request, false);
         Session rv = sessions.get(id);
         OpaqueRequest rq = (OpaqueRequest) request;
-        if (rq.callType == OpaqueRequest.CallType.PROCESS && rv == null) /* LMS should now request a new question session and replay all user responses */ {
+        /**
+         * LMS should now request a new question session and replay all user
+         * responses
+         */
+        if (rq.callType == OpaqueRequest.CallType.PROCESS && rv == null) {
             throw new WicketRuntimeException("Stale OPAQUE session!");
         }
 
@@ -154,16 +158,16 @@ public class OpaqueSessionStore implements ISessionStore {
 
     @Override
     public void registerBindListener(BindListener listener) {
-        throw new UnsupportedOperationException("registerBindListener Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bindListeners.add(listener);
     }
 
     @Override
     public void unregisterBindListener(BindListener listener) {
-        throw new UnsupportedOperationException("unregisterBindListener Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        bindListeners.remove(listener);
     }
 
     @Override
     public Set<BindListener> getBindListeners() {
-        throw new UnsupportedOperationException("getBindListeners Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Collections.unmodifiableSet(bindListeners);
     }
 }

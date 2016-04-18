@@ -67,10 +67,12 @@ public class OpaqueResourceMapper implements IRequestMapper {
         this.delegate = delegate;
     }
 
+    @Override
     public int getCompatibilityScore(Request request) {
         return delegate.getCompatibilityScore(request);
     }
 
+    @Override
     public Url mapHandler(IRequestHandler requestHandler) {
         Url url = delegate.mapHandler(requestHandler);
 
@@ -89,13 +91,14 @@ public class OpaqueResourceMapper implements IRequestMapper {
         OpaqueResponse response = (OpaqueResponse) requestCycle
                 .getOriginalResponse();
 
-        /* This is a marvelous piece of ugly hackery!
-		 * OPAQUE uses %%RESOURCES%% as a resource prefix. Of-course the {@link Url}
-		 * class will escape the %-s and guess what? It's final so it's impossible to override
-		 * that behaviour! So we add a syntactically correct placeholder here and then replace it
-		 * later with an output filter. Grr ......
-		 *
-		 * FIXME: Maybe there IS a way to combat this nonsense!
+        /**
+         * This is a marvelous piece of ugly hackery! OPAQUE uses %%RESOURCES%%
+         * as a resource prefix. Of-course the {@link Url} class will escape the
+         * %-s and guess what? It's final so it's impossible to override that
+         * behaviour! So we add a syntactically correct placeholder here and
+         * then replace it later with an output filter. Grr ......
+         *
+         * FIXME: Maybe there IS a way to combat this nonsense!
          */
         if (url.toString().startsWith(PLACEHOLDER_HACK)) // Already rewritten
         {
@@ -140,15 +143,15 @@ public class OpaqueResourceMapper implements IRequestMapper {
             IResource resource = resourceReference.getResource();
 
             if (resource instanceof IVersionedResource) {
-                /*
-				 * Special "versioned" resources have their checksum (aka
-				 * version) embedded into the "versioned" filename.
+                /**
+                 * Special "versioned" resources have their checksum (aka
+                 * version) embedded into the "versioned" filename.
                  */
                 name = ((IVersionedResource) resource).getVersionedName();
             } else if (resource instanceof IStaticCacheableResource) {
-                /*
-				 * Cacheable resources have their checksum (aka version) already
-				 * embedded into the URL. Therefore it is safe to use it as is.
+                /**
+                 * Cacheable resources have their checksum (aka version) already
+                 * embedded into the URL. Therefore it is safe to use it as is.
                  */
                 List<String> segments = url.getSegments();
                 name = segments.get(segments.size() - 1);
@@ -173,13 +176,16 @@ public class OpaqueResourceMapper implements IRequestMapper {
         return url;
     }
 
+    @Override
     public IRequestHandler mapRequest(Request request) {
         return delegate.mapRequest(request);
     }
 
+    @SuppressWarnings("Convert2Lambda")
     public static IResponseFilter getFilter() {
         return new IResponseFilter() {
 
+            @Override
             public AppendingStringBuffer filter(
                     AppendingStringBuffer responseBuffer) {
                 int i = 0;

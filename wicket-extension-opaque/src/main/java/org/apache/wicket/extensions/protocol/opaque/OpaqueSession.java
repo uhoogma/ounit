@@ -44,9 +44,13 @@ public class OpaqueSession extends WebSession {
     protected double score = 0;
     protected boolean closed;
 
-    // TODO: This has a potential to consume up a lot of memory so it's not enabled
-    // until the real need surfaces.
-    //LinkedList<PageParameters> history = new LinkedList<PageParameters>();
+    /**
+     * TODO: This has a potential to consume up a lot of memory so it's not
+     * enabled until the real need surfaces. LinkedList<PageParameters> history
+     * = new LinkedList<PageParameters>();
+     *
+     * @param request
+     */
     public OpaqueSession(Request request) {
         super(request);
 
@@ -61,7 +65,7 @@ public class OpaqueSession extends WebSession {
 
             this.question = rq.getQuestion();
 
-            cachedResources = new ArrayList<String>(rq.getCachedResources());
+            cachedResources = new ArrayList<>(rq.getCachedResources());
 
             bind(); // Make sure session ID is generated!
         } else {
@@ -78,8 +82,7 @@ public class OpaqueSession extends WebSession {
     }
 
     public List<String> getCachedResources() {
-        return // new ArrayList<String>();//
-                Collections.unmodifiableList(cachedResources);
+        return Collections.unmodifiableList(cachedResources);
     }
 
     void setCachedResources(List<String> cachedResources) {
@@ -88,7 +91,6 @@ public class OpaqueSession extends WebSession {
     }
 
     void addCachedResource(String resource) {
-        System.out.println("ressurss on: " + resource);
         this.cachedResources.add(resource);
         dirty();
     }
@@ -123,7 +125,6 @@ public class OpaqueSession extends WebSession {
     public Results getResults() throws OpaqueException {
         Results results = new Results();
         results.addScore(getMarks(), Results.ATTEMPTS_UNSET);
-        results.appendActionSummary("Siia tuleb plagiaadihinnang");
         return results;
     }
 

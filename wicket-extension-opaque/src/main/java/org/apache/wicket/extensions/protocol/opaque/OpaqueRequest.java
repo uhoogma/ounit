@@ -59,6 +59,7 @@ public class OpaqueRequest extends WebRequest {
         this.url = url;
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public OpaqueRequest(OpaqueQuestion question, String[] initialParamNames,
             String[] initialParamValues, String[] cachedResources) {
 
@@ -72,6 +73,7 @@ public class OpaqueRequest extends WebRequest {
         setUrl("");
     }
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public OpaqueRequest(String sessionId, String[] names, String[] values) {
         Args.notEmpty(sessionId, "sessionId");
 
@@ -109,8 +111,6 @@ public class OpaqueRequest extends WebRequest {
                 pageUrl = pageUrl2;
             }
             if (names[i].equals(PAGE_PARAMETER_NAME)) {
-
-                // pageUrl = pageUrl2;
                 // FIXME: This is a seriously ugly temporary hack!
                 if (!pageUrl.startsWith("?") && !pageUrl.startsWith("wicket/")) {
                     if (pageUrl.startsWith("page?")) {

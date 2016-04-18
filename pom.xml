@@ -108,7 +108,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                     <configuration>
                         <webAppSourceDirectory>${project.basedir}/ounit-server/target</webAppSourceDirectory>
                         <classesDirectory>${project.basedir}/ounit-server/target/classes</classesDirectory>
-                        <war>${project.basedir}/ounit-server/target/ounit-server-1.0-SNAPSHOT.war</war>
+                        <war>${project.basedir}/ounit-server/target/ounit-server</war>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -118,7 +118,7 @@ If not, see <http://www.gnu.org/licenses/>. -->
                     <configuration>
                         <webAppSourceDirectory>${project.basedir}/ounit-server/target</webAppSourceDirectory>
                         <classesDirectory>${project.basedir}/ounit-server/target/classes</classesDirectory>
-                        <war>${project.basedir}/ounit-server/target/ounit-server-1.0-SNAPSHOT.war</war>
+                        <war>${project.basedir}/ounit-server/target/ounit-server</war>
                     </configuration>
                 </plugin>
             </plugins>

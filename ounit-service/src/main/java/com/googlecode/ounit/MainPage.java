@@ -49,8 +49,7 @@ public class MainPage extends BasePage {
     private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
     private static final long serialVersionUID = 1L;
 
-    // FIXME: This is a hack that should go away as soon as sessions
-    //        start working properly
+    // FIXME: This is a hack that should go away as soon as sessions start working properly
     boolean redirected = false;
 
     public MainPage(PageParameters parameters) {
@@ -88,9 +87,9 @@ public class MainPage extends BasePage {
 
         }.add(new AnchorLink("resultslink", results)));
 
-        /*
-		 * Generate TextAreas first, because we need editor objects as anchors
-		 * for the links
+        /**
+         * Generate TextAreas first, because we need editor objects as anchors
+         * for the links
          */
         ListView<ProjectTreeNode> lv = new ListView<ProjectTreeNode>("editors") {
             private static final long serialVersionUID = 1L;
@@ -116,8 +115,8 @@ public class MainPage extends BasePage {
         //        http://osdir.com/ml/users-wicket.apache.org/2009-02/msg00925.html
         lv.internalPrepareForRender(false);
 
-        /*
-		 * Populate tab header links
+        /**
+         * Populate tab header links
          */
         quizPanel.add(new ListView<ProjectTreeNode>("editorcaptions") {
             private static final long serialVersionUID = 1L;
@@ -170,9 +169,9 @@ public class MainPage extends BasePage {
                     if (attempt >= maxAttempts) {
                         sess.setClosed(true);
                     }
-                    /*
-					 * Skip build if out of attempts. This is a sanity check, it
-					 * shouldn't happen under normal circumstances
+                    /**
+                     * Skip build if out of attempts. This is a sanity check, it
+                     * shouldn't happen under normal circumstances
                      */
                     if (attempt > maxAttempts) {
                         return;
@@ -216,19 +215,14 @@ public class MainPage extends BasePage {
 
         response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(MainPage.class, "jquery/jquery-ui.min.js")));// 1.8
         response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(MainPage.class, "codemirror/codemirror-compressed.js")));
-        /*
-		 * FIXME: Add images and refecence them somehow so we can use these files directly
-		 *        not from google API-s
-		 *
-		response.renderCSSReference(new PackageResourceReference(
-				MainPage.class, "jquery/jquery-ui.css")); // 1.8
+        /**
+         * FIXME: Add images and refecence them somehow so we can use these
+         * files directly not from google API-s
+         *
+         * response.renderCSSReference(new PackageResourceReference(
+         * MainPage.class, "jquery/jquery-ui.css")); // 1.8
          */
-        // response.render(CssHeaderItem.forReference(new CssResourceReference(MainPage.class, "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css")));
         response.render(CssHeaderItem.forUrl("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css"));
-
-        // response.render(CssHeaderItem.forReference(new CssResourceReference(MainPage.class, "jquery/jquery-ui.css")));
-        //response.renderCSSReference("//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css");
-        // response.render(JavaScriptHeaderItem.forScript("(function(){$(\"#ou-tabpanel\").tabs();})(jQuery);", "tabs"));
         response.render(CssHeaderItem.forReference(new CssResourceReference(MainPage.class, "codemirror/codemirror.css")));
         response.render(CssHeaderItem.forReference(new CssResourceReference(MainPage.class, "codemirror/codemirror-allmodes.css")));
         response.render(JavaScriptHeaderItem.forReference(new JavaScriptResourceReference(MainPage.class, "MainPage.js")));

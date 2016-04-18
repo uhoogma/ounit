@@ -41,6 +41,7 @@ import com.googlecode.ounit.executor.OunitExecutor;
 import com.googlecode.ounit.executor.OunitResult;
 import com.googlecode.ounit.executor.OunitTask;
 import com.googlecode.ounit.opaque.OpaqueException;
+import java.util.concurrent.ExecutionException;
 
 public class OunitApplication extends OpaqueApplication {
 
@@ -92,6 +93,7 @@ public class OunitApplication extends OpaqueApplication {
         return (OunitApplication) app;
     }
 
+    @SuppressWarnings("SleepWhileInLoop")
     public static OunitResult waitForTask(OunitTask task)
             throws RuntimeException {
         try {
@@ -99,7 +101,7 @@ public class OunitApplication extends OpaqueApplication {
                 Thread.sleep(200);
             }
             return task.get();
-        } catch (Exception e) {
+        } catch (InterruptedException | ExecutionException e) {
             //slog.warn("Failed task", e);
             throw new RuntimeException((e.getCause() == null) ? e : e.getCause());
         }

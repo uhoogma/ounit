@@ -38,11 +38,10 @@ public class OpaqueResponse extends WebResponse {
     String mimeType;
     String redirectLocation = null;
 
-    // private final WebResponse originalResponse;
     private ByteArrayOutputStream byteStream;
     private StringWriter stringWriter;
 
-    private Map<String, Url> referencedResources = new HashMap<String, Url>();
+    private Map<String, Url> referencedResources = new HashMap<>();
     private StringBuilder css = new StringBuilder();
     private StringBuilder head = new StringBuilder();
     private String pageURL;
@@ -51,7 +50,6 @@ public class OpaqueResponse extends WebResponse {
     OpaqueResponse() {
         stringWriter = new StringWriter();
         byteStream = new ByteArrayOutputStream();
-        // this.originalResponse = new WebResponse();
     }
 
     public String getContentType() {
@@ -77,8 +75,6 @@ public class OpaqueResponse extends WebResponse {
     }
 
     /**
-     *
-     *
      * @return redirected location
      */
     public String getRedirectLocation() {
@@ -86,9 +82,6 @@ public class OpaqueResponse extends WebResponse {
     }
 
     public Map<String, Url> getReferencedResources() {
-        for (Map.Entry<String, Url> entry : referencedResources.entrySet()) {
-            System.out.println(entry.getKey() + " kvp " + entry.getValue().toString());
-        }
         return referencedResources;
     }
 
@@ -98,7 +91,6 @@ public class OpaqueResponse extends WebResponse {
 
     public void addReferencedResource(String name, Url url) {
         if (!referencedResources.containsKey(name)) {
-            System.out.println("ureferencedResources rl on: " + url.toString());
             referencedResources.put(name, url);
         }
     }
@@ -213,18 +205,15 @@ public class OpaqueResponse extends WebResponse {
     @Override
     public String encodeURL(CharSequence url) {
         if (url.subSequence(0, 2).equals("./")) {
-            System.out.println("url inside on: " + url.subSequence(2, url.length()).toString());
             return url.subSequence(2, url.length()).toString();
-
         }
-
         return url.toString();
     }
 
     @Override
     public Object getContainerResponse() {
-        https://github.com/apache/wicket/blob/master/wicket-core/src/main/java/org/apache/wicket/protocol/http/HeaderBufferingWebResponse.java
-        return null;
+        // https://github.com/apache/wicket/blob/master/wicket-core/src/main/java/org/apache/wicket/protocol/http/HeaderBufferingWebResponse.java
+        return this.getContainerResponse();
     }
 
     @Override

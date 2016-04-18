@@ -23,7 +23,6 @@ package org.apache.wicket.extensions.protocol.opaque;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.head.filter.HeaderResponseContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.HiddenField;
@@ -34,10 +33,10 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 public abstract class OpaquePage extends WebPage {
 
     private static final long serialVersionUID = 1L;
-    //private final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(this.getClass());
 
     protected Form<?> mainForm;
 
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public OpaquePage(final PageParameters parameters) {
         super(parameters);
         String kala = "";
@@ -52,6 +51,7 @@ public abstract class OpaquePage extends WebPage {
                 getOpaqueResponse().setPageURL(url);
             }
 
+            @Override
             protected void onSubmit() {
                 onMainFormSubmit();
             }
@@ -59,11 +59,13 @@ public abstract class OpaquePage extends WebPage {
         super.add(mainForm);
         mainForm.setRenderBodyOnly(true);
 
-        HiddenField<String> wicketpage = new HiddenField<String>("wicketpage", Model.of(kala));
+        HiddenField<String> wicketpage = new HiddenField<>("wicketpage", Model.of(kala));
         mainForm.add(wicketpage);
 
-        /* We specifically do not use a model here, because it's easier to implement with
-    	 * a behaviour. */
+        /**
+         * We specifically do not use a model here, because it's easier to
+         * implement with a behaviour.
+         */
         // FIXME: This should be added by a PageManager or something
         //        so we do not depend on OpaqueResponse from this class
         wicketpage.add(new Behavior() {
