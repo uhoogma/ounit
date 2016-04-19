@@ -69,6 +69,7 @@ import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.classworlds.ClassWorld;
+import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.sonatype.aether.transfer.TransferListener;
 
@@ -117,13 +118,16 @@ public class MavenRunner {
      */
     protected void initialize() throws PlexusContainerException,
             ComponentLookupException, IOException {
-
         logger.setThreshold(logLevel);
 
         if (world == null) {
             world = new ClassWorld("plexus.core", Thread.currentThread().getContextClassLoader());
         }
+
+        ClassRealm classRealm = new ClassRealm(world, "maven", Thread.currentThread().getContextClassLoader());
+
         ContainerConfiguration cc = new DefaultContainerConfiguration()
+                .setRealm(classRealm)
                 .setClassWorld(world)
                 .setName("maven");
         container = new DefaultPlexusContainer(cc);

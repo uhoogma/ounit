@@ -78,8 +78,12 @@ If not, see <http://www.gnu.org/licenses/>. -->
 
     <dependencies>
 
-        <!-- <dependency> <groupId>${project.parent.groupId}</groupId> <artifactId>ounit-common</artifactId>
-        <version>${project.parent.version}</version> </dependency> -->
+        <!-- <dependency> <groupId>${project.parent.groupId}</groupId> <artifactId>ounit-common</artifactId-->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.maven</groupId>

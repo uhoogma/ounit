@@ -218,10 +218,6 @@ public class OpaqueResponse extends WebResponse {
 
     @Override
     public void write(byte[] array, int offset, int length) {
-        try {
-            byteStream.write(array);
-        } catch (IOException e) {
-            throw new WicketRuntimeException(e);
-        }
+        byteStream.write(array, offset, length);
     }
 }

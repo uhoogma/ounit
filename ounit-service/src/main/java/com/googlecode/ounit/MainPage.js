@@ -20,7 +20,7 @@
  */
 
 function createCodeEditor(area) {
-    if (CodeMirror == undefined)
+    if (CodeMirror === undefined)
         return; // Degrade gracefully if CM is not available
 
     /* Map supported mime types from http://codemirror.net/ to file extensions */
