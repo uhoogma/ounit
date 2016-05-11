@@ -22,7 +22,6 @@ If not, see <http://www.gnu.org/licenses/>. -->
     <packaging>pom</packaging>
     <url>http://ounit.googlecode.com</url>
     <name>OUnit</name>
-    <!-- testing actual -->
     <licenses>
         <license>
             <name>GNU General Public License, Version 3</name>
