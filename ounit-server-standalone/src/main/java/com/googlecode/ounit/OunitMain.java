@@ -30,7 +30,7 @@ public class OunitMain {
     public static void main(String[] args) {
 
         try {
-            System.setProperty("java.util.logging.config.file", "/home/urmas/tmp/logging.properties");
+            System.setProperty("java.util.logging.config.file", "/opt/ounit/conf/logging.properties");
             LogManager.getLogManager().readConfiguration();
         } catch (IOException | SecurityException e) {
             e.printStackTrace();

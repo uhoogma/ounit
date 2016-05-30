@@ -86,7 +86,7 @@
                     <id>anttix.org</id>
                     <name>anttix.org snapshots</name>
                     <url>
-                        http://enos.itcollege.ee/~uhoogma/repo
+                        http://autotest.itcollege.ee/repo
                     </url>
                 </repository>
             </repositories>
@@ -96,7 +96,7 @@
                     <id>anttix.org</id>
                     <name>anttix.org snapshots</name>
                     <url>
-                        http://enos.itcollege.ee/~uhoogma/repo
+                        http://autotest.itcollege.ee/repo
                     </url>
                 </pluginRepository>
             </pluginRepositories>
