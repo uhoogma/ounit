@@ -28,6 +28,8 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 
+import com.googlecode.ounit.interceptors.OutgoingInterceptor;
+
 /**
  * A servlet to publish the service without any of the "spring stuff"
  * http://cxf.apache.org/docs/servlet-transport.html
@@ -55,6 +57,10 @@ public class OunitServlet extends CXFNonSpringServlet {
         super.loadBus(sc);
 
         Bus bus = this.getBus();
+
+        OutgoingInterceptor outgoingInterceptor = new OutgoingInterceptor();
+        bus.getOutInterceptors().add(outgoingInterceptor);
+
         BusFactory.setDefaultBus(bus);
         Endpoint.publish("/OunitService", new OunitService());
     }
