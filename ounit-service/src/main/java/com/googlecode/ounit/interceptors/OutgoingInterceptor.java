@@ -29,7 +29,7 @@ import org.apache.cxf.message.Message;
 /**
  * @author Urmas Hoogma
  * @see
- * <a href="http://stackoverflow.com/posts/11053289/">http://stackoverflow.com/posts/11053289/</a>
+ * <a href="http://stackoverflow.com/a/11053289/">http://stackoverflow.com/a/11053289/</a>
  */
 public class OutgoingInterceptor extends AbstractSoapInterceptor {
 
