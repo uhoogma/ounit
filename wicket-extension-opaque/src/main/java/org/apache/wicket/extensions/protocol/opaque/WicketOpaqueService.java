@@ -33,6 +33,8 @@ import com.googlecode.ounit.opaque.OpaqueService;
 import com.googlecode.ounit.opaque.ProcessReturn;
 import com.googlecode.ounit.opaque.QuestionInfo;
 import com.googlecode.ounit.opaque.StartReturn;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wicket based Opaque service abstraction.
@@ -63,10 +65,14 @@ public abstract class WicketOpaqueService implements OpaqueService {
 
     protected OpaqueApplication app;
     protected PageRunner renderer;
+    public static Map<String, Boolean> staleSessions;
 
     public WicketOpaqueService(OpaqueApplication app) {
         this.app = app;
         renderer = new PageRunner(app);
+        if (staleSessions == null) {
+            staleSessions = new HashMap<>();
+        }
     }
 
     /**
@@ -167,15 +173,15 @@ public abstract class WicketOpaqueService implements OpaqueService {
         if (questionSession == null) {
             throw new OpaqueException("questionSession must be present");
         }
+        if (names == null) {
+            throw new OpaqueException("Parameter names array must be initialized");
+        }
+        if (values == null) {
+            throw new OpaqueException("Parameter values array must be initialized");
+        }
 
         ProcessReturn rv = new ProcessReturn();
-        /*
-        for (int i = 0; i < names.length; i++) {
-            if (names[i].equals("questiondiv:editors:0:editorarea")) {
-                values[i] = insertMissingGenericParameters(values[i]); // too raw for production
-            }
-        }
-         */
+
         OpaqueRequest request = new OpaqueRequest(questionSession, names,
                 values);
 

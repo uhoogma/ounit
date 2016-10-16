@@ -109,6 +109,16 @@ public class OpaqueSession extends WebSession {
         dirty();
     }
 
+    private String sessionId;
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     /**
      * Build an OPAQUE results object from the session data. Override this
      * method in your own session if you wish to pass more details back to the
@@ -120,9 +130,16 @@ public class OpaqueSession extends WebSession {
      */
     public Results getResults() throws OpaqueException {
         Results results = new Results();
-        results.addScore(getMarks(), Results.ATTEMPTS_UNSET);
-        results.appendActionSummary("Siia tuleb plagiaadihinnang");
-        return results;
+        if (WicketOpaqueService.staleSessions.get(getId()) == true) {
+            setSessionId(getId());
+            results.setAnswerLine("Too late answer line");
+            results.setActionSummary("Too late actionsummary");
+            results.setQuestionLine("Too late question line");
+            return results;
+        } else {
+            results.addScore(getMarks(), Results.ATTEMPTS_UNSET);
+            return results;
+        }
     }
 
     /**
